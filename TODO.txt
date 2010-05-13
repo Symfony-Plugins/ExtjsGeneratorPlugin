@@ -21,3 +21,10 @@ add a way to disable bottombar
 grid editing
 grid row expander
 grid grouping
+
+
+use sfGrid (once it is ready) 
+
+
+### usability
+don' t show delete buttons when object is not created yet in edit-form
