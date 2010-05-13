@@ -2,7 +2,6 @@ add a numberfield widget
 add a hiddenfield widget
 heredoc in generator for generated partials
 expand generated partials with examples
-refactor widgets to use config instead of attributes
 auto add ^object_actions as last column if object_actions are enabled
 move is_empty checkbox for filter to an extension
 is_empty doesn't reset when value is set from the session
