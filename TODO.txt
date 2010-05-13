@@ -1,0 +1,23 @@
+add a numberfield widget
+add a hiddenfield widget
+heredoc in generator for generated partials
+expand generated partials with examples
+refactor widgets to use config instead of attributes
+auto add ^object_actions as last column if object_actions are enabled
+move is_empty checkbox for filter to an extension
+is_empty doesn't reset when value is set from the session
+is_empty should clear associated fields when set
+is_empty oncheck listener to submit the filter
+formpanel updatebuttonvisibility needs to be looked at
+add time display for datetime fields to list, filter, and edit
+foreign columns should show __toString() output in list
+foreign columns should be clickable to open an adminstration for that foreign table if one exists
+refactor evals in generator partials
+clean up app.yml
+
+### defered
+add ext components not lazy loaded list to app.yml
+add a way to disable bottombar
+grid editing
+grid row expander
+grid grouping
