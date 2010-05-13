@@ -14,6 +14,9 @@ foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
 refactor evals in generator partials
 clean up app.yml
+add default fieldset styles
+fix widgetOptions for the itemselector for many to many in formpanels
+
 
 ### defered
 add ext components not lazy loaded list to app.yml
@@ -21,6 +24,8 @@ add a way to disable bottombar
 grid editing
 grid row expander
 grid grouping
+remote json combos
+remote json itemselector
 
 
 use sfGrid (once it is ready) 
