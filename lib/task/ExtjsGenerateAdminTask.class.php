@@ -54,7 +54,7 @@ For the filters and batch actions to work properly, you need to add
 the [with_wildcard_routes|COMMENT] option to the route:
 
   article:
-    class: sfPropelRouteCollection
+    class: ExtjsPropel15RouteCollection
     options:
       model:                Article
       with_wildcard_routes: true
@@ -65,7 +65,7 @@ EOF;
   {
     $routeOptions = $arguments['route']->getOptions();
 
-    if (!$arguments['route'] instanceof sfPropelRouteCollection)
+    if (!$arguments['route'] instanceof ExtjsPropel15RouteCollection)
     {
       throw new sfCommandException(sprintf('The route "%s" is not a Propel collection route.', $arguments['route_name']));
     }
