@@ -1,0 +1,47 @@
+ExtjsGeneratorPlugin
+====================
+Symfony 1.3/1.4 admin generator that requires sfPropel15Plugin and sfExtjs3Plugin. The entire administration frontend has been converted to use the ExtJS javascript framework.
+
+Installation
+------------
+
+Move into your project directory and issue the following commands:
+
+    > svn export http://svn.symfony-project.com/plugins/ExtjsGeneratorPlugin/trunk/ ./plugins/ExtjsGeneratorPlugin
+    > svn export http://svn.symfony-project.com/plugins/sfExtjs3Plugin/trunk/ ./plugins/sfExtjs3Plugin
+    > svn export http://svn.symfony-project.com/plugins/sfPropel15Plugin/trunk ./plugins/sfPropel15Plugin
+    > 
+    > mkdir ./plugins/sfExtjs3Plugin/web
+    > cd ./plugins/sfExtjs3Plugin/web
+    > wget http://extjs.cachefly.net/ext-3.2.1.zip
+    > unzip ext-3.2.1.zip
+    > rm ext-3.2.1.zip
+    > ln -s ext-3.2.1 extjs
+    > cd ../../../web/
+    > ln -s ../plugins/sfExtjs3Plugin/web sfExtjs3Plugin
+    > ln -s ../plugins/ExtjsGeneratorPlugin/web ExtjsGeneratorPlugin
+    > ln -s ../plugins/sfPropel15Plugin/web sfPropel15Plugin
+
+Disable the core Propel plugin and enable the `sfPropel15Plugin`, `sfExtjs3Plugin`, and `ExtjsGeneratorPlugin`:
+
+    [php]
+    class ProjectConfiguration extends sfProjectConfiguration
+    {
+      public function setup()
+      {
+        $this->enablePlugins('sfPropel15Plugin');
+        $this->enablePlugins('sfExtjs3Plugin');
+        $this->enablePlugins('ExtjsGeneratorPlugin');                
+      }
+    }
+
+Change the path of the symfony behaviors in the `config/propel.ini` file of your project:
+
+    [ini]
+    propel.behavior.symfony.class                  = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorSymfony
+    propel.behavior.symfony_i18n.class             = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorI18n
+    propel.behavior.symfony_i18n_translation.class = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorI18nTranslation
+    propel.behavior.symfony_behaviors.class        = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorSymfonyBehaviors
+    propel.behavior.symfony_timestampable.class    = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorTimestampable
+
+The new options for the `admin15` generator theme are fully documented, and illustrated by real life examples, in the [`doc/admin_generator.txt`](http://trac.symfony-project.org/browser/plugins/sfPropel15Plugin/trunk/doc/admin_generator.txt) file in this plugin source code.

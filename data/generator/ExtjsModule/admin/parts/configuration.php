@@ -71,7 +71,7 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 <?php unset($this->config['list']['with']) ?>
   }
   
-  public function getQueryPartials()
+  public function getQueryMethods()
   {
     return <?php echo $this->asPhp(isset($this->config['list']['query_methods']) ? $this->config['list']['query_methods'] : array()) ?>;
 <?php unset($this->config['list']['query_methods']) ?>
