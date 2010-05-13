@@ -53,6 +53,14 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
       '%input%' => $this->renderExtjsContentBlock('filter', 'TextField', array_merge(array(
         'name' => $name.'[text]', 
         'value' => $values['text'],
+        'listeners' => array(
+          'reset' => array(
+            'fn' => 'function(){this.originalValue = null;this.setValue(null)}'
+          ),
+          'specialkey' => array(
+            'fn' => 'function(f,e){if(f.getValue() != \'\' && e.getKey() ==13)this.ownerCt.buttons[0].handler.call(this.ownerCt);}'
+          )
+        )
       ), $attributes)), 
       '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));

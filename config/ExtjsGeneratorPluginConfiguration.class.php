@@ -54,11 +54,11 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants
       '/ExtjsGeneratorPlugin/js/Ext.ux.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.RowActions.js',
+      '/ExtjsGeneratorPlugin/js/Ext.form.TextField.override.js',  //adds reset event
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.MessageBox.js',  // adds autohiding info and error message types
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.MultiSelect.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ItemSelector.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.form.DoubleList.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinDateField.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.CheckColumn.js',

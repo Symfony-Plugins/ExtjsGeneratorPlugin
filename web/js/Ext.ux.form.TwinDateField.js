@@ -54,6 +54,7 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   hideTrigger1 : true,
 
   reset : Ext.form.Field.prototype.reset.createSequence(function() {
+    this.originalValue = null;
     this.setValue(null);
     this.triggers[0].hide();
   }),
