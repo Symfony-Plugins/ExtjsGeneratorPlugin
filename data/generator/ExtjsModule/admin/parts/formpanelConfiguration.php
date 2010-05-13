@@ -19,12 +19,15 @@
   {
 <?php 
 $fieldsetConfigs = array();
-foreach($this->config['form'] as $key => $config)
+if(isset($this->config['form']))
 {
-  if(strstr($key, 'params_'))
+  foreach($this->config['form'] as $key => $config)
   {
-    $fieldsetConfigs[$key] = $config;
-    unset($this->config['form'][$key]);
+    if(strstr($key, 'params_'))
+    {
+      $fieldsetConfigs[$key] = $config;
+      unset($this->config['form'][$key]);
+    }
   }
 }
 ?>
