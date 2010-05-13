@@ -151,7 +151,7 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 
     if ($column->isForeignKey())
     {
-      $options[] = sprintf('\'model\' => \'%s\', \'add_empty\' => true', $this->getForeignTable($column)->getClassname());
+      $options[] = sprintf('\'model\' => \'%s\'', $this->getForeignTable($column)->getClassname());
 
       $refColumn = $this->getForeignTable($column)->getColumn($column->getRelatedColumnName());
       if (!$refColumn->isPrimaryKey())

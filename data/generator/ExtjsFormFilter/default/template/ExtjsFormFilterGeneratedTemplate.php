@@ -17,7 +17,7 @@ abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormF
       '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
-      '<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($tables['middleTable']->getClassname()).'_list')) ?> => new ExtjsWidgetFormPropelChoice(array('context' => 'filter', 'model' => '<?php echo $tables['relatedTable']->getClassname() ?>', 'add_empty' => true)),
+      '<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($tables['middleTable']->getClassname()).'_list')) ?> => new ExtjsWidgetFormPropelChoice(array('context' => 'filter', 'model' => '<?php echo $tables['relatedTable']->getClassname() ?>')),
 <?php endforeach; ?>
     ));
 
