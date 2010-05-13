@@ -74,6 +74,8 @@ foreach ($configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  
   
   foreach ($fields as $name => $field)
   {
+    //dirty hack till I figure out the real reason this is added or make a hidden field widget
+    if(strstr('_csrf_token', $name)) continue;
     if($name == '<?php echo $key ?>') $needsId = false;
     $attributes = array(
       'help' => $field->getConfig('help'),
