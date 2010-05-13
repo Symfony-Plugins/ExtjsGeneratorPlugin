@@ -132,13 +132,15 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   },
 
   onTrigger1Click : function() {
-    this.clearValue();
-    this.triggers[0].hide();
-    if (this.submitOnClear && this.ownerCt && this.ownerCt.buttons) {
-      this.ownerCt.buttons[0].handler.call(this.ownerCt);
-    }
-    this.el.dom.qtip = null;
-    this.fireEvent('clear', this);
+  	if(!this.disabled) {
+      this.clearValue();
+      this.triggers[0].hide();
+      if (this.submitOnClear && this.ownerCt && this.ownerCt.buttons) {
+        this.ownerCt.buttons[0].handler.call(this.ownerCt);
+      }
+      this.el.dom.qtip = null;
+      this.fireEvent('clear', this);
+  	}
   }
 });
 Ext.ComponentMgr.registerType('twincombo', Ext.ux.form.TwinComboBox);

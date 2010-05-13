@@ -18,6 +18,7 @@
  */
 class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
 {
+
   /**
    * Configures the current widget.
    *
@@ -28,10 +29,10 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
    *
    * Available options:
    *
-   *  * date:      Options for the date widget (see sfWidgetFormDate)
-   *  * time:      Options for the time widget (see sfWidgetFormTime)
-   *  * with_time: Whether to include time (true by default)
-   *  * format:    The format string for the date and the time widget (default to %date% %time%)
+   * * date:      Options for the date widget (see sfWidgetFormDate)
+   * * time:      Options for the time widget (see sfWidgetFormTime)
+   * * with_time: Whether to include time (true by default)
+   * * format:    The format string for the date and the time widget (default to %date% %time%)
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -58,75 +59,21 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
    */
   function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    $date = $this->getDateWidget($attributes)->render($name, $value);
-
-    if (!$this->getOption('with_time'))
-    {
-      return $date;
-    }
-
-    return strtr($this->getOption('format'), array(
-      '%date%' => $date,
-      '%time%' => $this->getTimeWidget($attributes)->render($name, $value),
-    ));
-  }
-
-  /**
-   * Returns the date widget.
-   *
-   * @param  array $attributes  An array of attributes
-   *
-   * @return sfWidgetForm A Widget representing the date
-   */
-  protected function getDateWidget($attributes = array())
-  {
-    return new sfWidgetFormDate($this->getOptionsFor('date'), $this->getAttributesFor('date', $attributes));
-  }
-
-  /**
-   * Returns the time widget.
-   *
-   * @param  array $attributes  An array of attributes
-   *
-   * @return sfWidgetForm A Widget representing the time
-   */
-  protected function getTimeWidget($attributes = array())
-  {
-    return new sfWidgetFormTime($this->getOptionsFor('time'), $this->getAttributesFor('time', $attributes));
-  }
-
-  /**
-   * Returns an array of options for the given type.
-   *
-   * @param  string $type  The type (date or time)
-   *
-   * @return array  An array of options
-   *
-   * @throws InvalidArgumentException when option date|time type is not array
-   */
-  protected function getOptionsFor($type)
-  {
-    $options = $this->getOption($type);
-    if (!is_array($options))
-    {
-      throw new InvalidArgumentException(sprintf('You must pass an array for the %s option.', $type));
-    }
-
-    return $options;
-  }
-
-  /**
-   * Returns an array of HTML attributes for the given type.
-   *
-   * @param  string $type        The type (date or time)
-   * @param  array  $attributes  An array of attributes
-   *
-   * @return array  An array of HTML attributes
-   */
-  protected function getAttributesFor($type, $attributes)
-  {
-    $defaults = isset($this->attributes[$type]) ? $this->attributes[$type] : array();
-
-    return isset($attributes[$type]) ? array_merge($defaults, $attributes[$type]) : $defaults;
+    return $this->renderExtjsContentBlock('form', 'TwinDateField', array_merge(array(
+      'name' => $name, 
+      'value' => $value,
+    ), $attributes));
+    
+//    $date = $this->getDateWidget($attributes)->render($name, $value);
+//    
+//    if(! $this->getOption('with_time'))
+//    {
+//      return $date;
+//    }
+//    
+//    return strtr($this->getOption('format'), array(
+//      '%date%' => $date, 
+//      '%time%' => $this->getTimeWidget($attributes)->render($name, $value)
+//    ));
   }
 }

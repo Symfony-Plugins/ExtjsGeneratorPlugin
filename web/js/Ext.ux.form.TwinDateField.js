@@ -1,14 +1,15 @@
 Ext.namespace('Ext.ux.form');
 Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
-	submitOnSelect: true,
-	submitOnClear: true,
+  submitOnSelect : true,
+  submitOnClear : true,
   initComponent : function() {
     Ext.ux.form.TwinDateField.superclass.initComponent.call(this);
 
     this.triggerConfig = {
       tag : 'span',
       cls : 'x-form-twin-triggers',
-      cn : [{
+      cn : [
+      {
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger1Class
@@ -16,7 +17,8 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger2Class
-      }]
+      }
+      ]
     };
     this.addEvents('valuechange');
   },
@@ -25,10 +27,10 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
     Ext.ux.form.TwinDateField.superclass.initEvents.call(this);
 
     this.on({
-    	'select' : {
+      'select' : {
         fn : function() {
           if (this.value && this.ownerCt && this.ownerCt.buttons && this.submitOnSelect) {
-            this.ownerCt.buttons[0].handler();
+            this.ownerCt.buttons[0].handler.call(this.ownerCt);
           }
         },
         scope : this
@@ -52,6 +54,7 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   hideTrigger1 : true,
 
   reset : Ext.form.Field.prototype.reset.createSequence(function() {
+    this.setValue(null);
     this.triggers[0].hide();
   }),
 
@@ -60,12 +63,14 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   },
 
   onTrigger1Click : function() {
-    this.clearValue();
-    this.triggers[0].hide();
-    if (this.ownerCt && this.ownerCt.buttons && this.submitOnClear) {
-      this.ownerCt.buttons[0].handler();
-    }
-    this.fireEvent('clear', this);
+  	if(!this.disabled) {  	
+      this.clearValue();
+      this.triggers[0].hide();
+      if (this.ownerCt && this.ownerCt.buttons && this.submitOnClear) {
+        this.ownerCt.buttons[0].handler.call(this.ownerCt);
+      }
+      this.fireEvent('clear', this);
+  	}
   },
 
   /**
@@ -80,10 +85,14 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
     this.applyEmptyText();
     this.value = '';
   },
-  setValue : function(date) {
-    Ext.form.DateField.superclass.setValue.call(this, this.formatDate(this.parseDate(date)));
-    this.fireEvent('valuechange', this);
-  }
+  
+  setValue : Ext.form.DateField.prototype.setValue.createSequence(function(v) {
+    if (v !== null && v != '') {
+      this.triggers[0].show();
+    } else {
+      this.triggers[0].hide();
+    }
+  })
 
 });
 Ext.ComponentMgr.registerType('twindatefield', Ext.ux.form.TwinDateField);

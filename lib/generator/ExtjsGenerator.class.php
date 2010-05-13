@@ -100,12 +100,13 @@ class ExtjsGenerator extends sfPropelGenerator
     $fieldArr = array(
       'name' => $field->getName(), 
       'type' => $field->getReaderFieldType() 
-    );
+    );   
     
     if(isset($form))
     {
       $fieldArr['mapping'] = $field->getName();
       $fieldArr['name'] = sprintf($form[$field->getName()]->getParent()->getWidget()->getNameFormat(), $field->getName());
+      if($fieldArr['type']=='date') $fieldArr['dateFormat'] = 'Y-m-d H:i:s';
     }
     
     return sprintf("\$readerFields[] = %s", $this->asPhp($fieldArr));
