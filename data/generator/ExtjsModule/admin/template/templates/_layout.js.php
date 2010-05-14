@@ -23,11 +23,12 @@
 
 <?php if (sfConfig::get('app_extjs_gen_plugin_module_app_init_partial')): ?>
 [?php
-  $partialArr = array('sfExtjs3Plugin' => $sfExtjs3Plugin);
-  //$partialArr['gridpanel'] = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_grid_panel_name', 'Ext.app.sf.GridPanel') ?>';
-  $partialArr['tabpanel'] = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>';
+  $partialArr = array();
+  $partialArr['sfExtjs3Plugin'] = $sfExtjs3Plugin;
+  //$partialArr['gridpanel']      = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_grid_panel_name', 'Ext.app.sf.GridPanel') ?>';
+  $partialArr['tabpanel']       = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>';
 <?php if($this->configuration->hasFilterForm()):?>
-  $partialArr['filterpanel'] = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_filter_panel_name', 'Ext.app.sf.FilterPanel') ?>';
+  $partialArr['filterpanel']    = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_filter_panel_name', 'Ext.app.sf.FilterPanel') ?>';
 <?php endif; ?>
   include_partial('global/<?php echo sfConfig::get('app_extjs_gen_plugin_module_app_init_partial') ?>', $partialArr);
 ?]
