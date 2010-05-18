@@ -5,17 +5,17 @@
       'cm'              => 'this.cm',      
       'autoScroll'      => true,
       'clicksToEdit'    => 1,
-      'trackMouseOver'  => false,
-      'loadMask'        => false,
-      'stripeRows'      => true,
+      'trackMouseOver'  => sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true),
+      'loadMask'        => sfConfig::get('app_extjs_gen_plugin_list_loadMask', true),
+      'stripeRows'      => sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true),
       'stateful'        => true,
       'stateId'         => '<?php echo $this->getModuleName() ?>gridpanel',
       'viewConfig'      => array(
-        'forceFit'      => true,
+        'forceFit'      => sfConfig::get('extjs_gen_plugin_list_forceFit', true),
       ),
       'sm'              => 'this.cm.sm',
       'plugins'         => $this->getFormpanelPlugins(),
-<?php if (sfConfig::get('extjs_gen_plugin_list_tabbed')) echo "      'header' => false," ?>                                
+<?php if (sfConfig::get('app_extjs_gen_plugin_list_tabbed', true)) echo "      'header' => false," ?>                                
     ), <?php echo $this->asPhp(isset($this->config['gridpanel']['config']) ? $this->config['gridpanel']['config'] : array()) ?>);
 <?php unset($this->config['gridpanel']['config']) ?>
   }

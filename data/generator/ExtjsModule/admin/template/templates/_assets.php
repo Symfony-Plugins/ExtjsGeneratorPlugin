@@ -9,8 +9,8 @@
 // TODO: Need to put in a mechanism to only include extensions we are currently using in the generator.yml
 $sfExtjs3Plugin = new sfExtjs3Plugin(
   array(
-    'theme'   => sfConfig::get('extjs_gen_plugin_theme'),
-    'adapter' => sfConfig::get('extjs_gen_plugin_adapter')
+    'theme'   => sfConfig::get('app_extjs_gen_plugin_theme', 'aero'),
+    'adapter' => sfConfig::get('app_extjs_gen_plugin_adapter', 'ext')
   ),
   array(
     'css' => <?php var_export($css) ?>,
