@@ -96,11 +96,17 @@ foreach ($configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  
   else
   {     
     $formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
-      'title'       => __($fieldset, array(), '<?php echo $this->getI18nCatalogue() ?>'),
+      'title' => __($fieldset, array(), '<?php echo $this->getI18nCatalogue() ?>'),
       'collapsible' => false,
-      'autoHeight'  => true,
-      'style'   => 'padding:10px;',
-      'bodyStyle'   => 'padding:0px 0px;',
+      'autoHeight' => true,
+      'style' => 'padding:10px;',
+      'bodyStyle' => 'padding:0px 0px;',
+      'style' => 'margin-left:5px;margin-right:10px',
+      'autoWidth' => true,
+      'defaults' => array(
+        'anchor' => '51%'
+      ),
+      'labelWidth' => $formpanel->config_array['labelWidth'] - 16, 
       'items' => $fieldItems,
     ), $configuration->getFormFieldsetParams('params_'.$fieldset)));
   }

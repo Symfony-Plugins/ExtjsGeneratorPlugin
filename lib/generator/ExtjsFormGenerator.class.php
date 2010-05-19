@@ -113,7 +113,7 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
         break;
       case PropelColumnTypes::CLOB:
       case PropelColumnTypes::LONGVARCHAR:
-        $name = 'InputTextarea';
+        $name = 'InputTextArea';
         break;
       case PropelColumnTypes::DATE:
         $name = 'Date';
@@ -123,6 +123,17 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
         break;
       case PropelColumnTypes::TIMESTAMP:
         $name = 'DateTime';
+        break;
+      case PropelColumnTypes::NUMERIC:
+      case PropelColumnTypes::DECIMAL:
+      case PropelColumnTypes::TINYINT:
+      case PropelColumnTypes::SMALLINT:
+      case PropelColumnTypes::INTEGER:
+      case PropelColumnTypes::BIGINT:
+      case PropelColumnTypes::REAL: 
+      case PropelColumnTypes::FLOAT: 
+      case PropelColumnTypes::DOUBLE: 
+      	$name = 'InputNumberField';
         break;
       default:
         $name = 'InputText';

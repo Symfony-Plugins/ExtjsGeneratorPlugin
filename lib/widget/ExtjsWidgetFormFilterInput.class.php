@@ -27,6 +27,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
    */
   protected function configure($options = array(), $attributes = array())
   {
+  	$this->addRequiredOption('type');
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%input%  %empty_checkbox%');
@@ -50,7 +51,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
     ), is_array($value) ? $value : array());
     
     return strtr($this->getOption('template'), array(
-      '%input%' => $this->renderExtjsContentBlock('filter', 'TextField', array_merge(array(
+      '%input%' => $this->renderExtjsContentBlock('filter', $this->getOption('type'), array_merge(array(
         'name' => $name.'[text]', 
         'value' => $values['text'],
         'listeners' => array(

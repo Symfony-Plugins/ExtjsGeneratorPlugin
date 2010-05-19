@@ -33,9 +33,6 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
   protected function configure($options = array(), $attributes = array())
   {
     $this->addRequiredOption('type');
-
-    // to maintain BC with symfony 1.2
-    $this->setOption('type', 'TextField');
   }
 
   /**

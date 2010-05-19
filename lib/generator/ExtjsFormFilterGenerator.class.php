@@ -111,13 +111,28 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
       case PropelColumnTypes::BOOLEAN:
         $name = 'Choice';
         break;
+      case PropelColumnTypes::CLOB:
+      case PropelColumnTypes::LONGVARCHAR:
+        $name = 'FilterInputTextArea';
+        break;
       case PropelColumnTypes::DATE:
       case PropelColumnTypes::TIME:
       case PropelColumnTypes::TIMESTAMP:
         $name = 'FilterDate';
         break;
+      case PropelColumnTypes::NUMERIC:
+      case PropelColumnTypes::DECIMAL:
+      case PropelColumnTypes::TINYINT:
+      case PropelColumnTypes::SMALLINT:
+      case PropelColumnTypes::INTEGER:
+      case PropelColumnTypes::BIGINT:
+      case PropelColumnTypes::REAL: 
+      case PropelColumnTypes::FLOAT: 
+      case PropelColumnTypes::DOUBLE: 
+        $name = 'FilterInputNumberField';
+        break;
       default:
-        $name = 'FilterInput';
+        $name = 'FilterInputText';
     }
     
     if($column->isForeignKey())

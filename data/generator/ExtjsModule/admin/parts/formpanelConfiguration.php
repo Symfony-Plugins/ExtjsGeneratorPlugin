@@ -9,7 +9,7 @@
       'bodyStyle'           => 'padding: 10px 0px 10px 5px;',
       'trackResetOnLoad'    => true,
       'method'              => 'POST',
-      'defaults'            => array('anchor' => '40%'),
+      'defaults'            => array('anchor' => '50%'),
       'plugins'             => $this->getFormpanelPlugins(),
     ), <?php echo $this->asPhp(isset($this->config['formpanel']['config']) ? $this->config['formpanel']['config'] : array()) ?>);
 <?php unset($this->config['formpanel']['config']) ?>    

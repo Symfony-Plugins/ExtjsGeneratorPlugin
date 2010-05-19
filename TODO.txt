@@ -1,5 +1,4 @@
 ### forms
-add a numberfield widget
 add a hiddenfield widget
 
 show combobox for related fields (field is not always added)
