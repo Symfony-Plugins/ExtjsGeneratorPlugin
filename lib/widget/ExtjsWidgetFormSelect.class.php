@@ -63,8 +63,6 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'multiselects' => array(
           array(
             'legend'  => 'Associated',
-            'droppable' => false,
-            'draggable' => false,
             'store' => array(
               'xtype' => 'arraystore',
               'fields' => array('value', 'display'),
@@ -76,8 +74,6 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
           ),
           array(
             'legend'  => 'Unassociated',
-            'droppable' => false,
-            'draggable' => false, 
             'store' => array(
               'xtype' => 'arraystore',
               'fields' => array('value', 'display'),

@@ -8,6 +8,8 @@ formpanel updatebuttonvisibility needs to be looked at
 - don't show delete buttons when object is not created yet in edit-form
 - save and new does not work
 
+label doesn't apply to many to many fields
+
 ### grid
 foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
