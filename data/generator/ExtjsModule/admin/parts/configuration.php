@@ -70,15 +70,15 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
     return <?php echo $this->asPhp(isset($this->config['list']['with']) ? $this->config['list']['with'] : array()) ?>;
 <?php unset($this->config['list']['with']) ?>
   }
-  
+
   public function getQueryMethods()
   {
     return <?php echo $this->asPhp(isset($this->config['list']['query_methods']) ? $this->config['list']['query_methods'] : array()) ?>;
 <?php unset($this->config['list']['query_methods']) ?>
   }
-  
+
   public function getObjectName()
   {
-    return '<?php echo isset($this->params['object_name']) ? $this->params['object_name'] : $this->getModuleName() ?>';
+    return '<?php echo isset($this->params['object_name']) ? $this->params['object_name'] : sfInflector::humanize($this->getModuleName()) ?>';
   }
 }

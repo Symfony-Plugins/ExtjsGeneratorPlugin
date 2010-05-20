@@ -4,19 +4,58 @@
 
   public function getListTitle()
   {
-    return '<?php echo $this->escapeString(isset($this->config['list']['title']) ? $this->config['list']['title'] : sfInflector::humanize($this->getModuleName()).' List') ?>';
+<?php
+if(isset($this->config['list']['title']))
+{
+	$title = $this->config['list']['title'];
+} else if(isset($this->params['object_name']))
+{
+	$title = sfInflector::humanize($this->params['object_name']). ' List';
+}
+else
+{
+	$title = sfInflector::humanize($this->getModuleName()). ' List';
+}
+?>
+    return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['list']['title']) ?>
   }
 
   public function getEditTitle()
   {
-    return '<?php echo $this->escapeString(isset($this->config['edit']['title']) ? $this->config['edit']['title'] : 'Edit '.sfInflector::humanize($this->getModuleName())) ?>';
+<?php
+if(isset($this->config['edit']['title']))
+{
+  $title = $this->config['edit']['title'];
+} else if(isset($this->params['object_name']))
+{
+  $title = 'Edit '.sfInflector::humanize($this->params['object_name']);
+}
+else
+{
+  $title = 'Edit '.sfInflector::humanize($this->getModuleName());
+}
+?>
+    return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['edit']['title']) ?>
   }
 
   public function getNewTitle()
   {
-    return '<?php echo $this->escapeString(isset($this->config['new']['title']) ? $this->config['new']['title'] : 'New '.sfInflector::humanize($this->getModuleName())) ?>';
+<?php
+if(isset($this->config['new']['title']))
+{
+  $title = $this->config['new']['title'];
+} else if(isset($this->params['object_name']))
+{
+  $title = 'New '.sfInflector::humanize($this->params['object_name']);
+}
+else
+{
+  $title = 'New '.sfInflector::humanize($this->getModuleName());
+}
+?>
+    return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
 

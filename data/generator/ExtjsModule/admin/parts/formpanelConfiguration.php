@@ -2,7 +2,6 @@
   {
     return array_merge(array(
       'xtype'               => 'form',
-      'title'               => 'New '.$this->getObjectName(),
       'autoScroll'          => true,
       'labelWidth'          => 200,
       'labelAlign'          => 'right',
@@ -12,12 +11,12 @@
       'defaults'            => array('anchor' => '50%'),
       'plugins'             => $this->getFormpanelPlugins(),
     ), <?php echo $this->asPhp(isset($this->config['formpanel']['config']) ? $this->config['formpanel']['config'] : array()) ?>);
-<?php unset($this->config['formpanel']['config']) ?>    
+<?php unset($this->config['formpanel']['config']) ?>
   }
-  
+
   public function getFormFieldsetParams($fieldset)
   {
-<?php 
+<?php
 $fieldsetConfigs = array();
 if(isset($this->config['form']))
 {
@@ -60,5 +59,4 @@ if(isset($this->config['form']))
   {
     return <?php echo $this->asPhp(isset($this->config['formpanel']['partials']) ? $this->config['formpanel']['partials'] : array()) ?>;
 <?php unset($this->config['formpanel']['partials']) ?>
-  }      
-  
+  }

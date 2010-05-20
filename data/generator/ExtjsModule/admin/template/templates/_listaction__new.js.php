@@ -4,7 +4,8 @@
 
   var formpanel = Ext.ComponentMgr.create({
     xtype: '<?php echo $this->getModuleName() ?>formpanel',
-    gridPanel: this.ownerCt  
+    title: '<?php echo $this->configuration->getNewTitle() ?>',
+    gridPanel: this.ownerCt
   });
   <?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>.add(formpanel).show();
 ";

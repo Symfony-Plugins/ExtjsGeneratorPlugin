@@ -1,6 +1,6 @@
   <?php echo sfConfig::get('app_extjs_gen_plugin_module_grid_panel_name', 'Ext.app.sf.GridPanel') ?> = Ext.ComponentMgr.create({
     xtype : '<?php echo $this->getModuleName() ?>gridpanel',
-    title: '<?php echo $this->configuration->getObjectName() ?>'
+    title: '<?php echo $this->configuration->getListTitle() ?>'
   });
 <?php if (sfConfig::get('app_extjs_gen_plugin_module_returns_layout', true)): ?>
 [?php include_partial('viewport', array('sfExtjs3Plugin' => $sfExtjs3Plugin))?]
@@ -25,7 +25,7 @@
 [?php
   $partialArr = array();
   $partialArr['sfExtjs3Plugin'] = $sfExtjs3Plugin;
-  //$partialArr['gridpanel']      = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_grid_panel_name', 'Ext.app.sf.GridPanel') ?>';
+  $partialArr['gridpanel']      = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_grid_panel_name', 'Ext.app.sf.GridPanel') ?>';
   $partialArr['tabpanel']       = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>';
 <?php if($this->configuration->hasFilterForm()):?>
   $partialArr['filterpanel']    = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_filter_panel_name', 'Ext.app.sf.FilterPanel') ?>';
