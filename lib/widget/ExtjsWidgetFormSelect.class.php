@@ -36,7 +36,6 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     parent::configure($options, $attributes);
 
     $this->addOption('context', 'form');
-    $this->addOption('multiple', false);
     $this->addOption('allowClear', true);
     $this->addOption('defaultValue');
   }
@@ -73,6 +72,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
             ),
             'valueField' => 'value',
             'displayField' => 'display',
+            'width' => isset($attributes['width']) ? $attributes['width'] : 200
           ),
           array(
             'legend'  => 'Unassociated',
@@ -85,9 +85,11 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
             ),
             'valueField' => 'value',
             'displayField' => 'display',
+            'width' => isset($attributes['width']) ? $attributes['width'] : 200
           )
         )
       );
+      unset($attributes['width']);
     }
     else
     {
@@ -138,22 +140,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     $options = array();
     foreach ($choices as $key => $option)
     {
-//      if (is_array($option))
-//      {
-//        $options[] = $this->renderContentTag('optgroup', implode("\n", $this->getOptionsForSelect($value, $option)), array('label' => self::escapeOnce($key)));
-//      }
-//      else
-//      {
-//        $attributes = array('value' => self::escapeOnce($key));
-//        if (isset($value_set[strval($key)]))
-//        {
-//          $attributes['selected'] = 'selected';
-//        }
-        
-//        var_export($attributes);
-//        $options[] = $this->renderContentTag('option', self::escapeOnce($option), $attributes);
-        $options[] = array(self::escapeOnce($key), $option);
-//      }
+      $options[] = array(self::escapeOnce($key), $option);
     }
 
     $this->attributes = $mainAttributes;

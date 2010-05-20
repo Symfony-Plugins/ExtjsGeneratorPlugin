@@ -11,7 +11,7 @@
       'stateful'        => true,
       'stateId'         => '<?php echo $this->getModuleName() ?>gridpanel',
       'viewConfig'      => array(
-        'forceFit'      => sfConfig::get('extjs_gen_plugin_list_forceFit', true),
+        'forceFit'      => sfConfig::get('app_extjs_gen_plugin_list_forceFit', true),
       ),
       'sm'              => 'this.cm.sm',
       'plugins'         => $this->getFormpanelPlugins(),

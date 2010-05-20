@@ -80,39 +80,9 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
     if ($this->getOption('multiple'))
     {
       $attributes['multiple'] = 'multiple';
-
-//      if ('[]' != substr($name, -2))
-//      {
-//        $name .= '[]';
-//      }
     }
 
-//    if (!$this->getOption('renderer') && !$this->getOption('renderer_class') && $this->getOption('expanded'))
-//    {
-//      unset($attributes['multiple']);
-//    }
-
     return $this->getRenderer()->render($name, $value, $attributes, $errors);
-  }
-
-  /**
-   * Gets the stylesheet paths associated with the widget.
-   *
-   * @return array An array of stylesheet paths
-   */
-  public function getStylesheets()
-  {
-    return $this->getRenderer()->getStylesheets();
-  }
-
-  /**
-   * Gets the JavaScript paths associated with the widget.
-   *
-   * @return array An array of JavaScript paths
-   */
-  public function getJavaScripts()
-  {
-    return $this->getRenderer()->getJavaScripts();
   }
 
   public function getRenderer()
