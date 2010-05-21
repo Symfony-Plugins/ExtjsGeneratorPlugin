@@ -61,6 +61,12 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 <?php unset($this->config['filter']['class']) ?>
   }
 
+  public function getPrimaryKeys($firstOne = false)
+  {
+    $keys = <?php echo $this->asPhp($this->getPrimaryKeys()) ?>;
+    return $firstOne ? $keys[0] : $keys;
+  }
+
 <?php include dirname(__FILE__).'/paginationConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/sortingConfiguration.php' ?>
@@ -81,4 +87,6 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
   {
     return '<?php echo isset($this->params['object_name']) ? $this->params['object_name'] : sfInflector::humanize($this->getModuleName()) ?>';
   }
+
+
 }

@@ -9,7 +9,7 @@
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  */
-abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends BaseFormPropel
+abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends BaseExtjsFormPropel
 {
   public function setup()
   {

@@ -1,6 +1,4 @@
 ### forms
-add a hiddenfield widget
-
 show combobox for related fields (field is not always added)
 - this is a problem with the standard generator too
 
@@ -23,11 +21,10 @@ is_empty oncheck listener to submit the filter
 
 ### generic
 add time display for datetime fields to list, filter, and edit
-refactor evals in generator partials
-add default fieldset styles
+find alternate way to do filterpanel without eval, needs it now to get filter values from user session
 fix widgetOptions for the itemselector for many to many in formpanels
 use heredoc in ExtjsGenerator for getStandardPartials, createStandardConstructorPartial, createStandardInitComponentPartial, createStandardInitEventsPartial methods
-
+expand generated partials with examples
 add support for objects with multiple fields as primary key
 
 error handling
@@ -43,7 +40,5 @@ grid grouping
 remote json combos
 remote json itemselector
 
-expand generated partials with examples
-
-use sfGrid (once it is ready) 
+use sfGrid (once it is ready)
 

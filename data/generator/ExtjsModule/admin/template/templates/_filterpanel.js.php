@@ -18,7 +18,7 @@ $filterpanel->config_array = array(
 $filterpanel->config_array['buttons'] = array(
   $sfExtjs3Plugin->Button(array
   (
-    'text'    => 'Filter',    
+    'text'    => 'Filter',
     'handler' => $sfExtjs3Plugin->asMethod("
       var params=this.form.getValues();
       this.fireEvent('filter_set', params, this);
@@ -44,7 +44,7 @@ foreach ($configuration->getFormFilterFields($form) as $name => $field)
     'help' => $field->getConfig('help'),
     'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
   );
-  
+
   eval($form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array()))));
 }
 

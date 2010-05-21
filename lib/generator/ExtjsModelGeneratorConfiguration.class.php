@@ -80,7 +80,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
       ),
       'gridpanel'   => array(
         'config'  => $this->getGridpanelConfig(),
-        'plugins' => $this->getGridpanelPlugins(),      
+        'plugins' => $this->getGridpanelPlugins(),
         'method'  => $this->getGridpanelPartials(),
       ),
       'formpanel'   => array(
@@ -191,7 +191,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
     $this->configuration['credentials']['create'] = $this->configuration['credentials']['new'];
     $this->configuration['credentials']['update'] = $this->configuration['credentials']['edit'];
   }
-  
+
   /**
    * Gets the fields that represents the form.
    *
@@ -204,6 +204,10 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
   public function getFormFields(sfForm $form, $context)
   {
     $config = $this->getConfig();
+    $key = sfInflector::underscore($this->getPrimaryKeys(true));
+		$csrfToken = $form->getCSRFFieldName();
+		$needsId = true;
+		$needsCsrf = true;
 
     $method = sprintf('get%sDisplay', ucfirst($context));
     if (!$fieldsets = $this->$method())
@@ -232,6 +236,9 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
         foreach ($names as $name)
         {
+        	if($name == $key) $needsId = false;
+          if($name == $csrfToken) $needsCsrf = false;
+
           list($name, $flag) = ExtjsModelGeneratorConfigurationField::splitFieldWithFlag($name);
           if (!isset($this->configuration[$context]['fields'][$name]))
           {
@@ -247,6 +254,28 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
           $field->setFlag($flag);
           $fields[$fieldset][$name] = $field;
         }
+      }
+
+      if($needsId)
+      {
+      	$fields['NONE'][$key] = new ExtjsModelGeneratorConfigurationField($key, array_merge(
+	        array('type' => 'Text'),
+	        isset($config['default'][$key]) ? $config['default'][$key] : array(),
+	        isset($config['form'][$key]) ? $config['form'][$key] : array(),
+	        isset($config[$context][$key]) ? $config[$context][$key] : array(),
+	        array('is_real' => false)
+	      ));
+      }
+
+      if($needsCsrf)
+      {
+        $fields['NONE'][$csrfToken] = new ExtjsModelGeneratorConfigurationField($csrfToken, array_merge(
+          array('type' => 'Text'),
+          isset($config['default'][$csrfToken]) ? $config['default'][$csrfToken] : array(),
+          isset($config['form'][$csrfToken]) ? $config['form'][$csrfToken] : array(),
+          isset($config[$context][$csrfToken]) ? $config[$context][$csrfToken] : array(),
+          array('is_real' => false)
+        ));
       }
 
       return $fields;
@@ -266,7 +295,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
     return array('NONE' => $fields);
   }
-  
+
   protected function parseVariables($context, $key)
   {
     preg_match_all('/%%([^%]+)%%/', $this->configuration[$context][$key], $matches, PREG_PATTERN_ORDER);

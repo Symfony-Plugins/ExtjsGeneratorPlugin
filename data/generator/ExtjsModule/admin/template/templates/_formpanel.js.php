@@ -33,33 +33,54 @@ $this->createPartialFile('_editaction_'.$name,'<?php
 ?>
 <?php endif; ?>
 <?php if(in_array($name, array('_reload', '_save', '_savenew', '_delete', '_cancel'))): ?>
-include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
 
+include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
 <?php endif; ?>
 <?php echo $this->addCredentialCondition($this->getEditActionButton($name, $params), $params)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
 
 $readerFields = array();
+$fieldItems = array();
 <?php
 $form = $this->configuration->getForm();
-$key = sfInflector::underscore($this->getPrimaryKeys(true));
-$needsId = true;
 
-foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields)
-{
+foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields):
+	$fieldItems = array();
   foreach ($fields as $name => $field)
   {
-    if($name == $key) $needsId = false;
-    echo $this->addCredentialCondition((sprintf("%s;\n", $this->renderJsonReaderField($field, $form))), $field->getConfig());
+    echo $this->addCredentialCondition(sprintf("%s;\n\n", $this->renderJsonReaderField($field, $form)), $field->getConfig());
+
+    $attributes = array(
+      'help' => $field->getConfig('help'),
+      'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
+    );
+    echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array())))), $field->getConfig());
   }
-}
-if($needsId)
-{
-  $idField = $this->configuration->getFieldConfiguration('edit', $key);
-  echo sprintf("%s;\n", $this->renderJsonReaderField($idField, $form));
-}
-?>
+
+  if($fieldset == 'NONE'): ?>
+foreach($fieldItems as $fieldItem) $formpanel->config_array['items'][] = $fieldItem;
+$fieldItems = array();
+
+<?php else: ?>
+$formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
+	'title' => __('<?php echo $fieldset ?>', array(), '<?php echo $this->getI18nCatalogue() ?>'),
+	'collapsible' => false,
+	'autoHeight' => true,
+	'style' => 'padding:10px;',
+	'bodyStyle' => 'padding:0px 0px;',
+	'style' => 'margin-left:5px;margin-right:10px',
+	'autoWidth' => true,
+	'defaults' => array(
+	'anchor' => '51%'
+	),
+	'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
+	'items' => $fieldItems,
+), $configuration->getFormFieldsetParams('params_<?php echo $fieldset ?>')));
+$fieldItems = array();
+
+<?php endif; ?>
+<?php endforeach; ?>
 
 $formpanel->config_array['reader'] = $sfExtjs3Plugin->JsonReader(array(
   'root' => 'data',
@@ -67,70 +88,8 @@ $formpanel->config_array['reader'] = $sfExtjs3Plugin->JsonReader(array(
   'fields' => $readerFields,
 ));
 
-foreach ($configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields)
-{
-  $fieldItems = array();
-  $needsId = true;
-  
-  foreach ($fields as $name => $field)
-  {
-    //dirty hack till I figure out the real reason this is added or make a hidden field widget
-    if(strstr('_csrf_token', $name)) continue;
-    if($name == '<?php echo $key ?>') $needsId = false;
-    $attributes = array(
-      'help' => $field->getConfig('help'),
-      'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
-    );
-    
-    eval($form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array()))));
-    //echo $form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array())))."\n\n";
-  } 
-  
-  if($fieldset == 'NONE')
-  {
-    foreach($fieldItems as $fieldItem)
-    {
-      $formpanel->config_array['items'][] = $fieldItem;
-    }
-  }
-  else
-  {     
-    $formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
-      'title' => __($fieldset, array(), '<?php echo $this->getI18nCatalogue() ?>'),
-      'collapsible' => false,
-      'autoHeight' => true,
-      'style' => 'padding:10px;',
-      'bodyStyle' => 'padding:0px 0px;',
-      'style' => 'margin-left:5px;margin-right:10px',
-      'autoWidth' => true,
-      'defaults' => array(
-        'anchor' => '51%'
-      ),
-      'labelWidth' => $formpanel->config_array['labelWidth'] - 16, 
-      'items' => $fieldItems,
-    ), $configuration->getFormFieldsetParams('params_'.$fieldset)));
-  }
-}
-
-if($needsId)
-{
-  $formpanel->config_array['items'][] = $sfExtjs3Plugin->asCustomClass('Ext.form.Hidden', array(
-    'name' => sprintf($form->getWidgetSchema()->getNameFormat(), '<?php echo $key ?>'),
-  ));
-}
-
-if ($form->isCSRFProtected())
-{
-  //add csrf field
-  $formpanel->config_array['items'][] = $sfExtjs3Plugin->asCustomClass('Ext.form.Hidden', array(
-    'name' => sprintf($form->getWidgetSchema()->getNameFormat(), $form->getCSRFFieldName()),
-    'value' => $form->getCSRFToken(),
-  ));
-}
-
 //initComponent
 include_partial('formpanel_method_initComponent', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel, 'className' => $className));
-
 <?php echo $this->getStandardPartials('formpanel', array('constructor',)) ?>
 <?php echo $this->getCustomPartials('formpanel'); ?>
 
