@@ -8,7 +8,7 @@ Installation
 Move into your project directory and create a new project
 
     > /path/to/sf1.4/data/bin/symfony generate:project --orm=propel project_name
-    
+
 then issue the following commands:
 
     > svn export http://svn.symfony-project.com/plugins/ExtjsGeneratorPlugin/trunk/ ./plugins/ExtjsGeneratorPlugin
@@ -17,17 +17,8 @@ then issue the following commands:
 
 Or add them as svn-externals
 
-Now add the extjs-framework to the sfExtjs3Plugin
-     
-    > mkdir ./plugins/sfExtjs3Plugin/web
-    > cd ./plugins/sfExtjs3Plugin/web
-    > wget http://extjs.cachefly.net/ext-3.2.1.zip
-    > unzip ext-3.2.1.zip
-    > rm ext-3.2.1.zip
-    > ln -s ext-3.2.1 extjs
-    
 now extract the IconMgr library (we want to keep subversion fast, so we zipped it)
-    
+
     > cd ../../ExtjsGeneratorPlugin/web
     > tar xvzf ../Ext.ux.IconMgr.tar.gz
     > cd ../../../
@@ -41,11 +32,11 @@ Disable the core Propel plugin and enable the `sfPropel15Plugin`, `sfExtjs3Plugi
       {
         $this->enablePlugins('sfPropel15Plugin');
         $this->enablePlugins('sfExtjs3Plugin');
-        $this->enablePlugins('ExtjsGeneratorPlugin');                
+        $this->enablePlugins('ExtjsGeneratorPlugin');
       }
     }
 
-    
+
 And finally publish the assets of the plugins
     > ./symfony plugin:publish-assets
 
@@ -67,13 +58,13 @@ after you setup your database and create your model with Propel, you should crea
 
     > ./symfony extjs:build-forms
     > ./symfony extjs:build-filters
-    
-and you can create your modules with    
-  
+
+and you can create your modules with
+
     > ./symfony extjs:generate-admin app_name ModelName
 
 That is it, you should now see your ExtJS powered modules when you take a look with your browser!
 
-There is however a change you get a server-error when you have relations in your schema. The generator is looking for the __toString() methods for the related objects, but once you have implemented these functions in your model run 
-    > ./symfony cc 
+There is however a change you get a server-error when you have relations in your schema. The generator is looking for the __toString() methods for the related objects, but once you have implemented these functions in your model run
+    > ./symfony cc
 and refresh you should now see a list, with filter, and functionality to add new items!
