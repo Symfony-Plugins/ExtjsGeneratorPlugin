@@ -10,6 +10,7 @@ formpanel updatebuttonvisibility needs to be looked at
 - save and new does not work
 
 label doesn't apply to many to many fields
+look at how to handle a form with another form embedded in it
 
 ### grid
 foreign columns should show __toString() output in list
