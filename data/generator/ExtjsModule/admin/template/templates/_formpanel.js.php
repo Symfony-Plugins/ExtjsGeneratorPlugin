@@ -43,8 +43,10 @@ include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $
 $readerFields = array();
 $fieldItems = array();
 <?php
-$form = $this->configuration->getForm();
+$this->form = $this->configuration->getForm();
+eval($this->getFormCustomization('form'));
 
+$form = $this->form;
 foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields):
 	$fieldItems = array();
   foreach ($fields as $name => $field)
@@ -55,7 +57,10 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
       'help' => $field->getConfig('help'),
       'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
     );
-    echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array())))), $field->getConfig());
+    
+    $fieldAttributes = $field->getConfig('attributes', array());
+    if(isset($fieldAttributes['mode']) && $fieldAttributes['mode'] == 'remote') $attributes['url'] = $this->getModuleName().'/combo.json';
+    echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $fieldAttributes))), $field->getConfig());
   }
 
   if($fieldset == 'NONE'): ?>

@@ -58,19 +58,7 @@ else
     return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
-
-  public function getFilterDisplay()
-  {
-    return <?php echo $this->asPhp(isset($this->config['filter']['display']) ? $this->config['filter']['display'] : array()) ?>;
-<?php unset($this->config['filter']['display']) ?>
-  }
-
-  public function getFormDisplay()
-  {
-    return <?php echo $this->asPhp(isset($this->config['form']['display']) ? $this->config['form']['display'] : array()) ?>;
-<?php unset($this->config['form']['display']) ?>
-  }
-
+  
   public function getEditDisplay()
   {
     return <?php echo $this->asPhp(isset($this->config['edit']['display']) ? $this->config['edit']['display'] : array()) ?>;
@@ -83,18 +71,20 @@ else
 <?php unset($this->config['new']['display']) ?>
   }
 
-  public function getListDisplay()
+<?php foreach (array('list', 'filter', 'form') as $context): ?>
+  public function get<?php echo ucfirst($context) ?>Display()
   {
-<?php if (isset($this->config['list']['display'])): ?>
-    return <?php echo $this->asPhp($this->config['list']['display']) ?>;
-<?php elseif (isset($this->config['list']['hide'])): ?>
-    return <?php echo $this->asPhp(array_diff($this->getAllFieldNames(false), $this->config['list']['hide'])) ?>;
+<?php if (isset($this->config[$context]['display'])): ?>
+    return <?php echo $this->asPhp($this->config[$context]['display']) ?>;
+<?php elseif (isset($this->config[$context]['hide'])): ?>
+    return <?php echo $this->asPhp(array_diff($this->getAllFieldNames(false), $this->config[$context]['hide'])) ?>;
 <?php else: ?>
     return <?php echo $this->asPhp($this->getAllFieldNames(false)) ?>;
 <?php endif; ?>
-<?php unset($this->config['list']['display'], $this->config['list']['hide']) ?>
+<?php unset($this->config[$context]['display'], $this->config[$context]['hide']) ?>
   }
 
+<?php endforeach; ?>
   public function getFieldsDefault()
   {
     return array(

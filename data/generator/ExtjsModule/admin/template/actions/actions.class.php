@@ -26,6 +26,8 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper();
   }
+  
+<?php include dirname(__FILE__).'/../../parts/comboAction.php' ?>  
 
 <?php include dirname(__FILE__).'/../../parts/indexAction.php' ?>
 

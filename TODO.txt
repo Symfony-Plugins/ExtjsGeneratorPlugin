@@ -1,3 +1,6 @@
+###routing
+generated route prefix in generator not set correctly
+
 ### forms
 show combobox for related fields (field is not always added)
 - this is a problem with the standard generator too
@@ -12,6 +15,7 @@ label doesn't apply to many to many fields
 foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
 auto add ^object_actions as last column if object_actions are enabled
+need to escape single quotes in labels for columnmodel
 
 ### filter
 move is_empty checkbox for filter to an Ext.ux extension
@@ -22,7 +26,6 @@ is_empty oncheck listener to submit the filter
 ### generic
 add time display for datetime fields to list, filter, and edit
 find alternate way to do filterpanel without eval, needs it now to get filter values from user session
-fix widgetOptions for the itemselector for many to many in formpanels
 use heredoc in ExtjsGenerator for getStandardPartials, createStandardConstructorPartial, createStandardInitComponentPartial, createStandardInitEventsPartial methods
 expand generated partials with examples
 add support for objects with multiple fields as primary key
@@ -31,13 +34,20 @@ error handling
 
 backport changes in sfPropel15Plugin admin15 to forms, filters, widgets, and routing
 
+###remote combos (WIP set attributes.mode.remote to test )
+filterpanel support
+displays the value instead of display field when no combo store is loaded
+type ahead filtering not implemented
+no return limit
+support for query_method options not implemented
+non-foreign fields distint or grouping not implemented
+
 ### defered
 add ext components not lazy loaded list to app.yml
 add a way to disable bottombar
 grid editing
 grid row expander
 grid grouping
-remote json combos
 remote json itemselector
 
 use sfGrid (once it is ready)

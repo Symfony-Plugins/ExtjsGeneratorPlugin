@@ -33,6 +33,7 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
   protected function configure($options = array(), $attributes = array())
   {
     $this->addRequiredOption('choices');
+    $this->addOption('baseParams');
   }
 
   /**
@@ -63,6 +64,16 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
     }
 
     return $results;
+  }
+  
+  public function getBaseParams()
+  {
+    $baseParams = $this->getOption('baseParams');
+
+    if ($baseParams instanceof sfCallable)
+    {
+      return $baseParams->call();
+    }
   }
 
   /**

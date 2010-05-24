@@ -1,5 +1,5 @@
 generator:
-  class: ExtjsGenerator
+  class:                    ExtjsGenerator
   param:
 ##CONFIG##
 

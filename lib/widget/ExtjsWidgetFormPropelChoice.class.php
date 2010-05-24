@@ -18,13 +18,14 @@
  */
 class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
 {
+
   /**
    * @see sfWidget
    */
   public function __construct($options = array(), $attributes = array())
   {
     $options['choices'] = array();
-
+    
     parent::__construct($options, $attributes);
   }
 
@@ -33,18 +34,20 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
    *
    * Available options:
    *
-   *  * model:       The model class (required)
-   *  * add_empty:   Whether to add a first empty value or not (false by default)
-   *                 If the option is not a Boolean, the value will be used as the text value
-   *  * method:      The method to use to display object values (__toString by default)
-   *  * key_method:  The method to use to display the object keys (getPrimaryKey by default) 
-   *  * order_by:    An array composed of two fields:
-   *                   * The column to order by the results (must be in the PhpName format)
-   *                   * asc or desc
-   *  * criteria:    A criteria to use when retrieving objects
-   *  * connection:  The Propel connection to use (null by default)
-   *  * multiple:    true if the select tag must allow multiple selections
-   *  * peer_method: The peer method to use to fetch objects
+   * * model:       The model class (required)
+   * * add_empty:   Whether to add a first empty value or not (false by default)
+   * If the option is not a Boolean, the value will be used as the text value
+   * * method:      The method to use to display object values (__toString by default)
+   * * key_method:  The method to use to display the object keys (getPrimaryKey by default) 
+   * * order_by:    An array composed of two fields:
+   * * The column to order by the results (must be in the PhpName format)
+   * * asc or desc
+   * * query_methods: An array of method names listing the methods to execute
+   * on the model's query object
+   * * criteria:    A criteria to use when retrieving objects
+   * * connection:  The Propel connection to use (null by default)
+   * * multiple:    true if the select tag must allow multiple selections
+   * * peer_method: ignored - only supported for BC purpose
    *
    * @see sfWidgetFormSelect
    */
@@ -55,12 +58,28 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     $this->addOption('method', '__toString');
     $this->addOption('key_method', 'getPrimaryKey');
     $this->addOption('order_by', null);
+    $this->addOption('query_methods', array());
     $this->addOption('criteria', null);
     $this->addOption('connection', null);
     $this->addOption('multiple', false);
+    // not used anymore
     $this->addOption('peer_method', 'doSelect');
-
+    
     parent::configure($options, $attributes);
+  }
+
+  public function getBaseParams()
+  {
+    return array(
+      'model' => $this->getOption('model'), 
+      'method' => $this->getOption('method'), 
+      'key_method' => $this->getOption('key_method'), 
+      'order_by' => $this->getOption('order_by'), 
+      'query_methods' => $this->getOption('query_methods'), 
+      'criteria' => $this->getOption('criteria'), 
+      'connection' => $this->getOption('connection'), 
+      'multiple' => $this->getOption('multiple')
+    );
   }
 
   /**
@@ -71,38 +90,43 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   public function getChoices()
   {
     $choices = array();
-    if (false !== $this->getOption('add_empty'))
+    if(false !== $this->getOption('add_empty'))
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
     }
-
-    $class = constant($this->getOption('model').'::PEER');
-
-    $criteria = null === $this->getOption('criteria') ? new Criteria() : clone $this->getOption('criteria');
-    if ($order = $this->getOption('order_by'))
+    
+    $criteria = PropelQuery::from($this->getOption('model'));
+    if($this->getOption('criteria'))
     {
-      $method = sprintf('add%sOrderByColumn', 0 === strpos(strtoupper($order[1]), 'ASC') ? 'Ascending' : 'Descending');
-      $criteria->$method(call_user_func(array($class, 'translateFieldName'), $order[0], BasePeer::TYPE_PHPNAME, BasePeer::TYPE_COLNAME));
+      $criteria->mergeWith($this->getOption('criteria'));
     }
-    $objects = call_user_func(array($class, $this->getOption('peer_method')), $criteria, $this->getOption('connection'));
-
+    foreach($this->getOption('query_methods') as $method)
+    {
+      $criteria->$method();
+    }
+    if($order = $this->getOption('order_by'))
+    {
+      $criteria->orderBy($order[0], $order[1]);
+    }
+    $objects = $criteria->find($this->getOption('connection'));
+    
     $methodKey = $this->getOption('key_method');
-    if (!method_exists($this->getOption('model'), $methodKey))
+    if(! method_exists($this->getOption('model'), $methodKey))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
     }
-
+    
     $methodValue = $this->getOption('method');
-    if (!method_exists($this->getOption('model'), $methodValue))
+    if(! method_exists($this->getOption('model'), $methodValue))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodValue, __CLASS__));
     }
-
-    foreach ($objects as $object)
+    
+    foreach($objects as $object)
     {
       $choices[$object->$methodKey()] = $object->$methodValue();
     }
-
+    
     return $choices;
   }
 }

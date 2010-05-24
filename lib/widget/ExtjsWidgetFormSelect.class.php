@@ -89,14 +89,31 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     }
     else
     {
-      $configArr = array(
-        'hiddenName' => $name,
-        'name' => $name,
-        'store' => array(
+      if(isset($attributes['mode']) && $attributes['mode'] == 'remote')
+      {
+        $store = array(
+          'xtype' => 'jsonstore',
+          'fields' => array('value', 'display'),
+          'root' => 'data',
+          'url' => $attributes['url'],
+          'baseParams' => $this->getBaseParams(),
+        );
+        unset($attributes['url']);
+      }
+      else
+      {
+        $attributes['mode'] = 'local';
+        $store = array(
           'xtype' => 'arraystore',
           'fields' => array('value', 'display'),
           'data' => $this->getOptionsForSelect($value, $choices),
-        ),
+        );
+      }
+      
+      $configArr = array(
+        'hiddenName' => $name,
+        'name' => $name,
+        'store' => $store,
         'allowClear' => $this->getOption('allowClear'),
         'defaultValue' => $this->getOption('defaultValue'),
         'valueField' => 'value',
@@ -105,7 +122,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'typeAhead' => false,
         'value' => (string)$value,
         'triggerAction' => 'all',
-        'mode' => 'local',
+        'mode' => $attributes['mode'],
       );
     }   
 

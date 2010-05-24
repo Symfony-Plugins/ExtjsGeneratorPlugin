@@ -98,6 +98,12 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
       $class = sprintf('ExtjsWidgetFormSelect%s', ucfirst($type));
     }
 
-    return new $class(array_merge(array('defaultValue' => $this->getOption('defaultValue'), 'allowClear' => $this->getOption('allowClear'), 'context' => $this->getOption('context'), 'choices' => new sfCallable(array($this, 'getChoices'))), $this->options['renderer_options']), $this->getAttributes());
+    return new $class(array_merge(array(
+      'defaultValue' => $this->getOption('defaultValue'), 
+      'allowClear' => $this->getOption('allowClear'), 
+      'context' => $this->getOption('context'), 
+      'choices' => new sfCallable(array($this, 'getChoices')),
+      'baseParams' => new sfCallable(array($this, 'getBaseParams')))
+    , $this->options['renderer_options']), $this->getAttributes());
   }
 }
