@@ -7,7 +7,7 @@
  * @subpackage filter
  * @author     ##AUTHOR_NAME##
  */
-abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormFilter extends BaseFormFilterPropel
+abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormFilter extends BaseExtjsFormFilterPropel
 {
   public function setup()
   {
