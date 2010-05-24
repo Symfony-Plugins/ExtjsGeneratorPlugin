@@ -44,6 +44,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 //    )));    
 
     $default_stylesheets = array(
+      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',
     );
 
     $default_javascripts = array(

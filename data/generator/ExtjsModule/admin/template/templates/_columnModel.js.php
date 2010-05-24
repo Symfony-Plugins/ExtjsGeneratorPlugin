@@ -18,10 +18,7 @@ $columnModel->config_array = array(
 foreach ($this->configuration->getValue('list.display') as $name => $field)
 {
   echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnModelField($field)), $field->getConfig());
-}
 
-foreach ($this->configuration->getValue('list.display') as $name => $field)
-{
   if($field->isPlugin())
   {
     echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnModelPlugin($field)), $field->getConfig());

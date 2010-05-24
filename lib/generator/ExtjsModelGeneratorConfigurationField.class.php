@@ -130,6 +130,26 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     
     return $escaped ? str_replace("'", "\\'", $value) : $value;
   }
+  
+  /**
+   * Sets or unsets the invisible flag.
+   *
+   * @param Boolean $boolean true if the field is invisible, false otherwise
+   */
+  public function setInvisible($boolean)
+  {
+    $this->config['is_invisible'] = $boolean;
+  }
+
+  /**
+   * Returns true if the column is invisible.
+   *
+   * @return boolean true if the column is invisible, false otherwise
+   */
+  public function isInvisible()
+  {
+    return isset($this->config['is_invisible']) ? $this->config['is_invisible'] : false;
+  }
 
   /**
    * Sets or unsets the hidden flag.
@@ -220,6 +240,9 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     switch($flag)
     {
       case '+':
+        $this->setInvisible(true);
+        break;
+      case '-':
         $this->setHidden(true);
         break;
       case '^':
@@ -238,7 +261,8 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
    * * = for a link
    * * _ for a partial
    * * ~ for a component
-   * * + for a hidden field
+   * * + for a invisible field
+   * * - for a hidden field
    * * ^ for a plugin
    *
    * @return string The flag
@@ -249,9 +273,13 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     {
       return '^';
     }
-    elseif($this->isHidden())
+    elseif($this->isInvisible())
     {
       return '+';
+    }
+    elseif($this->isHidden())
+    {
+      return '-';
     }
     
     return parent::getFlag();

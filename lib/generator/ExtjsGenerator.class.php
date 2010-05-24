@@ -121,7 +121,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnModelField($field)
   {
-    if($field->isComponent() || $field->isPartial() || $field->isHidden()) return false;
+    if($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
     
     if($field->isPlugin())
     {

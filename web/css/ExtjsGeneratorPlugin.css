@@ -1,0 +1,4 @@
+/* whitespace normal for grids using formatLongstring renderer */
+.x-grid3-cell-wrap .x-grid3-cell-inner {
+	white-space: normal;
+}
