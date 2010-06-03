@@ -1,5 +1,7 @@
 ###routing
-generated route prefix in generator not set correctly
+extjs:generate-admin generator.yml route prefix is not set correctly to the modulename
+does with_propel_route in the generator.yml do anything?
+possible to work without route_prefix and no propel route?
 
 ### forms
 show combobox for related fields (field is not always added)
@@ -17,6 +19,8 @@ foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
 auto add ^object_actions as last column if object_actions are enabled
 need to escape single quotes in labels for columnmodel
+sort on foreign columns with many to one administrations
+filter on foreign columns with many to one administrations
 
 ### filter
 move is_empty checkbox for filter to an Ext.ux extension

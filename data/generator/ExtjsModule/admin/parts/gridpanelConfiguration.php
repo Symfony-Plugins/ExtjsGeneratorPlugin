@@ -9,7 +9,7 @@
       'loadMask'        => sfConfig::get('app_extjs_gen_plugin_list_loadMask', true),
       'stripeRows'      => sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true),
       'stateful'        => true,
-      'stateId'         => '<?php echo $this->getModuleName() ?>gridpanel',
+      'stateId'         => '<?php echo $this->params['route_prefix'] ?>gridpanel',
       'viewConfig'      => array(
         'forceFit'      => sfConfig::get('app_extjs_gen_plugin_list_forceFit', true),
       ),

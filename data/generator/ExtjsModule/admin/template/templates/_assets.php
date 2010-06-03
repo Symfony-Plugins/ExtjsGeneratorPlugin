@@ -4,7 +4,7 @@
 [?php use_stylesheet('<?php echo $this->params['css'] ?>', 'first') ?]
 <?php endif; ?>
 
-[?php use_javascript('<?php echo $this->params['route_prefix'] ?>/index/index.js', 'last', array('raw_name' => true)); ?]
+[?php use_javascript('<?php echo $this->getModuleName() ?>/index.js', 'last', array('raw_name' => true)); ?]
 [?php
 // TODO: Need to put in a mechanism to only include extensions we are currently using in the generator.yml
 $sfExtjs3Plugin = new sfExtjs3Plugin(
