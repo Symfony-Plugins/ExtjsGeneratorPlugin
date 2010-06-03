@@ -40,12 +40,20 @@ foreach ($configuration->getFormFilterFields($form) as $name => $field)
 {
   if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue;
 
-  $attributes = array(
+  $attributes = array_merge(array(
     'help' => $field->getConfig('help'),
     'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
-  );
+  ), $field->getConfig('attributes', array()));
 
-  eval($form[$name]->render(array_merge($attributes, $field->getConfig('attributes', array()))));
+  $params = $field->getConfig();
+  if(isset($params['credentials']))
+  {
+    if ($sf_user->hasCredential($params['credentials'])) eval($form[$name]->render($attributes));
+  }
+  else
+  {
+    eval($form[$name]->render($attributes));
+  }
 }
 
 if ($form->isCSRFProtected())
