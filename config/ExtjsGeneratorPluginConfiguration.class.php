@@ -17,13 +17,13 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     // Route to xtype-script-getter
     $this->dispatcher->connect('routing.load_configuration', array('ExtjsGeneratorPluginRouting', 'listenToRoutingLoadConfigurationEvent'));
 
-    //automatically enable module
+    //automatically enable modules
     if(is_array(sfConfig::get('sf_enabled_modules')))
     {
-      $moduleArr = array('ExtjsGeneratorPluginXtypeManager');
+      $moduleArr = array('ExtjsGeneratorPluginXtypeManager', 'IconMgrPreview');
       foreach ($moduleArr as $module)
       {
-        if (!in_array($module, sfConfig::get('sf_enabled_modules')))
+        if(! in_array($module, sfConfig::get('sf_enabled_modules')))
         {
           $enabled = sfConfig::get('sf_enabled_modules');
           array_unshift($enabled,$module);
@@ -38,10 +38,6 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     );
     
     sfConfig::set('extjs_quote_except', $quoteExcept);
-    
-//    sfConfig::set('sf_extjs3_classes', array_merge(sfConfig::get('sf_extjs3_classes'), array(
-//      'DateField' => 'Ext.form.DateField',
-//    )));    
 
     $default_stylesheets = array(
       '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',
