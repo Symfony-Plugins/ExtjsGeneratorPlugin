@@ -27,7 +27,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
    */
   protected function configure($options = array(), $attributes = array())
   {
-  	$this->addRequiredOption('type');
+    $this->addRequiredOption('type');
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%input%  %empty_checkbox%');
@@ -46,13 +46,13 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
     $values = array_merge(array(
-      'text' => '', 
+      'text' => '',
       'is_empty' => false
     ), is_array($value) ? $value : array());
-    
+
     return strtr($this->getOption('template'), array(
       '%input%' => $this->renderExtjsContentBlock('filter', $this->getOption('type'), array_merge(array(
-        'name' => $name.'[text]', 
+        'name' => $name . '[text]',
         'value' => $values['text'],
         'listeners' => array(
           'reset' => array(
@@ -62,7 +62,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
             'fn' => 'function(f,e){if(f.getValue() != \'\' && e.getKey() ==13)this.ownerCt.buttons[0].handler.call(this.ownerCt);}'
           )
         )
-      ), $attributes)), 
+      ), $attributes)),
       '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));
   }

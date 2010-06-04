@@ -18,21 +18,22 @@
  */
 class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * choices:          An array of possible choices (required)
-   *  * multiple:         true if the select tag must allow multiple selections
-   *  * expanded:         true to display an expanded widget
-   *                        if expanded is false, then the widget will be a select
-   *                        if expanded is true and multiple is false, then the widget will be a list of radio
-   *                        if expanded is true and multiple is true, then the widget will be a list of checkbox
-   *  * renderer_class:   The class to use instead of the default ones
-   *  * renderer_options: The options to pass to the renderer constructor
-   *  * renderer:         A renderer widget (overrides the expanded and renderer_options options)
-   *                      The choices option must be: new sfCallable($thisWidgetInstance, 'getChoices')
+   * * choices:          An array of possible choices (required)
+   * * multiple:         true if the select tag must allow multiple selections
+   * * expanded:         true to display an expanded widget
+   * if expanded is false, then the widget will be a select
+   * if expanded is true and multiple is false, then the widget will be a list of radio
+   * if expanded is true and multiple is true, then the widget will be a list of checkbox
+   * * renderer_class:   The class to use instead of the default ones
+   * * renderer_options: The options to pass to the renderer constructor
+   * * renderer:         A renderer widget (overrides the expanded and renderer_options options)
+   * The choices option must be: new sfCallable($thisWidgetInstance, 'getChoices')
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
    *
@@ -77,7 +78,7 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    if ($this->getOption('multiple'))
+    if($this->getOption('multiple'))
     {
       $attributes['multiple'] = 'multiple';
     }
@@ -87,23 +88,29 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
 
   public function getRenderer()
   {
-    if ($this->getOption('renderer'))
+    if($this->getOption('renderer'))
     {
       return $this->getOption('renderer');
     }
 
-    if (!$class = $this->getOption('renderer_class'))
+    if(! $class = $this->getOption('renderer_class'))
     {
-      $type = !$this->getOption('expanded') ? '' : ($this->getOption('multiple') ? 'checkbox' : 'radio');
+      $type = ! $this->getOption('expanded') ? '' : ($this->getOption('multiple') ? 'checkbox' : 'radio');
       $class = sprintf('ExtjsWidgetFormSelect%s', ucfirst($type));
     }
 
     return new $class(array_merge(array(
-      'defaultValue' => $this->getOption('defaultValue'), 
-      'allowClear' => $this->getOption('allowClear'), 
-      'context' => $this->getOption('context'), 
-      'choices' => new sfCallable(array($this, 'getChoices')),
-      'baseParams' => new sfCallable(array($this, 'getBaseParams')))
-    , $this->options['renderer_options']), $this->getAttributes());
+      'defaultValue' => $this->getOption('defaultValue'),
+      'allowClear' => $this->getOption('allowClear'),
+      'context' => $this->getOption('context'),
+      'choices' => new sfCallable(array(
+        $this,
+        'getChoices'
+      )),
+      'baseParams' => new sfCallable(array(
+        $this,
+        'getBaseParams'
+      ))
+    ), $this->options['renderer_options']), $this->getAttributes());
   }
 }

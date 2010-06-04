@@ -9,12 +9,13 @@
  */
 class ExtjsWidgetFormCheckbox extends sfWidgetForm
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * type: The widget type
+   * * type: The widget type
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -41,6 +42,10 @@ class ExtjsWidgetFormCheckbox extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    return $this->renderTag('input', array_merge(array('type' => $this->getOption('type'), 'name' => $name, 'value' => $value), $attributes));
+    return $this->renderTag('input', array_merge(array(
+      'type' => $this->getOption('type'),
+      'name' => $name,
+      'value' => $value
+    ), $attributes));
   }
 }

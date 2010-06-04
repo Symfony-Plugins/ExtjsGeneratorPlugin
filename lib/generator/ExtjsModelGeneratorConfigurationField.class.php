@@ -10,7 +10,7 @@
 class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfigurationField
 {
   protected $hasflag = false;
-  
+
   /**
    * Constructor.
    *
@@ -22,14 +22,14 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     $this->name = $name;
     $this->config = $config;
 
-    if (isset($this->config['flag']))
+    if(isset($this->config['flag']))
     {
       $this->setFlag($this->config['flag']);
       unset($this->config['flag']);
     }
     if(isset($config['flag']) && $config['flag'] !== null) $this->hasflag = true;
   }
-  
+
   public function getKey()
   {
     $fieldArr = self::splitFieldWithFlag($this->getName());
@@ -66,7 +66,7 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
           $renderer = false;
       }
       if($this->isLink()) $renderer = 'this.renderLink';
-      
+
       $this->setColumnModelRenderer($renderer);
     }
     return $this->config['column_model_renderer'];
@@ -125,12 +125,12 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     {
       return $this->config;
     }
-    
+
     $value = ExtjsModelGeneratorConfiguration::getFieldConfigValue($this->config, $key, $default);
-    
+
     return $escaped ? str_replace("'", "\\'", $value) : $value;
   }
-  
+
   /**
    * Sets or unsets the invisible flag.
    *
@@ -198,10 +198,10 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
   static public function splitFieldWithFlag($field)
   {
     if(in_array($flag = $field[0], array(
-      '=', 
-      '_', 
-      '~', 
-      '+', 
+      '=',
+      '_',
+      '~',
+      '+',
       '^'
     )))
     {
@@ -211,13 +211,13 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     {
       $flag = null;
     }
-    
+
     return array(
-      $field, 
+      $field,
       $flag
     );
   }
-  
+
   public function hasFlag()
   {
     return $this->hasflag;
@@ -236,7 +236,7 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     {
       return;
     }
-    
+
     switch($flag)
     {
       case '+':
@@ -281,7 +281,7 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
     {
       return '-';
     }
-    
+
     return parent::getFlag();
   }
 }

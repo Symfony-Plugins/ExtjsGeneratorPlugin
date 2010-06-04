@@ -9,12 +9,13 @@
  */
 class ExtjsWidgetFormTextField extends sfWidgetForm
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * type: The widget type
+   * * type: The widget type
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default config options
@@ -41,10 +42,8 @@ class ExtjsWidgetFormTextField extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    return '$sfExtjs3Plugin->TextField('
-      .var_export(array_merge(array(
-        'value' => $value,
-      ), $attributes)).
-    ');';
+    return '$sfExtjs3Plugin->TextField(' . var_export(array_merge(array(
+      'value' => $value
+    ), $attributes)) . ');';
   }
 }

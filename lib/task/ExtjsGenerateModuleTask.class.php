@@ -1,5 +1,5 @@
 <?php
-require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPropelGenerateModuleTask.class.php');
+require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPropelGenerateModuleTask.class.php');
 
 /**
  * Generates a Propel module.
@@ -10,6 +10,7 @@ require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPrope
  */
 class ExtjsGenerateModuleTask extends sfPropelGenerateModuleTask
 {
+
   /**
    * @see sfTask
    */
@@ -18,7 +19,7 @@ class ExtjsGenerateModuleTask extends sfPropelGenerateModuleTask
     $this->addArguments(array(
       new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
       new sfCommandArgument('module', sfCommandArgument::REQUIRED, 'The module name'),
-      new sfCommandArgument('model', sfCommandArgument::REQUIRED, 'The model class name'),
+      new sfCommandArgument('model', sfCommandArgument::REQUIRED, 'The model class name')
     ));
 
     $this->addOptions(array(
@@ -31,7 +32,7 @@ class ExtjsGenerateModuleTask extends sfPropelGenerateModuleTask
       new sfCommandOption('route-prefix', null, sfCommandOption::PARAMETER_REQUIRED, 'The route prefix', null),
       new sfCommandOption('with-propel-route', null, sfCommandOption::PARAMETER_NONE, 'Whether you will use a Propel route'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-      new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
+      new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions')
     ));
 
     $this->namespace = 'extjs';
@@ -68,44 +69,46 @@ EOF;
   protected function executeGenerate($arguments = array(), $options = array())
   {
     // generate module
-    $tmpDir = sfConfig::get('sf_cache_dir').DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.md5(uniqid(rand(), true));
+    $tmpDir = sfConfig::get('sf_cache_dir') . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . md5(uniqid(rand(), true));
     $generatorManager = new sfGeneratorManager($this->configuration, $tmpDir);
     $generatorManager->generate('ExtjsGenerator', array(
-      'model_class'           => $arguments['model'],
-      'moduleName'            => $arguments['module'],
-      'theme'                 => $options['theme'],
+      'model_class' => $arguments['model'],
+      'moduleName' => $arguments['module'],
+      'theme' => $options['theme'],
       'non_verbose_templates' => $options['non-verbose-templates'],
-      'with_show'             => $options['with-show'],
-      'singular'              => $options['singular'],
-      'plural'                => $options['plural'],
-      'route_prefix'          => $options['route-prefix'],
-      'with_propel_route'     => $options['with-propel-route'],
-      'actions_base_class'    => $options['actions-base-class'],
+      'with_show' => $options['with-show'],
+      'singular' => $options['singular'],
+      'plural' => $options['plural'],
+      'route_prefix' => $options['route-prefix'],
+      'with_propel_route' => $options['with-propel-route'],
+      'actions_base_class' => $options['actions-base-class']
     ));
 
-    $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];
+    $moduleDir = sfConfig::get('sf_app_module_dir') . '/' . $arguments['module'];
 
     // copy our generated module
-    $this->getFilesystem()->mirror($tmpDir.DIRECTORY_SEPARATOR.'auto'.ucfirst($arguments['module']), $moduleDir, sfFinder::type('any'));
+    $this->getFilesystem()->mirror($tmpDir . DIRECTORY_SEPARATOR . 'auto' . ucfirst($arguments['module']), $moduleDir, sfFinder::type('any'));
 
-    if (!$options['with-show'])
+    if(! $options['with-show'])
     {
-      $this->getFilesystem()->remove($moduleDir.'/templates/showSuccess.php');
+      $this->getFilesystem()->remove($moduleDir . '/templates/showSuccess.php');
     }
 
     // change module name
     $finder = sfFinder::type('file')->name('*.php');
-    $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '', '', array('auto'.ucfirst($arguments['module']) => $arguments['module']));
+    $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '', '', array(
+      'auto' . ucfirst($arguments['module']) => $arguments['module']
+    ));
 
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php', '*.yml');
     $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $this->constants);
 
     // create basic test
-    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir').DIRECTORY_SEPARATOR.'task'.DIRECTORY_SEPARATOR.'generator'.DIRECTORY_SEPARATOR.'skeleton'.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'actionsTest.php', sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php');
+    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir') . DIRECTORY_SEPARATOR . 'task' . DIRECTORY_SEPARATOR . 'generator' . DIRECTORY_SEPARATOR . 'skeleton' . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR . 'test' . DIRECTORY_SEPARATOR . 'actionsTest.php', sfConfig::get('sf_test_dir') . DIRECTORY_SEPARATOR . 'functional' . DIRECTORY_SEPARATOR . $arguments['application'] . DIRECTORY_SEPARATOR . $arguments['module'] . 'ActionsTest.php');
 
     // customize test file
-    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php', '##', '##', $this->constants);
+    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir') . DIRECTORY_SEPARATOR . 'functional' . DIRECTORY_SEPARATOR . $arguments['application'] . DIRECTORY_SEPARATOR . $arguments['module'] . 'ActionsTest.php', '##', '##', $this->constants);
 
     // delete temp files
     $this->getFilesystem()->remove(sfFinder::type('any')->in($tmpDir));
@@ -113,15 +116,15 @@ EOF;
 
   protected function executeInit($arguments = array(), $options = array())
   {
-    $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];
+    $moduleDir = sfConfig::get('sf_app_module_dir') . '/' . $arguments['module'];
 
     // create basic application structure
     $finder = sfFinder::type('any')->discard('.sf');
     $dirs = $this->configuration->getGeneratorSkeletonDirs('ExtjsModule', $options['theme']);
 
-    foreach ($dirs as $dir)
+    foreach($dirs as $dir)
     {
-      if (is_dir($dir))
+      if(is_dir($dir))
       {
         $this->getFilesystem()->mirror($dir, $moduleDir, $finder);
         break;
@@ -129,9 +132,9 @@ EOF;
     }
 
     // move configuration file
-    if (file_exists($config = $moduleDir.'/lib/configuration.php'))
+    if(file_exists($config = $moduleDir . '/lib/configuration.php'))
     {
-      if (file_exists($target = $moduleDir.'/lib/'.$arguments['module'].'GeneratorConfiguration.class.php'))
+      if(file_exists($target = $moduleDir . '/lib/' . $arguments['module'] . 'GeneratorConfiguration.class.php'))
       {
         $this->getFilesystem()->remove($config);
       }
@@ -142,9 +145,9 @@ EOF;
     }
 
     // move helper file
-    if (file_exists($config = $moduleDir.'/lib/helper.php'))
+    if(file_exists($config = $moduleDir . '/lib/helper.php'))
     {
-      if (file_exists($target = $moduleDir.'/lib/'.$arguments['module'].'GeneratorHelper.class.php'))
+      if(file_exists($target = $moduleDir . '/lib/' . $arguments['module'] . 'GeneratorHelper.class.php'))
       {
         $this->getFilesystem()->remove($config);
       }
@@ -155,10 +158,10 @@ EOF;
     }
 
     // create basic test
-    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir').DIRECTORY_SEPARATOR.'task'.DIRECTORY_SEPARATOR.'generator'.DIRECTORY_SEPARATOR.'skeleton'.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'actionsTest.php', sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php');
+    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir') . DIRECTORY_SEPARATOR . 'task' . DIRECTORY_SEPARATOR . 'generator' . DIRECTORY_SEPARATOR . 'skeleton' . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR . 'test' . DIRECTORY_SEPARATOR . 'actionsTest.php', sfConfig::get('sf_test_dir') . DIRECTORY_SEPARATOR . 'functional' . DIRECTORY_SEPARATOR . $arguments['application'] . DIRECTORY_SEPARATOR . $arguments['module'] . 'ActionsTest.php');
 
     // customize test file
-    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php', '##', '##', $this->constants);
+    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir') . DIRECTORY_SEPARATOR . 'functional' . DIRECTORY_SEPARATOR . $arguments['application'] . DIRECTORY_SEPARATOR . $arguments['module'] . 'ActionsTest.php', '##', '##', $this->constants);
 
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php', '*.yml');
@@ -173,17 +176,7 @@ EOF;
     with_propel_route:     %s
     actions_base_class:    %s
 EOF
-    ,
-      $arguments['model'],
-      $options['theme'],
-      $options['non-verbose-templates'] ? 'true' : 'false',
-      $options['with-show'] ? 'true' : 'false',
-      $options['singular'] ? $options['singular'] : '~',
-      $options['plural'] ? $options['plural'] : '~',
-      $options['route-prefix'] ? $options['route-prefix'] : '~',
-      $options['with-propel-route'] ? $options['with-propel-route'] : 'false',
-      $options['actions-base-class']
-    );
+    , $arguments['model'], $options['theme'], $options['non-verbose-templates'] ? 'true' : 'false', $options['with-show'] ? 'true' : 'false', $options['singular'] ? $options['singular'] : '~', $options['plural'] ? $options['plural'] : '~', $options['route-prefix'] ? $options['route-prefix'] : '~', $options['with-propel-route'] ? $options['with-propel-route'] : 'false', $options['actions-base-class']);
     $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $this->constants);
   }
 }

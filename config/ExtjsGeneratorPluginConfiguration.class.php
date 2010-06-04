@@ -9,44 +9,44 @@
  */
 class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 {
+
   /**
    * @see sfPluginConfiguration
    */
   public function initialize()
   {
     // Route to xtype-script-getter
-    $this->dispatcher->connect('routing.load_configuration', array('ExtjsGeneratorPluginRouting', 'listenToRoutingLoadConfigurationEvent'));
+    $this->dispatcher->connect('routing.load_configuration', array(
+      'ExtjsGeneratorPluginRouting',
+      'listenToRoutingLoadConfigurationEvent'
+    ));
 
     //automatically enable modules
     if(is_array(sfConfig::get('sf_enabled_modules')))
     {
-      $moduleArr = array('ExtjsGeneratorPluginXtypeManager', 'IconMgrPreview');
-      foreach ($moduleArr as $module)
+      $moduleArr = array(
+        'ExtjsGeneratorPluginXtypeManager',
+        'IconMgrPreview'
+      );
+      foreach($moduleArr as $module)
       {
         if(! in_array($module, sfConfig::get('sf_enabled_modules')))
         {
           $enabled = sfConfig::get('sf_enabled_modules');
-          array_unshift($enabled,$module);
-          sfConfig::set('sf_enabled_modules',$enabled);
+          array_unshift($enabled, $module);
+          sfConfig::set('sf_enabled_modules', $enabled);
         }
       }
     }
 
-    $quoteExcept = array(
-      'key' => array('renderer', 'store'),
-      'value' => array('true', 'false', 'new Ext.', 'function', 'Ext.')
-    );
-    
-    sfConfig::set('extjs_quote_except', $quoteExcept);
-
     $default_stylesheets = array(
-      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',
+      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css'
     );
 
     $default_javascripts = array(
       '/ExtjsGeneratorPlugin/js/ext-basex.js',  // BaseX/JIT 4.1 library, used for monitoring XHR requests (monitoring credentials) and lazy loading
       '/ExtjsGeneratorPlugin/js/jit.js',  // BaseX/JIT 4.1 library, used for monitoring XHR requests (monitoring credentials) and lazy loading
-      '/ExtjsGeneratorPlugin/js/Ext.ComponentMgr.create.createInterceptor.js',  // Interceptor for create method to lazy-load xtypes, REQUIRES INITIALISATION!    
+      '/ExtjsGeneratorPlugin/js/Ext.ComponentMgr.create.createInterceptor.js',  // Interceptor for create method to lazy-load xtypes, REQUIRES INITIALISATION!
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr.js',  // icon manager extension.  goes first so we can use it anywhere
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants
       '/ExtjsGeneratorPlugin/js/Ext.ux.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs
@@ -59,7 +59,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinDateField.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.CheckColumn.js',
-      '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js',  // adds setMethod method     
+      '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method
     );
 
     sfConfig::set('extjs_gen_default_javascripts', $default_javascripts);

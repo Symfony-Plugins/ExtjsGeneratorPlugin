@@ -60,20 +60,20 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
   function render($name, $value = null, $attributes = array(), $errors = array())
   {
     return $this->renderExtjsContentBlock('form', 'TwinDateField', array_merge(array(
-      'name' => $name, 
-      'value' => $value,
+      'name' => $name,
+      'value' => $value
     ), $attributes));
-    
-//    $date = $this->getDateWidget($attributes)->render($name, $value);
-//    
-//    if(! $this->getOption('with_time'))
-//    {
-//      return $date;
-//    }
-//    
-//    return strtr($this->getOption('format'), array(
-//      '%date%' => $date, 
-//      '%time%' => $this->getTimeWidget($attributes)->render($name, $value)
-//    ));
+
+  //    $date = $this->getDateWidget($attributes)->render($name, $value);
+  //
+  //    if(! $this->getOption('with_time'))
+  //    {
+  //      return $date;
+  //    }
+  //
+  //    return strtr($this->getOption('format'), array(
+  //      '%date%' => $date,
+  //      '%time%' => $this->getTimeWidget($attributes)->render($name, $value)
+  //    ));
   }
 }

@@ -25,7 +25,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   public function __construct($options = array(), $attributes = array())
   {
     $options['choices'] = array();
-    
+
     parent::__construct($options, $attributes);
   }
 
@@ -38,7 +38,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
    * * add_empty:   Whether to add a first empty value or not (false by default)
    * If the option is not a Boolean, the value will be used as the text value
    * * method:      The method to use to display object values (__toString by default)
-   * * key_method:  The method to use to display the object keys (getPrimaryKey by default) 
+   * * key_method:  The method to use to display the object keys (getPrimaryKey by default)
    * * order_by:    An array composed of two fields:
    * * The column to order by the results (must be in the PhpName format)
    * * asc or desc
@@ -64,20 +64,20 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     $this->addOption('multiple', false);
     // not used anymore
     $this->addOption('peer_method', 'doSelect');
-    
+
     parent::configure($options, $attributes);
   }
 
   public function getBaseParams()
   {
     return array(
-      'model' => $this->getOption('model'), 
-      'method' => $this->getOption('method'), 
-      'key_method' => $this->getOption('key_method'), 
-      'order_by' => $this->getOption('order_by'), 
-      'query_methods' => $this->getOption('query_methods'), 
-      'criteria' => $this->getOption('criteria'), 
-      'connection' => $this->getOption('connection'), 
+      'model' => $this->getOption('model'),
+      'method' => $this->getOption('method'),
+      'key_method' => $this->getOption('key_method'),
+      'order_by' => $this->getOption('order_by'),
+      'query_methods' => $this->getOption('query_methods'),
+      'criteria' => $this->getOption('criteria'),
+      'connection' => $this->getOption('connection'),
       'multiple' => $this->getOption('multiple')
     );
   }
@@ -94,7 +94,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
     }
-    
+
     $criteria = PropelQuery::from($this->getOption('model'));
     if($this->getOption('criteria'))
     {
@@ -109,24 +109,24 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
       $criteria->orderBy($order[0], $order[1]);
     }
     $objects = $criteria->find($this->getOption('connection'));
-    
+
     $methodKey = $this->getOption('key_method');
     if(! method_exists($this->getOption('model'), $methodKey))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
     }
-    
+
     $methodValue = $this->getOption('method');
     if(! method_exists($this->getOption('model'), $methodValue))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodValue, __CLASS__));
     }
-    
+
     foreach($objects as $object)
     {
       $choices[$object->$methodKey()] = $object->$methodValue();
     }
-    
+
     return $choices;
   }
 }

@@ -205,9 +205,9 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
   {
     $config = $this->getConfig();
     $key = sfInflector::underscore($this->getPrimaryKeys(true));
-		$csrfToken = $form->getCSRFFieldName();
-		$needsId = true;
-		$needsCsrf = true;
+    $csrfToken = $form->getCSRFFieldName();
+    $needsId = true;
+    $needsCsrf = true;
 
     $method = sprintf('get%sDisplay', ucfirst($context));
     if (!$fieldsets = $this->$method())
@@ -236,7 +236,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
         foreach ($names as $name)
         {
-        	if($name == $key) $needsId = false;
+          if($name == $key) $needsId = false;
           if($name == $csrfToken) $needsCsrf = false;
 
           list($name, $flag) = ExtjsModelGeneratorConfigurationField::splitFieldWithFlag($name);
@@ -258,13 +258,13 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
       if($needsId)
       {
-      	$fields['NONE'][$key] = new ExtjsModelGeneratorConfigurationField($key, array_merge(
-	        array('type' => 'Text'),
-	        isset($config['default'][$key]) ? $config['default'][$key] : array(),
-	        isset($config['form'][$key]) ? $config['form'][$key] : array(),
-	        isset($config[$context][$key]) ? $config[$context][$key] : array(),
-	        array('is_real' => false, 'flag' => '+')
-	      ));
+        $fields['NONE'][$key] = new ExtjsModelGeneratorConfigurationField($key, array_merge(
+          array('type' => 'Text'),
+          isset($config['default'][$key]) ? $config['default'][$key] : array(),
+          isset($config['form'][$key]) ? $config['form'][$key] : array(),
+          isset($config[$context][$key]) ? $config[$context][$key] : array(),
+          array('is_real' => false, 'flag' => '+')
+        ));
       }
 
       if($needsCsrf)

@@ -18,13 +18,14 @@
  */
 class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * choices:  An array of possible choices (required)
-   *  * multiple: true if the select tag must allow multiple selections
+   * * choices:  An array of possible choices (required)
+   * * multiple: true if the select tag must allow multiple selections
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -54,7 +55,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
   {
     $type = 'TwinComboBox';
     $choices = $this->getChoices();
-    if (isset($attributes['multiple']) && $attributes['multiple'] == 'multiple')
+    if(isset($attributes['multiple']) && $attributes['multiple'] == 'multiple')
     {
       $type = 'ItemSelector';
       unset($attributes['multiple']);
@@ -62,22 +63,28 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'name' => $name,
         'multiselects' => array(
           array(
-            'legend'  => 'Associated',
+            'legend' => 'Associated',
             'store' => array(
               'xtype' => 'arraystore',
-              'fields' => array('value', 'display'),
-              'data' => $this->getOptionsForSelect($value, $choices),
+              'fields' => array(
+                'value',
+                'display'
+              ),
+              'data' => $this->getOptionsForSelect($value, $choices)
             ),
             'valueField' => 'value',
             'displayField' => 'display',
             'width' => isset($attributes['width']) ? $attributes['width'] : 200
           ),
           array(
-            'legend'  => 'Unassociated',
+            'legend' => 'Unassociated',
             'store' => array(
               'xtype' => 'arraystore',
-              'fields' => array('value', 'display'),
-              'data' => '[]',
+              'fields' => array(
+                'value',
+                'display'
+              ),
+              'data' => '[]'
             ),
             'valueField' => 'value',
             'displayField' => 'display',
@@ -93,10 +100,13 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
       {
         $store = array(
           'xtype' => 'jsonstore',
-          'fields' => array('value', 'display'),
+          'fields' => array(
+            'value',
+            'display'
+          ),
           'root' => 'data',
           'url' => $attributes['url'],
-          'baseParams' => $this->getBaseParams(),
+          'baseParams' => $this->getBaseParams()
         );
         unset($attributes['url']);
       }
@@ -105,11 +115,14 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         $attributes['mode'] = 'local';
         $store = array(
           'xtype' => 'arraystore',
-          'fields' => array('value', 'display'),
-          'data' => $this->getOptionsForSelect($value, $choices),
+          'fields' => array(
+            'value',
+            'display'
+          ),
+          'data' => $this->getOptionsForSelect($value, $choices)
         );
       }
-      
+
       $configArr = array(
         'hiddenName' => $name,
         'name' => $name,
@@ -122,9 +135,9 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'typeAhead' => false,
         'value' => (string)$value,
         'triggerAction' => 'all',
-        'mode' => $attributes['mode'],
+        'mode' => $attributes['mode']
       );
-    }   
+    }
 
     return $this->renderExtjsContentBlock($this->getOption('context'), $type, array_merge($configArr, $attributes));
   }
@@ -142,18 +155,23 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     $mainAttributes = $this->attributes;
     $this->attributes = array();
 
-    if (!is_array($value))
+    if(! is_array($value))
     {
-      $value = array($value);
+      $value = array(
+        $value
+      );
     }
 
     $value = array_map('strval', array_values($value));
     $value_set = array_flip($value);
 
     $options = array();
-    foreach ($choices as $key => $option)
+    foreach($choices as $key => $option)
     {
-      $options[] = array(self::escapeOnce($key), $option);
+      $options[] = array(
+        self::escapeOnce($key),
+        $option
+      );
     }
 
     $this->attributes = $mainAttributes;

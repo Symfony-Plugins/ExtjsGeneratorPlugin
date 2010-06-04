@@ -1,5 +1,5 @@
 <?php
-require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPropelGenerateAdminTask.class.php');
+require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPropelGenerateAdminTask.class.php');
 
 /**
  * Generates a Propel admin module.
@@ -10,6 +10,7 @@ require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPrope
  */
 class ExtjsGenerateAdminTask extends sfPropelGenerateAdminTask
 {
+
   /**
    * @see sfTask
    */
@@ -17,7 +18,7 @@ class ExtjsGenerateAdminTask extends sfPropelGenerateAdminTask
   {
     $this->addArguments(array(
       new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-      new sfCommandArgument('route_or_model', sfCommandArgument::REQUIRED, 'The route name or the model class'),
+      new sfCommandArgument('route_or_model', sfCommandArgument::REQUIRED, 'The route name or the model class')
     ));
 
     $this->addOptions(array(
@@ -26,7 +27,7 @@ class ExtjsGenerateAdminTask extends sfPropelGenerateAdminTask
       new sfCommandOption('singular', null, sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
       new sfCommandOption('plural', null, sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-      new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
+      new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions')
     ));
 
     $this->namespace = 'extjs';
@@ -67,7 +68,7 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     // get configuration for the given route
-    if (false !== ($route = $this->getRouteFromName($arguments['route_or_model'])))
+    if(false !== ($route = $this->getRouteFromName($arguments['route_or_model'])))
     {
       $arguments['route'] = $route;
       $arguments['route_name'] = $arguments['route_or_model'];
@@ -76,35 +77,38 @@ EOF;
     }
 
     // is it a model class name
-    if (!class_exists($arguments['route_or_model']))
+    if(! class_exists($arguments['route_or_model']))
     {
       throw new sfCommandException(sprintf('The route "%s" does not exist and there is no "%s" class.', $arguments['route_or_model'], $arguments['route_or_model']));
     }
 
     $r = new ReflectionClass($arguments['route_or_model']);
-    if (!$r->isSubclassOf('BaseObject'))
+    if(! $r->isSubclassOf('BaseObject'))
     {
       throw new sfCommandException(sprintf('"%s" is not a Propel class.', $arguments['route_or_model']));
     }
 
     // create a route
     $model = $arguments['route_or_model'];
-    $name = strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), '\\1_\\2', $model));
+    $name = strtolower(preg_replace(array(
+      '/([A-Z]+)([A-Z][a-z])/',
+      '/([a-z\d])([A-Z])/'
+    ), '\\1_\\2', $model));
 
-    if (isset($options['module']))
+    if(isset($options['module']))
     {
       $route = $this->getRouteFromName($name);
-      if ($route && !$this->checkRoute($route, $model, $options['module']))
+      if($route && ! $this->checkRoute($route, $model, $options['module']))
       {
-        $name .= '_'.$options['module'];
+        $name .= '_' . $options['module'];
       }
     }
 
-    $routing = sfConfig::get('sf_app_config_dir').'/routing.yml';
+    $routing = sfConfig::get('sf_app_config_dir') . '/routing.yml';
     $content = file_get_contents($routing);
     $routesArray = sfYaml::load($content);
 
-    if (!isset($routesArray[$name]))
+    if(! isset($routesArray[$name]))
     {
       $primaryKey = $this->getPrimaryKey($model);
       $module = $options['module'] ? $options['module'] : $name;
@@ -120,7 +124,7 @@ EOF;
 
 
 EOF
-      , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey).$content;
+      , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey) . $content;
 
       $this->logSection('file+', $routing);
       file_put_contents($routing, $content);
@@ -131,12 +135,12 @@ EOF
 
     return $this->generateForRoute($arguments, $options);
   }
-  
+
   protected function generateForRoute($arguments, $options)
   {
     $routeOptions = $arguments['route']->getOptions();
 
-    if (!$arguments['route'] instanceof ExtjsPropel15RouteCollection)
+    if(! $arguments['route'] instanceof ExtjsPropel15RouteCollection)
     {
       throw new sfCommandException(sprintf('The route "%s" is not a Propel collection route.', $arguments['route_name']));
     }
@@ -151,18 +155,22 @@ EOF
 
     $this->logSection('app', sprintf('Generating admin module "%s" for model "%s"', $module, $model));
 
-    return $task->run(array($arguments['application'], $module, $model), array(
-      'theme'                 => $options['theme'],
-      'route-prefix'          => $routeOptions['name'],
-      'with-propel-route'     => true,
-      'generate-in-cache'     => true,
+    return $task->run(array(
+      $arguments['application'],
+      $module,
+      $model
+    ), array(
+      'theme' => $options['theme'],
+      'route-prefix' => $routeOptions['name'],
+      'with-propel-route' => true,
+      'generate-in-cache' => true,
       'non-verbose-templates' => true,
-      'singular'              => $options['singular'],
-      'plural'                => $options['plural'],
-      'actions-base-class'    => $options['actions-base-class'],
+      'singular' => $options['singular'],
+      'plural' => $options['plural'],
+      'actions-base-class' => $options['actions-base-class']
     ));
   }
-  
+
   /**
    * Checks whether a route references a model and module.
    *
@@ -174,7 +182,7 @@ EOF
    */
   protected function checkRoute($route, $model, $module)
   {
-    if ($route instanceof ExtjsPropel15RouteCollection)
+    if($route instanceof ExtjsPropel15RouteCollection)
     {
       $options = $route->getOptions();
       return $model == $options['model'] && $module == $options['module'];

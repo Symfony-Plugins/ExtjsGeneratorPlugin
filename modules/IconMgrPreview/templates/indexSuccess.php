@@ -7,21 +7,15 @@
 <style type="text/css">
 <!--
 body {
-  font-family: Trebuchet MS, arial, sans-serif;
-  color: #000;
-  background-color: #fff;
-  width: 8000px;
+  font-family: Trebuchet MS, arial, sans-serif; color: #000; background-color: #fff; width: 8000px;
 }
 
 p.preview {
-  margin: 0 4px 0px 0;
-  color: #666;
-  float: left;
+  margin: 0 4px 0px 0; color: #666; float: left;
 }
 
 h3 {
-  color: #666;
-  text-decoration: underline;
+  color: #666; text-decoration: underline;
 }
 -->
 </style>
@@ -31,9 +25,10 @@ h3 {
 <p class="preview">
 <?php $i=0; foreach ($icons as $name => $icon):?>
 <?php if($i==33): $i=0 ?>
-</p><p class="preview">
+</p>
+<p class="preview">
 <?php endif;?>
-    <img src="<?php echo $icon ?>" width="16" height="16" /> <?php echo $name ?> <br/>
+    <img src="<?php echo $icon ?>" width="16" height="16" /> <?php echo $name ?> <br />
 <?php $i++; endforeach;?>
 </p>
 </body>

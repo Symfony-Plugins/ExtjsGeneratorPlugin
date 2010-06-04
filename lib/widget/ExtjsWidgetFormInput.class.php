@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -18,12 +18,13 @@
  */
 class ExtjsWidgetFormInput extends ExtjsWidgetForm
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * type: The widget type
+   * * type: The widget type
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -48,12 +49,12 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
     $config = array(
-      'name' => $name, 
-      'value' => $value,
+      'name' => $name,
+      'value' => $value
     );
-    
-    if($this->getOption('type')=='Checkbox') $config['inputValue'] = 'true'; 
-    
+
+    if($this->getOption('type') == 'Checkbox') $config['inputValue'] = 'true';
+
     return $this->renderExtjsContentBlock('form', $this->getOption('type'), array_merge($config, $attributes));
   }
 }

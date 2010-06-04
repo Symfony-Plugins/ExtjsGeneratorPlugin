@@ -18,12 +18,13 @@
  */
 abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  * choices:         An array of possible choices (required)
+   * * choices:         An array of possible choices (required)
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -45,15 +46,15 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
   {
     $choices = $this->getOption('choices');
 
-    if ($choices instanceof sfCallable)
+    if($choices instanceof sfCallable)
     {
       $choices = $choices->call();
     }
 
     $results = array();
-    foreach ($choices as $key => $choice)
+    foreach($choices as $key => $choice)
     {
-      if (is_array($choice))
+      if(is_array($choice))
       {
         $results[$this->translate($key)] = $this->translateAll($choice);
       }
@@ -65,12 +66,12 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
 
     return $results;
   }
-  
+
   public function getBaseParams()
   {
     $baseParams = $this->getOption('baseParams');
 
-    if ($baseParams instanceof sfCallable)
+    if($baseParams instanceof sfCallable)
     {
       return $baseParams->call();
     }
@@ -81,10 +82,10 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
    */
   public function __clone()
   {
-    if ($this->getOption('choices') instanceof sfCallable)
+    if($this->getOption('choices') instanceof sfCallable)
     {
       $callable = $this->getOption('choices')->getCallable();
-      if (is_array($callable) && $callable[0] instanceof self)
+      if(is_array($callable) && $callable[0] instanceof self)
       {
         $callable[0] = $this;
         $this->setOption('choices', new sfCallable($callable));

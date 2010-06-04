@@ -26,7 +26,7 @@ class ExtjsWidgetFormFilterDate extends ExtjsWidgetForm
    * @see sfWidgetForm
    */
   protected function configure($options = array(), $attributes = array())
-  {   
+  {
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%from_date% %to_date% %empty_checkbox%');
@@ -47,28 +47,28 @@ class ExtjsWidgetFormFilterDate extends ExtjsWidgetForm
     $values = array_merge(array(
       'is_empty' => ''
     ), is_array($value) ? $value : array());
-    
+
     // need to do this because to field doesn't get a fieldLabel
     $fieldLabel = $attributes['fieldLabel'];
     unset($attributes['fieldLabel']);
-    
+
     return strtr($this->getOption('template'), array(
       '%from_date%' => $this->renderExtjsContentBlock('filter', 'TwinDateField', array_merge(array(
-        'name' => $name . '[from]', 
-        'value' => $value['from'], 
-        'labelSeparator' => ':<div style="color: #808080;padding-top:2px;">&nbsp;&nbsp;From:</div>', 
-        'fieldLabel' => $fieldLabel, 
-        'itemCls' => 'date-filter', 
+        'name' => $name . '[from]',
+        'value' => $value['from'],
+        'labelSeparator' => ':<div style="color: #808080;padding-top:2px;">&nbsp;&nbsp;From:</div>',
+        'fieldLabel' => $fieldLabel,
+        'itemCls' => 'date-filter',
         'anchor' => '80%'
-      ), $attributes)), 
+      ), $attributes)),
       '%to_date%' => $this->renderExtjsContentBlock('filter', 'TwinDateField', array_merge(array(
-        'name' => $name . '[to]', 
-        'value' => $value['to'], 
-        'labelSeparator' => '', 
-        'fieldLabel' => '<span style="color: #808080;">&nbsp;&nbsp;To:</span>', 
-        'itemCls' => 'date-filter', 
+        'name' => $name . '[to]',
+        'value' => $value['to'],
+        'labelSeparator' => '',
+        'fieldLabel' => '<span style="color: #808080;">&nbsp;&nbsp;To:</span>',
+        'itemCls' => 'date-filter',
         'anchor' => '80%'
-      ), $attributes)), 
+      ), $attributes)),
       '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));
   }

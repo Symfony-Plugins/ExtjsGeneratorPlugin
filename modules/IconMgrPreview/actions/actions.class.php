@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__).'/../lib/BaseIconMgrPreviewActions.class.php';
+require_once dirname(__FILE__) . '/../lib/BaseIconMgrPreviewActions.class.php';
 
 /**
  * IconMgrPreview actions.
- * 
+ *
  * @package    ExtjsGeneratorPlugin
  * @subpackage IconMgrPreview
  * @author     Benjamin Runnels <benjamin.r.runnels@citi.com>

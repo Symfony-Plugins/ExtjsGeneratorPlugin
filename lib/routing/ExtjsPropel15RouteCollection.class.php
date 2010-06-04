@@ -8,6 +8,5 @@
  */
 class ExtjsPropel15RouteCollection extends sfObjectRouteCollection
 {
-  protected
-    $routeClass = 'ExtjsPropel15Route';
+  protected $routeClass = 'ExtjsPropel15Route';
 }

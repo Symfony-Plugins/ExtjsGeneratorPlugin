@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPropelBaseTask.class.php');
+require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPropelBaseTask.class.php');
 
 /**
  * Create form classes for the current model.
@@ -20,6 +20,7 @@ require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPrope
  */
 class ExtjsPropelBuildFormsTask extends sfPropelBaseTask
 {
+
   /**
    * @see sfTask
    */
@@ -30,7 +31,7 @@ class ExtjsPropelBuildFormsTask extends sfPropelBaseTask
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('form-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The form dir name', 'form'),
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'ExtjsFormGenerator'),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'ExtjsFormGenerator')
     ));
 
     $this->namespace = 'extjs';
@@ -66,27 +67,27 @@ EOF;
 
     $generatorManager = new sfGeneratorManager($this->configuration);
     $generatorManager->generate($options['generator-class'], array(
-      'connection'     => $options['connection'],
+      'connection' => $options['connection'],
       'model_dir_name' => $options['model-dir-name'],
-      'form_dir_name'  => $options['form-dir-name'],
+      'form_dir_name' => $options['form-dir-name']
     ));
 
-    $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
+    $properties = parse_ini_file(sfConfig::get('sf_config_dir') . '/properties.ini', true);
 
     $constants = array(
       'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
-      'AUTHOR_NAME'  => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here'
+      'AUTHOR_NAME' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here'
     );
 
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php');
-    $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/form/'), '##', '##', $constants);
+    $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir') . '/form/'), '##', '##', $constants);
 
     // check for base form class
-    if (!class_exists('BaseForm'))
+    if(! class_exists('BaseForm'))
     {
-      $file = sfConfig::get('sf_lib_dir').'/'.$options['form-dir-name'].'/BaseForm.class.php';
-      $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir').'/task/generator/skeleton/project/lib/form/BaseForm.class.php', $file);
+      $file = sfConfig::get('sf_lib_dir') . '/' . $options['form-dir-name'] . '/BaseForm.class.php';
+      $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir') . '/task/generator/skeleton/project/lib/form/BaseForm.class.php', $file);
       $this->getFilesystem()->replaceTokens($file, '##', '##', $constants);
     }
 

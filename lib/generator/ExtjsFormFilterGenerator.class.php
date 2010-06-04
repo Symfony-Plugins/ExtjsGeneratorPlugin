@@ -17,7 +17,7 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
   public function initialize(sfGeneratorManager $generatorManager)
   {
     parent::initialize($generatorManager);
-    
+
     $this->setGeneratorClass('ExtjsFormFilter');
   }
 
@@ -31,26 +31,26 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
   public function generate($params = array())
   {
     $this->params = $params;
-    
+
     if(! isset($this->params['connection']))
     {
       throw new sfParseException('You must specify a "connection" parameter.');
     }
-    
+
     if(! isset($this->params['model_dir_name']))
     {
       $this->params['model_dir_name'] = 'model';
     }
-    
+
     if(! isset($this->params['filter_dir_name']))
     {
       $this->params['filter_dir_name'] = 'filter';
     }
-    
+
     $this->loadBuilders();
-    
+
     $this->dbMap = Propel::getDatabaseMap($this->params['connection']);
-    
+
     // create the project base class for all forms
     $file = sfConfig::get('sf_lib_dir') . '/filter/BaseExtjsFormFilterPropel.class.php';
     if(! file_exists($file))
@@ -59,10 +59,10 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
       {
         mkdir($directory, 0777, true);
       }
-      
+
       file_put_contents($file, $this->evalTemplate('ExtjsFormFilterBaseTemplate.php'));
     }
-    
+
     // create a form class for every Propel class
     foreach($this->dbMap->getTables() as $tableName => $table)
     {
@@ -71,9 +71,9 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
       {
         continue;
       }
-      
+
       $this->table = $table;
-      
+
       // find the package to store filter forms in the same directory as the model classes
       $packages = explode('.', constant(constant($table->getClassname() . '::PEER') . '::CLASS_DEFAULT'));
       array_pop($packages);
@@ -83,12 +83,12 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
       }
       $packages[$pos] = $this->params['filter_dir_name'];
       $baseDir = sfConfig::get('sf_root_dir') . '/' . implode(DIRECTORY_SEPARATOR, $packages);
-      
+
       if(! is_dir($baseDir . '/base'))
       {
         mkdir($baseDir . '/base', 0777, true);
       }
-      
+
       file_put_contents($baseDir . '/base/BaseExtjs' . ucfirst($table->getClassname()) . 'FormFilter.class.php', $this->evalTemplate('ExtjsFormFilterGeneratedTemplate.php'));
       if(! file_exists($classFile = $baseDir . '/Extjs' . ucfirst($table->getClassname()) . 'FormFilter.class.php'))
       {
@@ -126,23 +126,23 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
       case PropelColumnTypes::SMALLINT:
       case PropelColumnTypes::INTEGER:
       case PropelColumnTypes::BIGINT:
-      case PropelColumnTypes::REAL: 
-      case PropelColumnTypes::FLOAT: 
-      case PropelColumnTypes::DOUBLE: 
+      case PropelColumnTypes::REAL:
+      case PropelColumnTypes::FLOAT:
+      case PropelColumnTypes::DOUBLE:
         $name = 'FilterInputNumberField';
         break;
       default:
         $name = 'FilterInputText';
     }
-    
+
     if($column->isForeignKey())
     {
       $name = 'PropelChoice';
     }
-    
+
     return sprintf('ExtjsWidgetForm%s', $name);
   }
-  
+
   /**
    * Returns a PHP string representing options to pass to a widget for a given column.
    *
@@ -154,8 +154,10 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
   {
     $options = array();
 
-    $withEmpty = $column->isNotNull() && !$column->isForeignKey() ? array("'with_empty' => false") : array();
-    switch ($column->getType())
+    $withEmpty = $column->isNotNull() && ! $column->isForeignKey() ? array(
+      "'with_empty' => false"
+    ) : array();
+    switch($column->getType())
     {
       case PropelColumnTypes::BOOLEAN:
         $options[] = "'defaultValue' => '', 'allowClear' => false, 'context' => 'filter', 'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no')";
@@ -164,12 +166,12 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
         $options = array_merge($options, $withEmpty);
     }
 
-    if ($column->isForeignKey())
+    if($column->isForeignKey())
     {
       $options[] = sprintf('\'model\' => \'%s\'', $this->getForeignTable($column)->getClassname());
 
       $refColumn = $this->getForeignTable($column)->getColumn($column->getRelatedColumnName());
-      if (!$refColumn->isPrimaryKey())
+      if(! $refColumn->isPrimaryKey())
       {
         $options[] = sprintf('\'key_method\' => \'get%s\'', $refColumn->getPhpName());
       }

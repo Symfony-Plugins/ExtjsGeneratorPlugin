@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -18,12 +18,13 @@
  */
 class ExtjsWidgetFormInputCheckbox extends ExtjsWidgetFormInput
 {
+
   /**
    * Constructor.
    *
    * Available options:
    *
-   *  - value_attribute_value: The "value" attribute value to set for the checkbox
+   * - value_attribute_value: The "value" attribute value to set for the checkbox
    *
    * @param array  $options     An array of options
    * @param array  $attributes  An array of default HTML attributes
@@ -49,7 +50,7 @@ class ExtjsWidgetFormInputCheckbox extends ExtjsWidgetFormInput
 
     $this->setOption('type', 'Checkbox');
 
-    if (isset($attributes['value']))
+    if(isset($attributes['value']))
     {
       $this->setOption('value_attribute_value', $attributes['value']);
     }
@@ -67,12 +68,12 @@ class ExtjsWidgetFormInputCheckbox extends ExtjsWidgetFormInput
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    if (null !== $value && $value !== false)
+    if(null !== $value && $value !== false)
     {
       $attributes['checked'] = true;
     }
 
-    if (!isset($attributes['value']) && null !== $this->getOption('value_attribute_value'))
+    if(! isset($attributes['value']) && null !== $this->getOption('value_attribute_value'))
     {
       $attributes['value'] = $this->getOption('value_attribute_value');
     }

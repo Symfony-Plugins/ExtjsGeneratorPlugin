@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPropelBaseTask.class.php');
+require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPropelBaseTask.class.php');
 
 /**
  * Create filter form classes for the current model.
@@ -20,6 +20,7 @@ require_once(sfConfig::get('sf_plugins_dir').'/sfPropel15Plugin/lib/task/sfPrope
  */
 class ExtjsBuildFiltersTask extends sfPropelBaseTask
 {
+
   /**
    * @see sfTask
    */
@@ -30,7 +31,7 @@ class ExtjsBuildFiltersTask extends sfPropelBaseTask
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'ExtjsFormFilterGenerator'),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'ExtjsFormFilterGenerator')
     ));
 
     $this->namespace = 'extjs';
@@ -66,21 +67,21 @@ EOF;
 
     $generatorManager = new sfGeneratorManager($this->configuration);
     $generatorManager->generate($options['generator-class'], array(
-      'connection'      => $options['connection'],
-      'model_dir_name'  => $options['model-dir-name'],
-      'filter_dir_name' => $options['filter-dir-name'],
+      'connection' => $options['connection'],
+      'model_dir_name' => $options['model-dir-name'],
+      'filter_dir_name' => $options['filter-dir-name']
     ));
 
-    $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
+    $properties = parse_ini_file(sfConfig::get('sf_config_dir') . '/properties.ini', true);
 
     $constants = array(
       'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
-      'AUTHOR_NAME'  => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here'
+      'AUTHOR_NAME' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here'
     );
 
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php');
-    $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
+    $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir') . '/filter/'), '##', '##', $constants);
 
     $this->reloadAutoload();
   }
