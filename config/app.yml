@@ -1,5 +1,5 @@
 # these are the defaults, you should override them in your application/config/app.yml file
-#all: 
+#all:
 #  extjs_gen_plugin:
 #    theme:                      aero                    # Extjs library theme
 #    adapter:                    ext                     # Extjs Adapter Type jquery, prototype, yui, or ext
@@ -10,22 +10,22 @@
 #    list_trackMouseOver:        true
 #    list_loadMask:              true
 #    list_stripeRows:            true
-#    list_forceFit:              true
+#    list_forceFit:              false
 
 #    module_returns_layout:      true                    # true uses the build in viewport
                                                         # set to false if you want to use your own layout
-                                                        
+
 #    module_grid_panel_name:     Ext.app.sf.GridPanel    # the global var name for the list grid panel
-    
+
 #    module_tab_panel_name:      Ext.app.sf.TabPanel     # the global var name for the list tab panel
                                                         # gridpanel is automatically an item of the tabpanel
-                                                        
+
 #    module_filter_panel_name:   Ext.app.sf.FilterPanel  # the global var name for the list filter panel
                                                         # filterpanel is not an item of the tabpanel
-                                                        
+
 #    module_view_port_name:      Ext.app.sf.ViewPort     # the global var name for the viewport
-    
-#    module_app_init_partial:    init_app                # partial file located in the app/templates directory 
+
+#    module_app_init_partial:    init_app                # partial file located in the app/templates directory
                                                         # that adds panels to your custom layout.
 
 #    format_date:                "m/d/Y"

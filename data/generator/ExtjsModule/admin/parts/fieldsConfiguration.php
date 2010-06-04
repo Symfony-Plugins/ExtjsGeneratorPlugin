@@ -7,14 +7,14 @@
 <?php
 if(isset($this->config['list']['title']))
 {
-	$title = $this->config['list']['title'];
+  $title = $this->config['list']['title'];
 } else if(isset($this->params['object_name']))
 {
-	$title = sfInflector::humanize($this->params['object_name']). ' List';
+  $title = sfInflector::humanize($this->params['object_name']). ' List';
 }
 else
 {
-	$title = sfInflector::humanize($this->getModuleName()). ' List';
+  $title = sfInflector::humanize($this->getModuleName()). ' List';
 }
 ?>
     return '<?php echo $this->escapeString($title) ?>';
@@ -58,7 +58,7 @@ else
     return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
-  
+
   public function getEditDisplay()
   {
     return <?php echo $this->asPhp(isset($this->config['edit']['display']) ? $this->config['edit']['display'] : array()) ?>;
@@ -78,8 +78,15 @@ else
     return <?php echo $this->asPhp($this->config[$context]['display']) ?>;
 <?php elseif (isset($this->config[$context]['hide'])): ?>
     return <?php echo $this->asPhp(array_diff($this->getAllFieldNames(false), $this->config[$context]['hide'])) ?>;
-<?php else: ?>
-    return <?php echo $this->asPhp($this->getAllFieldNames(false)) ?>;
+<?php else: $allFieldNames = $this->getAllFieldNames(false);
+if(
+  $context == 'list' &&
+  (
+    (isset($this->config['list']['object_actions']) && count($this->config['list']['object_actions'])) ||
+    !isset($this->config['list']['object_actions'])
+  )
+) $allFieldNames[] = '^object_actions' ?>
+    return <?php echo $this->asPhp($allFieldNames) ?>;
 <?php endif; ?>
 <?php unset($this->config[$context]['display'], $this->config[$context]['hide']) ?>
   }

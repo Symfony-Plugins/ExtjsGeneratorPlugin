@@ -3,31 +3,31 @@
 /**
  * @class Ext.ux.grid.RowActions
  * @extends Ext.util.Observable
- * 
+ *
  * RowActions plugin for Ext grid. Contains renderer for icons and fires events
  * when an icon is clicked. CSS rules from Ext.ux.RowActions.css are mandatory
- * 
+ *
  * Important general information: Actions are identified by iconCls. Wherever an
  * <i>action</i> is referenced (event argument, callback argument), the iconCls
  * of clicked icon is used. In other words, action identifier === iconCls.
- * 
+ *
  * @author Ing. Jozef Sakáloš
  * @copyright (c) 2008, by Ing. Jozef Sakáloš
  * @date 22. March 2008
  * @version 1.0
  * @revision $Id: Ext.ux.grid.RowActions.js 747 2009-09-03 23:30:52Z jozo $
- * 
+ *
  * @license Ext.ux.grid.RowActions is licensed under the terms of the Open
  *          Source LGPL 3.0 license. Commercial use is permitted to the extent
  *          that the code/component(s) do NOT become part of another Open Source
  *          or Commercially licensed development library or toolkit without
  *          explicit permission.
- * 
+ *
  * <p>
  * License details: <a href="http://www.gnu.org/licenses/lgpl.html"
  * target="_blank">http://www.gnu.org/licenses/lgpl.html</a>
  * </p>
- * 
+ *
  * @forum 29961
  * @demo http://rowactions.extjs.eu
  * @download
@@ -38,7 +38,7 @@
  *       href="http://rowactions.extjs.eu/rowactions.tar.gz">rowactions.tar.gz</a></li>
  *       <li><a href="http://rowactions.extjs.eu/rowactions.zip">rowactions.zip</a></li>
  *       </ul>
- * 
+ *
  * @donate <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
  *         target="_blank"> <input type="hidden" name="cmd" value="_s-xclick">
  *         <input type="hidden" name="hosted_button_id" value="3430419"> <input
@@ -65,7 +65,7 @@ if ('function' !== typeof RegExp.escape) {
 
 /**
  * Creates new RowActions plugin
- * 
+ *
  * @constructor
  * @param {Object}
  *          config A config object
@@ -241,7 +241,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   /**
    * @cfg {Object} callbacks iconCls keyed object that contains callback
    *      functions. For example:
-   * 
+   *
    * <pre>
    * callbacks:{
    *      'icon-open':function(...) {...}
@@ -331,12 +331,13 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Init function
-   * 
+   *
    * @param {Ext.grid.GridPanel}
    *          grid Grid this plugin is in
    */
   ,
   init : function(grid) {
+
     this.grid = grid;
 
     // the actions column must have an id for Ext 3.x
@@ -346,6 +347,16 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
     var lookup = grid.getColumnModel().lookup;
     delete(lookup[undefined]);
     lookup[this.id] = this;
+
+    if(!this.actions)
+    {
+      var colIndex = grid.getColumnModel().getIndexById(this.id);
+      var config = grid.getColumnModel().config;
+      grid.getColumnModel().config = [config[colIndex]];
+      config.splice(colIndex, 1);
+      grid.getColumnModel().setConfig(config);
+      return;
+    }
 
     // {{{
     // setup template
@@ -421,7 +432,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Returns data to apply to template. Override this if needed.
-   * 
+   *
    * @param {Mixed}
    *          value
    * @param {Object}
@@ -444,7 +455,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Processes actions configs and returns template.
-   * 
+   *
    * @param {Array}
    *          actions
    * @param {String}
@@ -502,7 +513,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Grid body actionEvent event handler
-   * 
+   *
    * @private
    */
   ,
