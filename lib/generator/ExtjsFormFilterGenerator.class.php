@@ -98,6 +98,96 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
   }
 
   /**
+   * Returns a RelationMap object for a one-to-one table if it exists.
+   *
+   * @return object RelationMap.
+   */
+  public function getOneToOneTable()
+  {
+    foreach($this->table->getRelations() as $relation)
+    {
+      if($relation->getType() == RelationMap::ONE_TO_ONE)
+      {
+        return $relation;
+      }
+    }
+  }
+
+  /**
+   * Returns the name of the filterMethod for the column.
+   *
+   * @param $field string the column name
+   * @return string filter method.
+   */
+  public function getFilterForColumn($columnName)
+  {
+    $columnArr = explode('-', $columnName);
+    $className = $this->table->getPhpName();
+
+    for($i = 0; $i <= count($columnArr) - 1; $i ++)
+    {
+      $column = $columnArr[$i];
+
+      if(! isset($map))
+      {
+        $map = call_user_func(array(
+          $className . 'Peer',
+          'getTableMap'
+        ));
+      }
+
+      try
+      {
+        $fieldName = call_user_func(array(
+          $className . 'Peer',
+          'translateFieldName'
+        ), sfInflector::camelize(strtolower($columnArr[$i])), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
+      }
+      catch(PropelException $e)
+      {
+        $fieldName = strtolower($columnArr[$i]);
+      }
+
+      try
+      {
+        $column = $map->getColumn($fieldName);
+      }
+      catch(PropelException $e)
+      {
+        $relationName = sfInflector::camelize($fieldName);
+        try
+        {
+          $relation = $map->getRelation($relationName);
+        }
+        catch(PropelException $e)
+        {
+          try
+          {
+            // also try lcfirst as relations could start with either
+            $relationName = (string)(strtolower(substr($relationName, 0, 1)) . substr($relationName, 1));
+            $relation = $map->getRelation($relationName);
+          }
+          catch(PropelException $e)
+          {
+            //not a real column but we try using it anyhow
+            unset($relationName);
+            continue;
+          }
+        }
+
+        $map = $relation->getLocalTable();
+        $relationColumns = $relation->getLocalColumns();
+        $column = $relationColumns[0];
+        $className = $column->getTable()->getPhpName();
+      }
+    }
+
+    $phpName = ($column instanceof ColumnMap) ? $column->getPhpName() : sfInflector::camelize($column);
+
+    return isset($relationName) ? 'filterBy' . $relationName . '.' . $phpName . '()' : null;
+  }
+
+  /**
    * Returns a sfWidgetForm class name for a given column.
    *
    * @param  ColumnMap  $column A ColumnMap object
