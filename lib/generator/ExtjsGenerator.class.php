@@ -80,93 +80,101 @@ class ExtjsGenerator extends sfPropelGenerator
           continue;
         }
 
-        $columnArr = explode('-', $name);
-        $className = $this->getModelClass();
-        $relatedGetter = '';
-        $relationName = null;
-        for($i = 0; $i <= count($columnArr) - 1; $i ++)
-        {
-          $column = $columnArr[$i];
-          $phpName = null;
-          $relation = null;
-
-          if(! isset($map))
-          {
-            $map = call_user_func(array(
-              $className . 'Peer',
-              'getTableMap'
-            ));
-          }
-
-          try
-          {
-            $fieldName = call_user_func(array(
-              $className . 'Peer',
-              'translateFieldName'
-            ), sfInflector::camelize(strtolower($columnArr[$i])), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
-          }
-          catch(PropelException $e)
-          {
-            $fieldName = strtolower($columnArr[$i]);
-          }
-
-          try
-          {
-            $column = $map->getColumn($fieldName);
-          }
-          catch(PropelException $e)
-          {
-            $relationName = sfInflector::camelize($fieldName);
-            try
-            {
-               $relation = $map->getRelation($relationName);
-            }
-            catch(PropelException $e)
-            {
-              try
-              {
-                // also try lcfirst as relations could start with either
-                $relationName = (string)(strtolower(substr($relationName,0,1)).substr($relationName,1));
-                $relation = $map->getRelation($relationName);
-              }
-              catch(PropelException $e)
-              {
-                //not a real column but we try using it anyhow
-                if($i != count($columnArr) - 1)
-                {
-                  $relatedGetter .= 'get' . sfInflector::camelize($columnArr[$i]) . '()->';
-                }
-                unset($relationName);
-                continue;
-              }
-            }
-
-            $map = $relation->getLocalTable();
-            $relationColumns = $relation->getLocalColumns();
-            $column = $relationColumns[0];
-            $className = $column->getTable()->getPhpName();
-            if($i != count($columnArr) - 1)
-            {
-              $relatedGetter .= 'get' . $relationName . '()->';
-            }
-          }
-        }
-
-        $phpName = ($column instanceof ColumnMap) ? $column->getPhpName() : sfInflector::camelize($column);
-
-        $fields[$name] = array_merge(array(
-          'is_link'      => false,
-          'is_real'      => ($column instanceof ColumnMap) ? true : false,
-          'getter'       => $relatedGetter . 'get' . $phpName,
-          'sort_method'  => isset($relationName) ? 'orderBy' . $relationName . '.' . $phpName : null,
-          'type'         => ($column instanceof ColumnMap) ? $this->getType($column) : 'Text',
-        ), is_array($params) ? $params : array());
+        $fields[$name] = array_merge($this->getColumnParams($name), is_array($params) ? $params : array());
       }
     }
 
     unset($this->config['fields']);
 
     return $fields;
+  }
+
+   /**
+   * Returns an array of params for a column name.
+   *
+   * @return array array of params.
+   */
+  public function getColumnParams($columnName)
+  {
+    $columnArr = explode('-', $columnName);
+    $className = $this->getModelClass();
+    $relatedGetter = '';
+
+    for($i = 0; $i <= count($columnArr) - 1; $i ++)
+    {
+      $column = $columnArr[$i];
+
+      if(! isset($map))
+      {
+        $map = call_user_func(array(
+          $className . 'Peer',
+          'getTableMap'
+        ));
+      }
+
+      try
+      {
+        $fieldName = call_user_func(array(
+          $className . 'Peer',
+          'translateFieldName'
+        ), sfInflector::camelize(strtolower($columnArr[$i])), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
+      }
+      catch(PropelException $e)
+      {
+        $fieldName = strtolower($columnArr[$i]);
+      }
+
+      try
+      {
+        $column = $map->getColumn($fieldName);
+      }
+      catch(PropelException $e)
+      {
+        $relationName = sfInflector::camelize($fieldName);
+        try
+        {
+          $relation = $map->getRelation($relationName);
+        }
+        catch(PropelException $e)
+        {
+          try
+          {
+            // also try lcfirst as relations could start with either
+            $relationName = (string)(strtolower(substr($relationName, 0, 1)) . substr($relationName, 1));
+            $relation = $map->getRelation($relationName);
+          }
+          catch(PropelException $e)
+          {
+            //not a real column but we try using it anyhow
+            if($i != count($columnArr) - 1)
+            {
+              $relatedGetter .= 'get' . sfInflector::camelize($columnArr[$i]) . '()->';
+            }
+            unset($relationName);
+            continue;
+          }
+        }
+
+        $map = $relation->getLocalTable();
+        $relationColumns = $relation->getLocalColumns();
+        $column = $relationColumns[0];
+        $className = $column->getTable()->getPhpName();
+        if($i != count($columnArr) - 1)
+        {
+          $relatedGetter .= 'get' . $relationName . '()->';
+        }
+      }
+    }
+
+    $phpName = ($column instanceof ColumnMap) ? $column->getPhpName() : sfInflector::camelize($column);
+
+    return array(
+      'is_link' => ($column instanceof ColumnMap) ? (Boolean) $column->isPrimaryKey() : false,
+      'is_real' => ($column instanceof ColumnMap) ? true : false,
+      'getter' => $relatedGetter . 'get' . $phpName,
+      'sort_method' => isset($relationName) ? 'orderBy' . $relationName . '.' . $phpName : null,
+      'type' => ($column instanceof ColumnMap) ? $this->getType($column) : 'Text'
+    );
   }
 
   /**
@@ -198,7 +206,15 @@ class ExtjsGenerator extends sfPropelGenerator
   {
     $defaults = $this->configuration->getFieldsDefault();
 
-    $getter = $defaults[$column]['getter'];
+    if (isset($defaults[$column]))
+    {
+      $getter = $defaults[$column]['getter'];
+    }
+    else
+    {
+      $params = $this->getColumnParams($column);
+      $getter = $params['getter'];
+    }
 
     if(! $developed)
     {
