@@ -23,6 +23,169 @@ class ExtjsGenerator extends sfPropelGenerator
   }
 
   /**
+   * Returns the default configuration for fields.
+   *
+   * @return array An array of default configuration for all fields
+   */
+  public function getDefaultFieldsConfiguration()
+  {
+    $fields = array();
+
+    $names = array();
+    foreach ($this->getTableMap()->getColumns() as $column)
+    {
+      $name = $this->translateColumnName($column);
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => (Boolean) $column->isPrimaryKey(),
+        'is_real'      => true,
+        'getter'       => 'get'.$column->getPhpName(),
+        'type'         => $this->getType($column),
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    foreach ($this->getManyToManyTables() as $tables)
+    {
+      $name = sfInflector::underscore($tables['middleTable']->getClassname()).'_list';
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => false,
+        'is_real'      => false,
+        'type'         => 'Text',
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    if($oneToOne = $this->getOneToOneTable())
+    {
+      foreach ($oneToOne->getLocalTable()->getColumns() as $column)
+      {
+        $name = $this->translateColumnName($column);
+        $names[] = $name;
+        $fields[$name] = array_merge(array(
+          'is_link' => (boolean)$column->isPrimaryKey(),
+          'is_real' => true,
+          'getter' => 'get' . $oneToOne->getName() . '()->get' . $column->getPhpName(),
+          'sort_method' => 'orderBy' . $oneToOne->getName() . '.' . $column->getPhpName(),
+          'type' => $this->getType($column)
+        ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+      }
+    }
+
+    if (isset($this->config['fields']))
+    {
+      foreach ($this->config['fields'] as $name => $params)
+      {
+        if (in_array($name, $names))
+        {
+          continue;
+        }
+
+        $columnArr = explode('-', $name);
+        $className = $this->getModelClass();
+        $relatedGetter = '';
+        $relationName = null;
+        for($i = 0; $i <= count($columnArr) - 1; $i ++)
+        {
+          $column = $columnArr[$i];
+          $phpName = null;
+          $relation = null;
+
+          if(! isset($map))
+          {
+            $map = call_user_func(array(
+              $className . 'Peer',
+              'getTableMap'
+            ));
+          }
+
+          try
+          {
+            $fieldName = call_user_func(array(
+              $className . 'Peer',
+              'translateFieldName'
+            ), sfInflector::camelize(strtolower($columnArr[$i])), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
+          }
+          catch(PropelException $e)
+          {
+            $fieldName = strtolower($columnArr[$i]);
+          }
+
+          try
+          {
+            $column = $map->getColumn($fieldName);
+          }
+          catch(PropelException $e)
+          {
+            $relationName = sfInflector::camelize($fieldName);
+            try
+            {
+               $relation = $map->getRelation($relationName);
+            }
+            catch(PropelException $e)
+            {
+              try
+              {
+                // also try lcfirst as relations could start with either
+                $relationName = (string)(strtolower(substr($relationName,0,1)).substr($relationName,1));
+                $relation = $map->getRelation($relationName);
+              }
+              catch(PropelException $e)
+              {
+                //not a real column but we try using it anyhow
+                if($i != count($columnArr) - 1)
+                {
+                  $relatedGetter .= 'get' . sfInflector::camelize($columnArr[$i]) . '()->';
+                }
+                unset($relationName);
+                continue;
+              }
+            }
+
+            $map = $relation->getLocalTable();
+            $relationColumns = $relation->getLocalColumns();
+            $column = $relationColumns[0];
+            $className = $column->getTable()->getPhpName();
+            if($i != count($columnArr) - 1)
+            {
+              $relatedGetter .= 'get' . $relationName . '()->';
+            }
+          }
+        }
+
+        $phpName = ($column instanceof ColumnMap) ? $column->getPhpName() : sfInflector::camelize($column);
+
+        $fields[$name] = array_merge(array(
+          'is_link'      => false,
+          'is_real'      => ($column instanceof ColumnMap) ? true : false,
+          'getter'       => $relatedGetter . 'get' . $phpName,
+          'sort_method'  => isset($relationName) ? 'orderBy' . $relationName . '.' . $phpName : null,
+          'type'         => ($column instanceof ColumnMap) ? $this->getType($column) : 'Text',
+        ), is_array($params) ? $params : array());
+      }
+    }
+
+    unset($this->config['fields']);
+
+    return $fields;
+  }
+
+  /**
+   * Returns a RelationMap object for a one-to-one table if it exists.
+   *
+   * @return object RelationMap.
+   */
+  public function getOneToOneTable()
+  {
+    foreach($this->getTableMap()->getRelations() as $relation)
+    {
+      if($relation->getType() == RelationMap::ONE_TO_ONE)
+      {
+        return $relation;
+      }
+    }
+  }
+
+  /**
    * Returns the getter either non-developped: 'getFoo' or developped: '$class->getFoo()'.
    *
    * @param string  $column     The column name
@@ -33,74 +196,16 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function getColumnGetter($column, $developed = false, $prefix = '')
   {
-    $columnArr = explode('-', $column);
-    $relatedGetter = '';
-    $className = $this->getModelClass();
+    $defaults = $this->configuration->getFieldsDefault();
 
-    for($i = 0; $i <= count($columnArr) - 1; $i ++)
-    {
-      if(count($columnArr) > 1)
-      {
-        if(! isset($map)) $map = call_user_func(array(
-          $className . 'Peer',
-          'getTableMap'
-        ));
-
-        try
-        {
-          $column = $map->getColumn($columnArr[$i]);
-        }
-        catch(PropelException $e)
-        {
-          //not a real column
-          if($i == count($columnArr) - 1)
-          {
-            $getter = 'get' . sfInflector::camelize($columnArr[$i]);
-          }
-          else
-          {
-            $relatedGetter .= 'get' . sfInflector::camelize($columnArr[$i]) . '()->';
-          }
-          continue;
-
-        }
-
-        /* @var $column ColumnMap */
-        if($column->getRelatedTableName())
-        {
-          $map = $column->getRelatedTable();
-          $className = $map->getPhpName();
-          $relatedGetter .= 'get' . ucfirst($column->getRelation()->getName()) . '()->';
-        }
-        else
-        {
-          $column = $columnArr[$i];
-        }
-      }
-    }
-
-    if(! isset($getter))
-    {
-      try
-      {
-        $getter = 'get' . call_user_func(array(
-          constant($className . '::PEER'),
-          'translateFieldName'
-        ), $column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_PHPNAME);
-      }
-      catch(PropelException $e)
-      {
-        // not a real column
-        $getter = 'get' . sfInflector::camelize($column);
-      }
-    }
+    $getter = $defaults[$column]['getter'];
 
     if(! $developed)
     {
       return $getter;
     }
 
-    return sprintf('$%s%s->%s%s()', $prefix, $this->getSingularName(), $relatedGetter, $getter);
+    return sprintf('$%s%s->%s()', $prefix, $this->getSingularName(), $getter);
   }
 
   /**
