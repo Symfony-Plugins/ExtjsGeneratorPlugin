@@ -32,149 +32,68 @@ class ExtjsGenerator extends sfPropelGenerator
     $fields = array();
 
     $names = array();
-    foreach ($this->getTableMap()->getColumns() as $column)
+    foreach($this->getTableMap()->getColumns() as $column)
     {
       $name = $this->translateColumnName($column);
       $names[] = $name;
       $fields[$name] = array_merge(array(
-        'is_link'      => (Boolean) $column->isPrimaryKey(),
-        'is_real'      => true,
-        'getter'       => 'get'.$column->getPhpName(),
-        'type'         => $this->getType($column),
+        'is_link' => (boolean)$column->isPrimaryKey(),
+        'is_real' => true,
+        'getter' => 'get' . $column->getPhpName(),
+        'model' => $column->getTable()->getPhpName(),
+        'php_name' => $column->getPhpName(),
+        'field_name' => $name,
+        'type' => $this->getType($column)
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 
-    foreach ($this->getManyToManyTables() as $tables)
+    foreach($this->getManyToManyTables() as $tables)
     {
-      $name = sfInflector::underscore($tables['middleTable']->getClassname()).'_list';
+      $name = sfInflector::underscore($tables['middleTable']->getClassname()) . '_list';
       $names[] = $name;
       $fields[$name] = array_merge(array(
-        'is_link'      => false,
-        'is_real'      => false,
-        'type'         => 'Text',
+        'is_link' => false,
+        'is_real' => false,
+        'type' => 'Text'
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 
     if($oneToOne = $this->getOneToOneTable())
     {
-      foreach ($oneToOne->getLocalTable()->getColumns() as $column)
+      foreach($oneToOne->getLocalTable()->getColumns() as $column)
       {
         $name = $this->translateColumnName($column);
         $names[] = $name;
         $fields[$name] = array_merge(array(
           'is_link' => (boolean)$column->isPrimaryKey(),
           'is_real' => true,
-          'getter' => 'get' . $oneToOne->getName() . '()->get' . $column->getPhpName(),
-          'sort_method' => 'orderBy' . $oneToOne->getName() . '.' . $column->getPhpName(),
+          'getter' => sprintf('get%s()->get%s', $oneToOne->getName(), $column->getPhpName()),
+          'model' => $column->getTable()->getPhpName(),
+          'php_name' => $column->getPhpName(),
+          'field_name' => $name,
+          'relation_name' => $oneToOne->getName(),
+          'sort_method' => sprintf('orderBy%s.%s', $oneToOne->getName(), $column->getPhpName()),
           'type' => $this->getType($column)
         ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
       }
     }
 
-    if (isset($this->config['fields']))
+    if(isset($this->config['fields']))
     {
-      foreach ($this->config['fields'] as $name => $params)
+      foreach($this->config['fields'] as $name => $params)
       {
-        if (in_array($name, $names))
+        if(in_array($name, $names))
         {
           continue;
         }
 
-        $fields[$name] = array_merge($this->getColumnParams($name), is_array($params) ? $params : array());
+        $fields[$name] = array_merge(ExtjsGeneratorUtil::getColumnParams($name, $this->getModelClass()), is_array($params) ? $params : array());
       }
     }
 
     unset($this->config['fields']);
 
     return $fields;
-  }
-
-   /**
-   * Returns an array of params for a column name.
-   *
-   * @return array array of params.
-   */
-  public function getColumnParams($columnName)
-  {
-    $columnArr = explode('-', $columnName);
-    $className = $this->getModelClass();
-    $relatedGetter = '';
-
-    for($i = 0; $i <= count($columnArr) - 1; $i ++)
-    {
-      $column = $columnArr[$i];
-
-      if(! isset($map))
-      {
-        $map = call_user_func(array(
-          $className . 'Peer',
-          'getTableMap'
-        ));
-      }
-
-      try
-      {
-        $fieldName = call_user_func(array(
-          $className . 'Peer',
-          'translateFieldName'
-        ), sfInflector::camelize(strtolower($columnArr[$i])), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
-      }
-      catch(PropelException $e)
-      {
-        $fieldName = strtolower($columnArr[$i]);
-      }
-
-      try
-      {
-        $column = $map->getColumn($fieldName);
-      }
-      catch(PropelException $e)
-      {
-        $relationName = sfInflector::camelize($fieldName);
-        try
-        {
-          $relation = $map->getRelation($relationName);
-        }
-        catch(PropelException $e)
-        {
-          try
-          {
-            // also try lcfirst as relations could start with either
-            $relationName = (string)(strtolower(substr($relationName, 0, 1)) . substr($relationName, 1));
-            $relation = $map->getRelation($relationName);
-          }
-          catch(PropelException $e)
-          {
-            //not a real column but we try using it anyhow
-            if($i != count($columnArr) - 1)
-            {
-              $relatedGetter .= 'get' . sfInflector::camelize($columnArr[$i]) . '()->';
-            }
-            unset($relationName);
-            continue;
-          }
-        }
-
-        $map = $relation->getLocalTable();
-        $relationColumns = $relation->getLocalColumns();
-        $column = $relationColumns[0];
-        $className = $column->getTable()->getPhpName();
-        if($i != count($columnArr) - 1)
-        {
-          $relatedGetter .= 'get' . $relationName . '()->';
-        }
-      }
-    }
-
-    $phpName = ($column instanceof ColumnMap) ? $column->getPhpName() : sfInflector::camelize($column);
-
-    return array(
-      'is_link' => ($column instanceof ColumnMap) ? (Boolean) $column->isPrimaryKey() : false,
-      'is_real' => ($column instanceof ColumnMap) ? true : false,
-      'getter' => $relatedGetter . 'get' . $phpName,
-      'sort_method' => isset($relationName) ? 'orderBy' . $relationName . '.' . $phpName : null,
-      'type' => ($column instanceof ColumnMap) ? $this->getType($column) : 'Text'
-    );
   }
 
   /**
@@ -206,13 +125,13 @@ class ExtjsGenerator extends sfPropelGenerator
   {
     $defaults = $this->configuration->getFieldsDefault();
 
-    if (isset($defaults[$column]))
+    if(isset($defaults[$column]))
     {
       $getter = $defaults[$column]['getter'];
     }
     else
     {
-      $params = $this->getColumnParams($column);
+      $params = ExtjsGeneratorUtil::getColumnParams($column, $this->getModelClass());
       $getter = $params['getter'];
     }
 
@@ -222,40 +141,6 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     return sprintf('$%s%s->%s()', $prefix, $this->getSingularName(), $getter);
-  }
-
-  /**
-   * Returns the type of a column.
-   *
-   * @param  object $column A column object
-   *
-   * @return string The column type
-   */
-  public function getType($column)
-  {
-    if($column->isForeignKey())
-    {
-      return 'ForeignKey';
-    }
-
-    switch($column->getType())
-    {
-      case PropelColumnTypes::BOOLEAN:
-        return 'Boolean';
-      case PropelColumnTypes::DATE:
-      case PropelColumnTypes::TIMESTAMP:
-        return 'Date';
-      case PropelColumnTypes::TIME:
-        return 'Time';
-      case PropelColumnTypes::INTEGER:
-        return 'Integer';
-      case PropelColumnTypes::FLOAT:
-        return 'Float';
-      case PropelColumnTypes::LONGVARCHAR:
-        return 'Text';
-      default:
-        return 'String';
-    }
   }
 
   /**
@@ -734,5 +619,169 @@ $%1$s->attributes["initComponent"] = $sfExtjs3Plugin->asMethod($configArr);', $o
 // initEvents
 $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);";
 $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
+  }
+
+  public function getFormCustomization($view, $formVariableName = 'form')
+  {
+    $customization = '';
+    $form = $this->configuration->getForm(); // fallback field definition
+    $defaultFieldNames = array_keys($form->getWidgetSchema()->getFields());
+    $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
+    $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);
+    $plainFields = array();
+
+    foreach($fieldsets as $fieldset => $fields)
+    {
+      foreach($fields as $fieldName => $field)
+      {
+        // one-to-many widget creation
+        if($view == 'filter' && $field->getConfig('is_real') && $field->getConfig('relation_name', false) && strpos($fieldName, '-'))
+        {
+          $generatorClass = sprintf('ExtjsForm%sGenerator', $view != 'form' ? ucfirst($view) : '');
+          $gen = new $generatorClass($this->getGeneratorManager());
+
+          $column = $this->getTableMap()->getRelation($field->getConfig('relation_name'))->getLocalTable()->getColumn($field->getConfig('field_name'));
+
+          $widgetConfig = array_merge(array(
+            'widgetClass' => $gen->getWidgetClassForColumn($column),
+            'widgetOptions' => $gen->getWidgetOptionsForColumn($column),
+            'validatorClass' => $gen->getValidatorClassForColumn($column),
+            'validatorOptions' => $gen->getValidatorOptionsForColumn($column)
+          ), $field->getConfig('widget', array()));
+
+          // widget creation
+          $widgetOptions = (isset($widgetConfig['widgetOptions']) && $widgetConfig['widgetOptions'] != '') ? $widgetConfig['widgetOptions'] : $this->asPhp(array());
+          $widgetAttributes = (isset($widgetConfig['widgetAttributes'])) ? $widgetConfig['widgetAttributes'] : $this->asPhp(array());
+
+          $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $widgetConfig['widgetClass'], $widgetOptions, $widgetAttributes);
+
+          // validator creation
+          $validatorOptions = (isset($widgetConfig['validatorOptions']) && $widgetConfig['validatorOptions'] != '') ? $widgetConfig['validatorOptions'] : $this->asPhp(array());
+          $validatorMessages = (isset($widgetConfig['validatorMessages'])) ? $widgetConfig['validatorMessages'] : $this->asPhp(array());
+
+          $format = 'new %s(%s, %s)';
+          if(in_array($class = $widgetConfig['widgetClass'], array('sfValidatorInteger', 'sfValidatorNumber')))
+          {
+            $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
+          }
+
+          $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $widgetConfig['validatorClass'], $validatorOptions, $validatorMessages);
+
+          continue;
+        }
+
+        // plain widget
+        if($field->getConfig('type', false) == 'plain')
+        {
+          $plainFields[] = $fieldName;
+          $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
+          $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
+        }
+
+        // widget customization
+        if(! $widgetConfig = $field->getConfig('widget', array()))
+        {
+          if($widgetClass = $field->getConfig('widgetClass', false))
+          {
+            $widgetConfig['class'] = $widgetClass;
+          }
+          if($widgetOptions = $field->getConfig('widgetOptions', false))
+          {
+            $widgetConfig['options'] = $widgetOptions;
+          }
+          if($widgetAttributes = $field->getConfig('widgetAttributes', false))
+          {
+            $widgetConfig['attributes'] = $widgetAttributes;
+          }
+        }
+        if($widgetConfig)
+        {
+          $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
+          $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
+          if(isset($widgetConfig['class']))
+          {
+            $class = $widgetConfig['class'];
+            $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($attributes));
+          }
+          else
+          {
+            foreach($options as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getWidget('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
+            foreach($attributes as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getWidget('%s')->setAttribute('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
+          }
+        }
+
+        // validator configuration
+        if(! $validatorConfig = $field->getConfig('validator', array()))
+        {
+          if($validatorClass = $field->getConfig('validatorClass', false))
+          {
+            $validatorConfig['class'] = $validatorClass;
+          }
+          if($validatorOptions = $field->getConfig('validatorOptions', false))
+          {
+            $validatorConfig['options'] = $validatorOptions;
+          }
+          if($validatorMessages = $field->getConfig('validatorMessages', false))
+          {
+            $validatorConfig['messages'] = $validatorMessages;
+          }
+        }
+        if($validatorConfig)
+        {
+          $options = (isset($validatorConfig['options'])) ? $validatorConfig['options'] : array();
+          $messages = (isset($validatorConfig['messages'])) ? $validatorConfig['messages'] : array();
+          if(isset($validatorConfig['class']))
+          {
+            $class = $validatorConfig['class'];
+            $customization .= sprintf("    \$this->%s->setValidator('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($messages));
+          }
+          else
+          {
+            foreach($options as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getValidator('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
+            foreach($messages as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getValidator('%s')->setMessage('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
+          }
+        }
+
+        // this field is used
+        if(isset($unusedFields[$fieldName]))
+        {
+          unset($unusedFields[$fieldName]);
+        }
+      }
+    }
+
+    // remove plain fields from validation
+    if(! empty($plainFields))
+    {
+      $customization .= sprintf("    \$this->%s->mergePostValidator(new sfValidatorSchemaRemove(array('fields' => %s)));\n", $formVariableName, $this->asPhp($plainFields));
+    }
+
+    // remove unused fields
+    if(! empty($unusedFields))
+    {
+      foreach($unusedFields as $field)
+      {
+        // ignore primary keys, CSRF, and embedded forms
+        if($form->getWidget($field) instanceof sfWidgetFormInputHidden || $form->getWidget($field) instanceof sfWidgetFormSchemaDecorator)
+        {
+          continue;
+        }
+        $customization .= sprintf("    unset(\$this->%s['%s']);\n", $formVariableName, $field);
+      }
+    }
+
+    return $customization;
   }
 }
