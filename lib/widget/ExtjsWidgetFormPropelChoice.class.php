@@ -58,6 +58,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     $this->addOption('method', '__toString');
     $this->addOption('key_method', 'getPrimaryKey');
     $this->addOption('order_by', null);
+    $this->addOption('group_by', null);
     $this->addOption('query_methods', array());
     $this->addOption('criteria', null);
     $this->addOption('connection', null);
@@ -75,6 +76,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
       'method' => $this->getOption('method'),
       'key_method' => $this->getOption('key_method'),
       'order_by' => $this->getOption('order_by'),
+      'group_by' => $this->getOption('group_by'),
       'query_methods' => $this->getOption('query_methods'),
       'criteria' => $this->getOption('criteria'),
       'connection' => $this->getOption('connection'),
@@ -90,41 +92,59 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   public function getChoices()
   {
     $choices = array();
+
     if(false !== $this->getOption('add_empty'))
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
     }
 
     $criteria = PropelQuery::from($this->getOption('model'));
+
     if($this->getOption('criteria'))
     {
       $criteria->mergeWith($this->getOption('criteria'));
     }
+
     foreach($this->getOption('query_methods') as $method)
     {
       $criteria->$method();
     }
+
     if($order = $this->getOption('order_by'))
     {
       $criteria->orderBy($order[0], $order[1]);
     }
-    $objects = $criteria->find($this->getOption('connection'));
 
-    $methodKey = $this->getOption('key_method');
-    if(! method_exists($this->getOption('model'), $methodKey))
+    if($group = $this->getOption('group_by'))
     {
-      throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
+      //if a key_method was explicitly set use it otherwise key is the value
+      if($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
+      $criteria->groupBy($group)->select(isset($key) ? array($key, $group) : array($group));
+      $values = $criteria->find($this->getOption('connection'));
+      foreach($values as $value)
+      {
+        $choices[isset($key) ? $value[$key] : $value] = isset($key) ? $value[$group] : $value;
+      }
     }
-
-    $methodValue = $this->getOption('method');
-    if(! method_exists($this->getOption('model'), $methodValue))
+    else
     {
-      throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodValue, __CLASS__));
-    }
+      $objects = $criteria->find($this->getOption('connection'));
+      $methodKey = $this->getOption('key_method');
+      if(! method_exists($this->getOption('model'), $methodKey))
+      {
+        throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
+      }
 
-    foreach($objects as $object)
-    {
-      $choices[$object->$methodKey()] = $object->$methodValue();
+      $methodValue = $this->getOption('method');
+      if(! method_exists($this->getOption('model'), $methodValue))
+      {
+        throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodValue, __CLASS__));
+      }
+
+      foreach($objects as $object)
+      {
+        $choices[$object->$methodKey()] = $object->$methodValue();
+      }
     }
 
     return $choices;
