@@ -119,7 +119,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     {
       //if a key_method was explicitly set use it otherwise key is the value
       if($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
-      $criteria->groupBy($group)->select(isset($key) ? array($key, $group) : array($group));
+      $criteria->groupBy($group)->select(isset($key) ? array($key, $group) : $group);
       $values = $criteria->find($this->getOption('connection'));
       foreach($values as $value)
       {
