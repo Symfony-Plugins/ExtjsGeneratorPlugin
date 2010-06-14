@@ -13,7 +13,7 @@
 <?php if($this->configuration->hasFilterForm()):?>
 [?php include_partial('filterpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'form' => $filters, 'configuration' => $configuration)) ?]
 <?php endif; ?>
-[?php //include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'form' => $configuration->getForm(), 'configuration' => $configuration)) ?]
+[?php //include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'configuration' => $configuration)) ?]
 
 // initialise CodeLoader
 Ext.app.CodeLoader = new Ext.ux.ModuleManager({modulePath: '[?php echo sfContext::getInstance()->getRequest()->getScriptName() ?]' });
