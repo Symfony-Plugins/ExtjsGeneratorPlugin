@@ -121,8 +121,9 @@ class ExtjsGenerator extends sfPropelGenerator
    *
    * @return string PHP code
    */
-  public function getColumnGetter($column, $developed = false, $prefix = '')
+  public function getColumnGetter($column, $developed = false, $prefix = '', $modelClass = null)
   {
+    if(!$modelClass) $modelClass = $this->getSingularName();
     $defaults = $this->configuration->getFieldsDefault();
 
     if(isset($defaults[$column]))
@@ -131,7 +132,7 @@ class ExtjsGenerator extends sfPropelGenerator
     }
     else
     {
-      $params = ExtjsGeneratorUtil::getColumnParams($column, $this->getModelClass());
+      $params = ExtjsGeneratorUtil::getColumnParams($column, $modelClass);
       $getter = $params['getter'];
     }
 
@@ -140,7 +141,22 @@ class ExtjsGenerator extends sfPropelGenerator
       return $getter;
     }
 
-    return sprintf('$%s%s->%s()', $prefix, $this->getSingularName(), $getter);
+    if(strpos($getter,'()->'))
+    {
+      $relatedGetters = explode('->', $getter);
+      for($i = 0; $i < count($relatedGetters); $i++)
+      {
+        $relatedGetters[$i] = ($i == 0) ? $relatedGetters[$i] : $relatedGetters[$i-1] . '->' .$relatedGetters[$i];
+      }
+
+      $getter = sprintf('$%s->%s()', $modelClass, array_pop($relatedGetters));
+      $relatedCheck = implode(sprintf(') && is_object($%s->',$modelClass), $relatedGetters);
+
+
+      return sprintf("(is_object(\$%s->%s)) ? %s : ''", $modelClass, $relatedCheck, $getter);
+    }
+
+    return sprintf('$%s%s->%s()', $prefix, $modelClass, $getter);
   }
 
   /**
@@ -670,8 +686,7 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
 
           if($view == 'edit' || $view == 'update')
           {
-            $params = ExtjsGeneratorUtil::getColumnParams($fieldName, $this->getModelClass());
-            $customization .= sprintf("    \$this->%s->setDefault('%s', \$this->%s->get%s()->get%s());\n", $formVariableName, $fieldName, $this->getSingularName(), $params['relation_name'], $params['php_name']);
+            $customization .= sprintf("    \$this->%s->setDefault('%s', %s);\n", $formVariableName, $fieldName, $this->getColumnGetter($fieldName, true, '', 'this->'.$this->getSingularName()));
           }
         }
         else
