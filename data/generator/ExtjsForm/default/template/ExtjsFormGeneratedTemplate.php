@@ -131,6 +131,11 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
 <?php if($oneToOne = $this->getOneToOneTable()):?>
   public function save<?php echo $oneToOne->getName() ?>()
   {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
     if (!is_null($<?php echo $oneToOne->getName() ?> = $this->getRelatedObject('get<?php echo $oneToOne->getName() ?>')))
     {
       $values = $this->getValues();

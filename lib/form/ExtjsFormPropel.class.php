@@ -241,6 +241,30 @@ abstract class ExtjsFormPropel extends sfFormObject
 
     // embedded forms
     $this->saveEmbeddedForms($con);
+
+    // many-to-one fields
+    $this->saveManyToOneValues($con);
+  }
+
+  protected function saveManyToOneValues($con)
+  {
+    foreach($this->getValues() as $fieldName => $value)
+    {
+      if(strpos($fieldName, '-') && isset($this->widgetSchema[$fieldName]))
+      {
+        $params = ExtjsGeneratorUtil::getColumnParams($fieldName, get_class($this->getObject()));
+        $relation = call_user_func(array($this->getObject(), sprintf("get%s", $params['relation_name'])));
+
+        // not a "real" column of this object
+        if (!method_exists($relation, $method = sprintf('set%s', ucfirst($params['php_name']))))
+        {
+          continue;
+        }
+
+        $relation = call_user_func(array($relation, $method), $value);
+        $relation->save($con);
+      }
+    }
   }
 
   /**

@@ -635,9 +635,9 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
       foreach($fields as $fieldName => $field)
       {
         // one-to-many widget creation
-        if($view == 'filter' && $field->getConfig('is_real') && $field->getConfig('relation_name', false) && strpos($fieldName, '-'))
+        if($field->getConfig('relation_name', false) && strpos($fieldName, '-'))
         {
-          $generatorClass = sprintf('ExtjsForm%sGenerator', $view != 'form' ? ucfirst($view) : '');
+          $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
           $gen = new $generatorClass($this->getGeneratorManager());
 
           $column = $this->getTableMap()->getRelation($field->getConfig('relation_name'))->getLocalTable()->getColumn($field->getConfig('field_name'));
@@ -666,6 +666,12 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
           }
 
           $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $widgetConfig['validatorClass'], $validatorOptions, $validatorMessages);
+
+          if($view == 'edit' || $view == 'update')
+          {
+            $params = ExtjsGeneratorUtil::getColumnParams($fieldName, $this->getModelClass());
+            $customization .= sprintf("    \$this->%s->setDefault('%s', \$this->%s->get%s()->get%s());\n", $formVariableName, $fieldName, $this->getSingularName(), $params['relation_name'], $params['php_name']);
+          }
 
           continue;
         }
