@@ -71,10 +71,10 @@ class ExtjsGeneratorUtil
           }
         }
 
-        $map = $relation->getLocalTable();
-        $relationColumns = $relation->getLocalColumns();
+        $map = $relation->getRightTable();
+        $relationColumns = $relation->getRightColumns();
         $column = $relationColumns[0];
-        $model = $column->getTable()->getPhpName();
+        $model = $relation->getRightTable()->getPhpName();
         if($i != count($columnArr) - 1)
         {
           $relatedGetter .= sprintf('get%s()->', $relationName);

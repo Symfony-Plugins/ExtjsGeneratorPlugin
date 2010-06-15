@@ -44,11 +44,11 @@ $readerFields = array();
 $fieldItems = array();
 <?php
 $this->form = $this->configuration->getForm();
-eval($this->getFormCustomization('form'));
+eval($this->getFormCustomization('form', 'form', false));
 
 $form = $this->form;
 foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields):
-	$fieldItems = array();
+  $fieldItems = array();
   foreach ($fields as $name => $field)
   {
     echo $this->addCredentialCondition(sprintf("%s;\n\n", $this->renderJsonReaderField($field, $form)), $field->getConfig());
@@ -57,7 +57,7 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
       'help' => $field->getConfig('help'),
       'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
     );
-    
+
     $fieldAttributes = $field->getConfig('attributes', array());
     if(isset($fieldAttributes['mode']) && $fieldAttributes['mode'] == 'remote') $attributes['url'] = $this->getModuleName().'/combo.json';
     echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $fieldAttributes))), $field->getConfig());
@@ -69,18 +69,18 @@ $fieldItems = array();
 
 <?php else: ?>
 $formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
-	'title' => __('<?php echo $fieldset ?>', array(), '<?php echo $this->getI18nCatalogue() ?>'),
-	'collapsible' => false,
-	'autoHeight' => true,
-	'style' => 'padding:10px;',
-	'bodyStyle' => 'padding:0px 0px;',
-	'style' => 'margin-left:5px;margin-right:10px',
-	'autoWidth' => true,
-	'defaults' => array(
-	'anchor' => '51%'
-	),
-	'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
-	'items' => $fieldItems,
+  'title' => __('<?php echo $fieldset ?>', array(), '<?php echo $this->getI18nCatalogue() ?>'),
+  'collapsible' => false,
+  'autoHeight' => true,
+  'style' => 'padding:10px;',
+  'bodyStyle' => 'padding:0px 0px;',
+  'style' => 'margin-left:5px;margin-right:10px',
+  'autoWidth' => true,
+  'defaults' => array(
+  'anchor' => '51%'
+  ),
+  'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
+  'items' => $fieldItems,
 ), $configuration->getFormFieldsetParams('params_<?php echo $fieldset ?>')));
 $fieldItems = array();
 

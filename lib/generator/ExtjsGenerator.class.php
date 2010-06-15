@@ -621,7 +621,7 @@ $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);
 $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
-  public function getFormCustomization($view, $formVariableName = 'form')
+  public function getFormCustomization($view, $formVariableName = 'form', $withCredentialCheck = true)
   {
     $customization = '';
     $form = $this->configuration->getForm(); // fallback field definition
@@ -629,6 +629,7 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
     $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
     $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);
     $plainFields = array();
+    $credentialFields = array();
 
     foreach($fieldsets as $fieldset => $fields)
     {
@@ -640,7 +641,7 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
           $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
           $gen = new $generatorClass($this->getGeneratorManager());
 
-          $column = $this->getTableMap()->getRelation($field->getConfig('relation_name'))->getLocalTable()->getColumn($field->getConfig('field_name'));
+          $column = $this->getTableMap()->getRelation($field->getConfig('relation_name'))->getRightTable()->getColumn($field->getConfig('field_name'));
 
           $widgetConfig = array_merge(array(
             'widgetClass' => $gen->getWidgetClassForColumn($column),
@@ -672,90 +673,90 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
             $params = ExtjsGeneratorUtil::getColumnParams($fieldName, $this->getModelClass());
             $customization .= sprintf("    \$this->%s->setDefault('%s', \$this->%s->get%s()->get%s());\n", $formVariableName, $fieldName, $this->getSingularName(), $params['relation_name'], $params['php_name']);
           }
-
-          continue;
         }
+        else
+        {
+          // plain widget
+          if($field->getConfig('type', false) == 'plain')
+          {
+            $plainFields[] = $fieldName;
+            $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
+            $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
+          }
 
-        // plain widget
-        if($field->getConfig('type', false) == 'plain')
-        {
-          $plainFields[] = $fieldName;
-          $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
-          $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
-        }
-
-        // widget customization
-        if(! $widgetConfig = $field->getConfig('widget', array()))
-        {
-          if($widgetClass = $field->getConfig('widgetClass', false))
+          // widget customization
+          if(! $widgetConfig = $field->getConfig('widget', array()))
           {
-            $widgetConfig['class'] = $widgetClass;
-          }
-          if($widgetOptions = $field->getConfig('widgetOptions', false))
-          {
-            $widgetConfig['options'] = $widgetOptions;
-          }
-          if($widgetAttributes = $field->getConfig('widgetAttributes', false))
-          {
-            $widgetConfig['attributes'] = $widgetAttributes;
-          }
-        }
-        if($widgetConfig)
-        {
-          $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
-          $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
-          if(isset($widgetConfig['class']))
-          {
-            $class = $widgetConfig['class'];
-            $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($attributes));
-          }
-          else
-          {
-            foreach($options as $name => $value)
+            if($widgetClass = $field->getConfig('widgetClass', false))
             {
-              $customization .= sprintf("    \$this->%s->getWidget('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              $widgetConfig['class'] = $widgetClass;
             }
-            foreach($attributes as $name => $value)
+            if($widgetOptions = $field->getConfig('widgetOptions', false))
             {
-              $customization .= sprintf("    \$this->%s->getWidget('%s')->setAttribute('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              $widgetConfig['options'] = $widgetOptions;
+            }
+            if($widgetAttributes = $field->getConfig('widgetAttributes', false))
+            {
+              $widgetConfig['attributes'] = $widgetAttributes;
             }
           }
-        }
-
-        // validator configuration
-        if(! $validatorConfig = $field->getConfig('validator', array()))
-        {
-          if($validatorClass = $field->getConfig('validatorClass', false))
+          if($widgetConfig)
           {
-            $validatorConfig['class'] = $validatorClass;
-          }
-          if($validatorOptions = $field->getConfig('validatorOptions', false))
-          {
-            $validatorConfig['options'] = $validatorOptions;
-          }
-          if($validatorMessages = $field->getConfig('validatorMessages', false))
-          {
-            $validatorConfig['messages'] = $validatorMessages;
-          }
-        }
-        if($validatorConfig)
-        {
-          $options = (isset($validatorConfig['options'])) ? $validatorConfig['options'] : array();
-          $messages = (isset($validatorConfig['messages'])) ? $validatorConfig['messages'] : array();
-          if(isset($validatorConfig['class']))
-          {
-            $class = $validatorConfig['class'];
-            $customization .= sprintf("    \$this->%s->setValidator('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($messages));
-          }
-          else
-          {
-            foreach($options as $name => $value)
+            $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
+            $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
+            if(isset($widgetConfig['class']))
             {
-              $customization .= sprintf("    \$this->%s->getValidator('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              $class = $widgetConfig['class'];
+              $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($attributes));
             }
-            foreach($messages as $name => $value)
+            else
             {
-              $customization .= sprintf("    \$this->%s->getValidator('%s')->setMessage('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              foreach($options as $name => $value)
+              {
+                $customization .= sprintf("    \$this->%s->getWidget('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              }
+              foreach($attributes as $name => $value)
+              {
+                $customization .= sprintf("    \$this->%s->getWidget('%s')->setAttribute('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              }
+            }
+          }
+
+          // validator configuration
+          if(! $validatorConfig = $field->getConfig('validator', array()))
+          {
+            if($validatorClass = $field->getConfig('validatorClass', false))
+            {
+              $validatorConfig['class'] = $validatorClass;
+            }
+            if($validatorOptions = $field->getConfig('validatorOptions', false))
+            {
+              $validatorConfig['options'] = $validatorOptions;
+            }
+            if($validatorMessages = $field->getConfig('validatorMessages', false))
+            {
+              $validatorConfig['messages'] = $validatorMessages;
+            }
+          }
+          if($validatorConfig)
+          {
+            $options = (isset($validatorConfig['options'])) ? $validatorConfig['options'] : array();
+            $messages = (isset($validatorConfig['messages'])) ? $validatorConfig['messages'] : array();
+            if(isset($validatorConfig['class']))
+            {
+              $class = $validatorConfig['class'];
+              $customization .= sprintf("    \$this->%s->setValidator('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($messages));
+            }
+            else
+            {
+              foreach($options as $name => $value)
+              {
+                $customization .= sprintf("    \$this->%s->getValidator('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              }
+              foreach($messages as $name => $value)
+              {
+                $customization .= sprintf("    \$this->%s->getValidator('%s')->setMessage('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+              }
             }
           }
         }
@@ -763,8 +764,15 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
         // this field is used
         if(isset($unusedFields[$fieldName]))
         {
+//          if($field->getConfig())
           unset($unusedFields[$fieldName]);
         }
+
+        if($withCredentialCheck && $field->getConfig('credentials'))
+        {
+          $credentialFields[$fieldName] = $field->getConfig('credentials');
+        }
+
       }
     }
 
@@ -772,6 +780,15 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
     if(! empty($plainFields))
     {
       $customization .= sprintf("    \$this->%s->mergePostValidator(new sfValidatorSchemaRemove(array('fields' => %s)));\n", $formVariableName, $this->asPhp($plainFields));
+    }
+
+    // add credential check if enabled
+    if(! empty($credentialFields))
+    {
+      foreach($credentialFields as $field => $credentials)
+      {
+        $customization .= sprintf("    if(!\$this->getUser()->hasCredential(%s)) unset(\$this->%s['%s']);\n", $this->asPhp($credentials), $formVariableName, $field);
+      }
     }
 
     // remove unused fields
