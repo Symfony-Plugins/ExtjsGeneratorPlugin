@@ -71,10 +71,11 @@ class ExtjsGeneratorUtil
           }
         }
 
-        $map = $relation->getRightTable();
-        $relationColumns = $relation->getRightColumns();
+        $direction = ($relation->getType() == RelationMap::ONE_TO_ONE) ? 'Local' : 'Foreign';
+        $map = call_user_func(array($relation, sprintf('get%sTable', $direction))); //$relation->getRightTable();
+        $relationColumns = call_user_func(array($relation, sprintf('get%sColumns', $direction))); //$relation->getRightColumns();
         $column = $relationColumns[0];
-        $model = $relation->getRightTable()->getPhpName();
+        $model = $map->getPhpName(); // $relation->getRightTable()->getPhpName();
         if($i != count($columnArr) - 1)
         {
           $relatedGetter .= sprintf('get%s()->', $relationName);

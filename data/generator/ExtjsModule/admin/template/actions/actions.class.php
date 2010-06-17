@@ -26,8 +26,8 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper();
   }
-  
-<?php include dirname(__FILE__).'/../../parts/comboAction.php' ?>  
+
+<?php include dirname(__FILE__).'/../../parts/comboAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/indexAction.php' ?>
 
@@ -51,6 +51,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 
 <?php if ($this->configuration->hasFilterForm()): ?>
 <?php include dirname(__FILE__).'/../../parts/filterpanelAction.php' ?>
+
 <?php include dirname(__FILE__).'/../../parts/filterAction.php' ?>
 <?php endif; ?>
 

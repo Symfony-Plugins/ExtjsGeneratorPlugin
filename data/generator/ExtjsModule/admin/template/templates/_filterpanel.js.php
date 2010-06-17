@@ -36,32 +36,33 @@ $filterpanel->config_array['buttons'] = array(
   ))
 );
 
-foreach ($configuration->getFormFilterFields($form) as $name => $field)
+foreach ($configuration->getFormFilterFields($filters) as $name => $field)
 {
-  if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue;
+  if ((isset($filters[$name]) && $filters[$name]->isHidden()) || (!isset($filters[$name]) && $field->isReal())) continue;
+  //if (!isset($filters[$name]) || $filters[$name]->isHidden()) continue;
 
   $attributes = array_merge(array(
     'help' => $field->getConfig('help'),
-    'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
+    'fieldLabel' => addslashes($field->getConfig('label', $filters[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name))),
   ), $field->getConfig('attributes', array()));
 
   $params = $field->getConfig();
   if(isset($params['credentials']))
   {
-    if ($sf_user->hasCredential($params['credentials'])) eval($form[$name]->render($attributes));
+    if ($sf_user->hasCredential($params['credentials'])) eval($filters[$name]->render($attributes));
   }
   else
   {
-    eval($form[$name]->render($attributes));
+    eval($filters[$name]->render($attributes));
   }
 }
 
-if ($form->isCSRFProtected())
+if ($filters->isCSRFProtected())
 {
   //add csrf field
   $filterpanel->config_array['items'][] = $sfExtjs3Plugin->asCustomClass('Ext.form.Hidden', array(
-    'name' => sprintf($form->getWidgetSchema()->getNameFormat(), $form->getCSRFFieldName()),
-    'value' => $form->getCSRFToken(),
+    'name' => sprintf($filters->getWidgetSchema()->getNameFormat(), $filters->getCSRFFieldName()),
+    'value' => $filters->getCSRFToken(),
   ));
 }
 

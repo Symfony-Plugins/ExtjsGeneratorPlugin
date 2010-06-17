@@ -11,7 +11,7 @@
 [?php include_partial('gridpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
 [?php include_partial('tabpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
 <?php if($this->configuration->hasFilterForm()):?>
-[?php include_partial('filterpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'form' => $filters, 'configuration' => $configuration)) ?]
+[?php include_partial('filterpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'filters' => $filters, 'configuration' => $configuration)) ?]
 <?php endif; ?>
 [?php //include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'configuration' => $configuration)) ?]
 

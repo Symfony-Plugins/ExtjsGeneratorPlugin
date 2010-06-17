@@ -253,8 +253,17 @@ abstract class ExtjsFormPropel extends sfFormObject
       if(strpos($fieldName, '-') && isset($this->widgetSchema[$fieldName]))
       {
         $params = ExtjsGeneratorUtil::getColumnParams($fieldName, get_class($this->getObject()));
+
+        //TODO: throw a real form error here if possible instead of failing quietly
+        // not a "real" column of this object
+        if (!method_exists($this->getObject(), sprintf("get%s", $params['relation_name'])))
+        {
+          continue;
+        }
+
         $relation = call_user_func(array($this->getObject(), sprintf("get%s", $params['relation_name'])));
 
+        //TODO: throw a real form error here if possible instead of failing quietly
         // not a "real" column of this object
         if (!method_exists($relation, $method = sprintf('set%s', ucfirst($params['php_name']))))
         {

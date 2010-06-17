@@ -3,7 +3,7 @@ extjs:generate-admin generator.yml route prefix is not set correctly to the modu
 does with_propel_route in the generator.yml do anything?
 possible to work without route_prefix and no propel route?
 look at _assets.js index.js and fix to properly use route_prefix instead of moduleName()
-getXtype module should support routing and be called with the route instead of teh moduleName()
+getXtype module should support routing and be called with the route instead of the moduleName()
 
 ### forms
 show combobox for related fields (field is not always added)
@@ -18,7 +18,6 @@ look at how to handle a form with another form embedded in it, document if not p
 ### grid
 foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
-need to escape single quotes in labels for columnmodel
 
 ### filter
 move is_empty checkbox for filter to an Ext.ux extension
@@ -33,6 +32,8 @@ expand generated partials with examples
 add support for objects with multiple fields as primary key
 
 error handling
+- need to catch errors when index.js doesn't load because of a problem with the javascript
+- need to show errors on ajax requests and show them in a window
 
 ###remote combos (WIP set attributes.mode.remote to test )
 filterpanel support

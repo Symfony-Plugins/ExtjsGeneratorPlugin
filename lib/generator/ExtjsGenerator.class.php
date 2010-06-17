@@ -244,7 +244,7 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     $colArr = array(
-      'header' => "[?php echo __('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "'); ?]",
+      'header' => "[?php echo __('" . addslashes($field->getConfig('label', '', true)) . "', array(), '" . $this->getI18nCatalogue() . "'); ?]",
       'dataIndex' => $field->getName()
     );
 
@@ -637,6 +637,42 @@ $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);
 $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
+  /**
+   * Get the code to modify a form object based on fields configuration.
+   *
+   * Configuration attributes considered for customization:
+   *  * type
+   *  * widgetClass
+   *  * widgetOptions
+   *  * widgetAttributes (same effect as the 'attributes' attribute)
+   *  * validatorClass
+   *  * validatorOptions
+   *  * validatorMessages
+   *
+   * This also removes unused fields from the display list.
+   *
+   * <code>
+   * form:
+   *   display: [foo1, foo2]
+   *   fields:
+   *     foo1: { widgetOptions: { bar: baz } }
+   *     foo2: { widgetClass: sfWidgetFormInputText, validatorClass: sfValidatorPass }
+   *     foo3: { type: plain }
+   * $form->getWidget('foo1')->setOption('bar', 'baz');
+   * $form->setWidget('foo2', new sfWidgetFormInputText());
+   * $form->setValidator('foo2', new sfValidatorPass());
+   * $form->setWidget('foo3', new sfWidgetFormPlain());
+   * $form->setValidator('foo3', new sfValidatorPass(array('required' => false)));
+   * $form->mergePostValidator(new sfValidatorSchemaRemove(array('fields' => array('foo3'))));
+   * unset($form['foo']);
+   * </code>
+   *
+   * @param string $view Choices are 'edit', 'new', or 'filter'
+   * @param string $formVariableName The name of the variable referencing the form.
+   *                                 Choices are 'form', or 'filters'
+   *
+   * @return string the form customization code
+   */
   public function getFormCustomization($view, $formVariableName = 'form', $withCredentialCheck = true)
   {
     $customization = '';
@@ -657,7 +693,12 @@ $%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
           $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
           $gen = new $generatorClass($this->getGeneratorManager());
 
-          $column = $this->getTableMap()->getRelation($field->getConfig('relation_name'))->getRightTable()->getColumn($field->getConfig('field_name'));
+          $relationMap = call_user_func(array(
+            $field->getConfig('model') . 'Peer',
+            'getTableMap'
+          ));
+
+          $column = $relationMap->getColumn($field->getConfig('field_name'));
 
           $widgetConfig = array_merge(array(
             'widgetClass' => $gen->getWidgetClassForColumn($column),

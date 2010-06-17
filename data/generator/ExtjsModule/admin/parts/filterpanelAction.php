@@ -1,5 +1,5 @@
   public function executeFilterpanel(sfWebRequest $request)
   {
-    $this->filters = $this->configuration->getFilterForm($this->getFilters());
+    $this->getFilterForm();
     sfConfig::set('sf_escaping_strategy', false);
   }

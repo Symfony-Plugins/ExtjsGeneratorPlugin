@@ -55,7 +55,7 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
 
     $attributes = array(
       'help' => $field->getConfig('help'),
-      'fieldLabel' => $field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name)),
+      'fieldLabel' => addslashes($field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name))),
     );
 
     $fieldAttributes = $field->getConfig('attributes', array());
