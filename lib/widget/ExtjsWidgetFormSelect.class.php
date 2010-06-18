@@ -170,7 +170,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     {
       $options[] = array(
         self::escapeOnce($key),
-        $option
+        self::escapeOnce($option)
       );
     }
 
