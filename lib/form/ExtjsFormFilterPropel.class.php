@@ -201,7 +201,13 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   {
     $colname = $this->getColumnName($field, $criteria->getModelName());
 
-    if(is_array($value))
+    if(is_array($value) && isset($value['is_empty']) && $value['is_empty'])
+    {
+      $criterion = $criteria->getNewCriterion($colname, '');
+      $criterion->addOr($criteria->getNewCriterion($colname, null, Criteria::ISNULL));
+      $criteria->add($criterion);
+    } 
+    else if(is_array($value))
     {
       $values = $value;
       $value = array_pop($values);

@@ -39,6 +39,9 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     $this->addOption('context', 'form');
     $this->addOption('allowClear', true);
     $this->addOption('defaultValue');
+    $this->addOption('with_empty', true);
+    $this->addOption('empty_label', 'is empty');
+    $this->addOption('template', '%input%  %empty_checkbox%');
   }
 
   /**
@@ -53,12 +56,19 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    $values = array_merge(array(
+      'is_empty' => false
+    ), is_array($value) ? $value : array());
+    
+    if(is_array($value)) $value = null;
+    
     $type = 'TwinComboBox';
     $choices = $this->getChoices();
     if(isset($attributes['multiple']) && $attributes['multiple'] == 'multiple')
     {
       $type = 'ItemSelector';
       unset($attributes['multiple']);
+      $this->setOption('with_empty', false);
       $configArr = array(
         'name' => $name,
         'multiselects' => array(
@@ -126,6 +136,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
       $configArr = array(
         'hiddenName' => $name,
         'name' => $name,
+        'value' => (string) $value,
         'store' => $store,
         'allowClear' => $this->getOption('allowClear'),
         'defaultValue' => $this->getOption('defaultValue'),
@@ -133,13 +144,15 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'displayField' => 'display',
         'forceSelection' => true,
         'typeAhead' => false,
-        'value' => (string)$value,
         'triggerAction' => 'all',
         'mode' => $attributes['mode']
       );
-    }
+    }    
 
-    return $this->renderExtjsContentBlock($this->getOption('context'), $type, array_merge($configArr, $attributes));
+    return strtr($this->getOption('template'), array(
+      '%input%' => $this->renderExtjsContentBlock($this->getOption('context'), $type, array_merge($configArr, $attributes)),
+      '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
+    ));
   }
 
   /**
