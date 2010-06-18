@@ -258,12 +258,12 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 
     if($column->isForeignKey())
     {
-      $options[] = sprintf('\'model\' => \'%s\'', $this->getForeignTable($column)->getClassname());
+      $options[] = sprintf("'context' => 'filter', 'model' => '%s'", $this->getForeignTable($column)->getClassname());
 
       $refColumn = $this->getForeignTable($column)->getColumn($column->getRelatedColumnName());
       if(! $refColumn->isPrimaryKey())
       {
-        $options[] = sprintf('\'key_method\' => \'get%s\'', $refColumn->getPhpName());
+        $options[] = sprintf("'key_method' => 'get%s'", $refColumn->getPhpName());
       }
     }
 
