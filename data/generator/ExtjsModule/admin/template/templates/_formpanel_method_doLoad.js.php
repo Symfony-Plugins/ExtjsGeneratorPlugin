@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin @object $form string $className and @object $formpanel provided
 // doLoad
 $formpanel->methods['doLoad'] = $sfExtjs3Plugin->asMethod("
   if (this.isNew())

@@ -27,8 +27,6 @@ is_empty oncheck listener to submit the filter
 
 ### generic
 add time display for datetime fields to list, filter, and edit
-use heredoc in ExtjsGenerator for getStandardPartials, createStandardConstructorPartial, createStandardInitComponentPartial, createStandardInitEventsPartial methods
-expand generated partials with examples
 add support for objects with multiple fields as primary key
 
 error handling

@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
 // updateButtonsVisibility
 $formpanel->methods['updateButtonsVisibility'] = $sfExtjs3Plugin->asMethod("
   // hide delete button when new item

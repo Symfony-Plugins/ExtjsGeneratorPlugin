@@ -1,5 +1,5 @@
-[?php // @object $sfExtjs3Plugin and @object $formpanel provided
-  $formpanel->attributes["_reload"] = $sfExtjs3Plugin->asMethod("
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
+  $formpanel->methods["_reload"] = $sfExtjs3Plugin->asMethod("
   if (!this.getForm().isDirty()) {
     this.doLoad();
   } else {

@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $gridpanel provided
 // constructor
 $configArr = array(
   'source' => "
@@ -23,5 +23,5 @@ $configArr = array(
 
 ");
 
-$gridpanel->attributes['initEvents'] = $sfExtjs3Plugin->asMethod($configArr);
+$gridpanel->methods['initEvents'] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

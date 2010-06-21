@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $bottomToolbar = new stdClass();
-$bottomToolbar->attributes = array();
+$bottomToolbar->methods = array();
+$bottomToolbar->variables = array();
 
 /* bottomToolbar configuration */
 $bottomToolbar->config_array = array(
@@ -26,7 +27,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.PagingToolbar',
-  $bottomToolbar->attributes
+  array_merge(
+    $bottomToolbar->methods,
+    $bottomToolbar->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $formpanel = new stdClass();
-$formpanel->attributes = array();
+$formpanel->methods = array();
+$formpanel->variables = array();
 
 /* formpanel configuration */
 $formpanel->config_array = array();
@@ -25,11 +26,29 @@ $formpanel->config_array = array_merge($formpanel->config_array, array(
 $formpanel->config_array['tbar'] = array();
 <?php foreach ($editActions as $name => $params): ?>
 <?php if(! isset($params['handler_function']) && $name[0] != '_'):
-$this->createPartialFile('_editaction_'.$name,'<?php
-  // @object $sfExtjs3Plugin and @object $formpanel provided
-  $configArr["source"] = "Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_editaction_'.$actionName.'.js.php\" from cache to your application/modules/'.strtolower($this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');";
-  $formpanel->attributes["'.$name.'"] = $sfExtjs3Plugin->asMethod($configArr);
-?>');
+$this->createPartialFile('_editaction_'.$name, <<<EOT
+<?php
+/* @object \$sfExtjs3Plugin string \$className and @object \$formpanel provided
+*** Method example with no parameters
+\$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod("
+  //method code
+");
+
+*** Method example with parameters
+\$configArr->['parameters'] = 'grid, record, action, row, col';
+\$configArr->['source'] = "
+  //method code
+");
+\$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+*/
+\$configArr["source"] = "
+  Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_editaction_$actionName.js.php\" from cache to your application/modules/'.strtolower(\$this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');
+";
+\$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+?>
+EOT
+
+);
 ?>
 <?php endif; ?>
 <?php if(in_array($name, array('_reload', '_save', '_savenew', '_delete', '_cancel'))): ?>
@@ -141,7 +160,7 @@ $sfExtjs3Plugin->beginClass(
   'Ext.FormPanel',
   array_merge(
     $formpanel->methods,
-    $formpanel->attributes
+    $formpanel->variables
   )
 );
 

@@ -6,8 +6,8 @@
     $csrf = "{$form->getCSRFFieldName()}: '{$form->getCSRFToken()}',\n          ";  
   }
   
-  $configArr["parameters"] = "grid, record, action, row, col";
-  $configArr["source"] =   $configArr["source"] = "
+  $configArr['parameters'] = 'grid, record, action, row, col';
+  $configArr['source'] = "
   Ext.Msg.confirm('Confirm','Are you sure you want to delete this <?php echo $this->configuration->getObjectName() ?>?',function(btn,text){
     if(btn == 'yes')
     {
@@ -36,5 +36,5 @@
     }
   });
   ";
-  $objectActions->attributes["_delete"] = $sfExtjs3Plugin->asMethod($configArr);
+  $objectActions->methods['_delete'] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

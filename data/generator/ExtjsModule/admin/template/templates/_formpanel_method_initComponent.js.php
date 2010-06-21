@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
 // constructor
 $configArr = array(
   'source' => "
@@ -56,5 +56,5 @@ this.updateButtonsVisibility();
 "
 );
 
-$formpanel->attributes['initComponent'] = $sfExtjs3Plugin->asMethod($configArr);
+$formpanel->methods['initComponent'] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

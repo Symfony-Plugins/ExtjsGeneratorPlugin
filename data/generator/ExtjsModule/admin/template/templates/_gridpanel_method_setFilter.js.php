@@ -1,6 +1,6 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $gridpanel provided
 // setFilter
-$gridpanel->attributes['setFilter'] = $sfExtjs3Plugin->asMethod(array(
+$gridpanel->methods['setFilter'] = $sfExtjs3Plugin->asMethod(array(
   'parameters' => 'params',
   'source' => "
     params['action'] = 'filter';

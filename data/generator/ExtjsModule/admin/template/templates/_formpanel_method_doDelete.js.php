@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
 $form = new BaseForm();
 $csrf = ''; 
 if ($form->isCSRFProtected())

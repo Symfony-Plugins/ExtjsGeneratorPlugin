@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $filterpanel = new stdClass();
-$filterpanel->attributes = array();
+$filterpanel->methods = array();
+$filterpanel->variables = array();
 
 /* Filterpanel Configuration */
 $filterpanel->config_array = array(
@@ -76,7 +77,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.FormPanel',
-  $filterpanel->attributes
+  array_merge(
+    $filterpanel->methods,
+    $filterpanel->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

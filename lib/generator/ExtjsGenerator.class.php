@@ -132,7 +132,7 @@ class ExtjsGenerator extends sfPropelGenerator
     }
     else
     {
-      $params = ExtjsGeneratorUtil::getColumnParams($column, $modelClass);
+      $params = ExtjsGeneratorUtil::getColumnParams($column, sfInflector::camelize($modelClass));
       $getter = $params['getter'];
     }
 
@@ -561,8 +561,34 @@ EOF;
       $partialStr .= "\n// generator custom partials\n";
       foreach($partials as $partial)
       {
+        if($partial[0] == '_') $partial = substr($partial, 1);
         $partialStr .= "include_partial('" . $partial . "', array('sfExtjs3Plugin' => \$sfExtjs3Plugin, '$objName' => \$$objName, 'className' => \$className));\n";
-        $this->createPartialFile('_' . $partial, '<?php // @object $sfExtjs3Plugin, $className and @object $' . $objName . ' provided ?>');
+        
+        $partialContent = <<<EOF
+<?php 
+// @object \$sfExtjs3Plugin string \$className and @object $$objName provided
+/*
+*** Method example with no parameters
+\${$objName}->methods['MethodName'] = \$sfExtjs3Plugin->asMethod("
+  //method code
+");
+
+*** Method example with parameters
+\$configArr->['parameters'] = 'grid, record, action, row, col';
+\$configArr->['source'] = "
+  //method code
+");
+\${$objName}->methods['MethodName'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+
+*** Variable example
+\${$objName}->variables['VariableName'] = \$sfExtjs3Plugin->asVar("
+  //variable creation or string
+");
+*/
+?>        
+EOF;
+        
+        $this->createPartialFile('_' . $partial, $partialContent);
       }
     }
     return $partialStr;
@@ -609,7 +635,7 @@ EOF;
 
   protected function createStandardConstructorPartial($objName)
   {
-    return sprintf('<?php
+    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
 // constructor
 $configArr["parameters"] = "c";
 $configArr["source"] = "
@@ -618,23 +644,23 @@ this.%1$s_config = ".(isset($%1$s->config_array) ? $sfExtjs3Plugin->asAnonymousC
 
 // combine %1$s config with arguments
 Ext.app.sf.$className.superclass.constructor.call(this, Ext.apply(this.%1$s_config, c));";
-$%1$s->attributes["constructor"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
+$%1$s->methods["constructor"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
   protected function createStandardInitComponentPartial($objName)
   {
-    return sprintf('<?php
+    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
 // initComponent
 $configArr["source"] = "Ext.app.sf.$className.superclass.initComponent.apply(this, arguments);";
-$%1$s->attributes["initComponent"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
+$%1$s->methods["initComponent"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
   protected function createStandardInitEventsPartial($objName)
   {
-    return sprintf('<?php
+    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
 // initEvents
 $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);";
-$%1$s->attributes["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
+$%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
   /**

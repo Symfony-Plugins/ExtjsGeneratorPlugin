@@ -15,81 +15,81 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
   protected function compile()
   {
     $config = $this->getConfig();
-
+    
     // inheritance rules:
     // new|edit < form < default
     // list < default
     // filter < default
     $this->configuration = array(
-      'list'   => array(
-        'fields'         => array(),
-        'layout'         => $this->getListLayout(),
-        'title'          => $this->getListTitle(),
-        'actions'        => $this->getListActions(),
-        'object_actions' => $this->getListObjectActions(),
-        'params'         => $this->getListParams(),
-      ),
+      'list' => array(
+        'fields' => array(), 
+        'layout' => $this->getListLayout(), 
+        'title' => $this->getListTitle(), 
+        'actions' => $this->getListActions(), 
+        'object_actions' => $this->getListObjectActions(), 
+        'params' => $this->getListParams()
+      ), 
       'filter' => array(
-        'fields'  => array(),
-      ),
-      'form'   => array(
-        'fields'  => array(),
-      ),
-      'new'    => array(
-        'fields'  => array(),
-        'title'   => $this->getNewTitle(),
-        'actions' => $this->getNewActions() ? $this->getNewActions() : $this->getFormActions(),
-      ),
-      'edit'   => array(
-        'fields'  => array(),
-        'title'   => $this->getEditTitle(),
-        'actions' => $this->getEditActions() ? $this->getEditActions() : $this->getFormActions(),
-      ),
-      'top_toolbar'   => array(
-        'config'  => $this->getTopToolbarConfig(),
-        'plugins' => $this->getTopToolbarPlugins(),
-        'method'  => $this->getTopToolbarPartials(),
-      ),
-      'bottom_toolbar'   => array(
-        'config'  => $this->getBottomToolbarConfig(),
-        'plugins' => $this->getBottomToolbarPlugins(),
-        'method'  => $this->getBottomToolbarPartials(),
-      ),
-      'datastore'   => array(
-        'config'    => $this->getDatastoreConfig(),
-        'method'    => $this->getDatastorePartials(),
-        'grouping'  => $this->getDatastoreGroupingConfig(),
-      ),
-      'column_renderers'   => array(
-        'method'  => $this->getColumnRenderersPartials(),
-      ),
-      'column_model'   => array(
-        'config'  => $this->getColumnModelConfig(),
-        'method'  => $this->getColumnModelPartials(),
-      ),
-      'tabpanel'   => array(
-        'config'  => $this->getTabpanelConfig(),
-        'plugins' => $this->getTabpanelPlugins(),
-        'method'  => $this->getTabpanelPartials(),
-        'active_tab' => $this->getTabpanelActiveTab(),
-      ),
-      'filterpanel'   => array(
-        'config'  => $this->getFilterpanelConfig(),
-        'plugins' => $this->getFilterpanelPlugins(),
-        'method'  => $this->getFilterpanelPartials(),
-      ),
-      'gridpanel'   => array(
-        'config'  => $this->getGridpanelConfig(),
-        'plugins' => $this->getGridpanelPlugins(),
-        'method'  => $this->getGridpanelPartials(),
-      ),
-      'formpanel'   => array(
-        'config'  => $this->getFormpanelConfig(),
-        'plugins' => $this->getFormpanelPlugins(),
-        'method'  => $this->getFormpanelPartials(),
-      ),
-      'object_actions'   => array(
-        'method'  => $this->getObjectActionsPartials(),
+        'fields' => array()
+      ), 
+      'form' => array(
+        'fields' => array()
+      ), 
+      'new' => array(
+        'fields' => array(), 
+        'title' => $this->getNewTitle(), 
+        'actions' => $this->getNewActions() ? $this->getNewActions() : $this->getFormActions()
+      ), 
+      'edit' => array(
+        'fields' => array(), 
+        'title' => $this->getEditTitle(), 
+        'actions' => $this->getEditActions() ? $this->getEditActions() : $this->getFormActions()
+      ), 
+      'top_toolbar' => array(
+        'config' => $this->getTopToolbarConfig(), 
+        'plugins' => $this->getTopToolbarPlugins(), 
+        'partials' => $this->getTopToolbarPartials()
+      ), 
+      'bottom_toolbar' => array(
+        'config' => $this->getBottomToolbarConfig(), 
+        'plugins' => $this->getBottomToolbarPlugins(), 
+        'partials' => $this->getBottomToolbarPartials()
+      ), 
+      'datastore' => array(
+        'config' => $this->getDatastoreConfig(), 
+        'partials' => $this->getDatastorePartials(), 
+        'grouping' => $this->getDatastoreGroupingConfig()
+      ), 
+      'column_renderers' => array(
+        'partials' => $this->getColumnRenderersPartials()
+      ), 
+      'column_model' => array(
+        'config' => $this->getColumnModelConfig(), 
+        'partials' => $this->getColumnModelPartials()
+      ), 
+      'tabpanel' => array(
+        'config' => $this->getTabpanelConfig(), 
+        'plugins' => $this->getTabpanelPlugins(), 
+        'partials' => $this->getTabpanelPartials(), 
+        'active_tab' => $this->getTabpanelActiveTab()
+      ), 
+      'filterpanel' => array(
+        'config' => $this->getFilterpanelConfig(), 
+        'plugins' => $this->getFilterpanelPlugins(), 
+        'partials' => $this->getFilterpanelPartials()
+      ), 
+      'gridpanel' => array(
+        'config' => $this->getGridpanelConfig(), 
+        'plugins' => $this->getGridpanelPlugins(), 
+        'partials' => $this->getGridpanelPartials()
+      ), 
+      'formpanel' => array(
+        'config' => $this->getFormpanelConfig(), 
+        'plugins' => $this->getFormpanelPlugins(), 
+        'partials' => $this->getFormpanelPartials()
+      ), 
+      'object_actions' => array(
+        'method' => $this->getObjectActionsPartials()
       ),
     );
 

@@ -7,7 +7,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $datastore = new stdClass();
-$datastore->attributes = array();
+$datastore->methods = array();
+$datastore->variables = array();
 
 /* store configuration */
 $datastore->config_array = array(
@@ -48,7 +49,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.data.<?php echo $store ?>',
-  $datastore->attributes
+  array_merge(
+    $datastore->methods,
+    $datastore->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

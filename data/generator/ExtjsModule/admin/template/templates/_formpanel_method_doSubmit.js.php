@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin @object $form string $className and @object $formpanel provided
 // doSubmit
 $formpanel->methods['doSubmit'] = $sfExtjs3Plugin->asMethod(array(
   'parameters'  => 'submitnew',

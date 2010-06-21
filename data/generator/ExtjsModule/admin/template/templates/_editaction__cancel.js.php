@@ -1,5 +1,5 @@
-[?php // @object $sfExtjs3Plugin and @object $formpanel provided
-  $formpanel->attributes["_cancel"] = $sfExtjs3Plugin->asMethod("
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
+  $formpanel->methods["_cancel"] = $sfExtjs3Plugin->asMethod("
   this.fireEvent('close', this);
   ");
 ?]

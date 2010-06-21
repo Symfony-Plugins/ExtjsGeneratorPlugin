@@ -14,5 +14,5 @@
       <?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>.setActiveTab(<?php echo sfConfig::get('app_extjs_gen_plugin_module_tab_panel_name', 'Ext.app.sf.TabPanel') ?>.findById(id+grid.title));
     }
 ";
-  $objectActions->attributes["_edit"] = $sfExtjs3Plugin->asMethod($configArr);
+  $objectActions->methods["_edit"] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

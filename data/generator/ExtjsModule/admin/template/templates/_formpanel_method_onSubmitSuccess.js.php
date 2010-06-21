@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
 // onSubmitSuccess
 $formpanel->methods['onSubmitSuccess'] = $sfExtjs3Plugin->asMethod(array(
   'parameters'  => 'form, action',

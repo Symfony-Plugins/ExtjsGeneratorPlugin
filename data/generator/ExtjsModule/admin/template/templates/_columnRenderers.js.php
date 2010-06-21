@@ -6,10 +6,11 @@
 [?php
 $className = '<?php echo $className ?>';
 $columnRenderers = new stdClass();
-$columnRenderers->attributes = array();
+$columnRenderers->methods = array();
+$columnRenderers->variables = array();
 
 // renderLink
-$columnRenderers->attributes['renderLink'] = $sfExtjs3Plugin->asMethod(array(
+$columnRenderers->methods['renderLink'] = $sfExtjs3Plugin->asMethod(array(
   'parameters' => 'value, params, record, rowIndex, colIndex, store',
   'source' => "
     if('function' == typeof value.dateFormat) value = this.formatDate(value);
@@ -21,7 +22,7 @@ $columnRenderers->attributes['renderLink'] = $sfExtjs3Plugin->asMethod(array(
   "
 ));
 
-$columnRenderers->attributes['formatLongstring'] = $sfExtjs3Plugin->asMethod(array(
+$columnRenderers->methods['formatLongstring'] = $sfExtjs3Plugin->asMethod(array(
   'parameters' => 'value, params, record, rowIndex, colIndex, store',
   'source' => "
     params.css += 'x-grid3-cell-wrap';
@@ -30,13 +31,13 @@ $columnRenderers->attributes['formatLongstring'] = $sfExtjs3Plugin->asMethod(arr
   "
 ));
 
-$columnRenderers->attributes['formatBoolean'] = $sfExtjs3Plugin->asMethod(array(
+$columnRenderers->methods['formatBoolean'] = $sfExtjs3Plugin->asMethod(array(
   'parameters' => 'value, params, record, rowIndex, colIndex, store',
   'source' => "return value ? 'Yes' : 'No';"
 ));
 
 // formatDate
-$renderers->attributes['formatDate'] = $sfExtjs3Plugin->asMethod(array(
+$columnRenderers->methods['formatDate'] = $sfExtjs3Plugin->asMethod(array(
   'parameters' => 'v',
   'source' => "return Ext.util.Format.date(v, 'm/d/Y')"
 ));
@@ -49,7 +50,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.grid.ColumnModel',
-  $columnRenderers->attributes
+  array_merge(
+    $columnRenderers->methods,
+    $columnRenderers->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

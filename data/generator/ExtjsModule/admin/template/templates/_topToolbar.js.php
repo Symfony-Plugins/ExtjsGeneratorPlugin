@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $topToolbar = new stdClass();
-$topToolbar->attributes = array();
+$topToolbar->methods = array();
+$topToolbar->variables = array();
 
 /* topToolbar configuration */
 $topToolbar->config_array = array(
@@ -116,11 +117,29 @@ $topToolbar->config_array['items'][] = array(
 <?php if ($listActions = $this->configuration->getValue('list.actions')): ?>
 <?php foreach ($listActions as $name => $params): ?>
 <?php if(! isset($params['handler_function']) && $name[0] != '_'):
-$this->createPartialFile('_listaction_'.$name,'<?php
-  // @object $sfExtjs3Plugin and @object $topToolbar provided
-  $configArr["source"] = "Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_listaction_'.$actionName.'.js.php\" from cache to your application/modules/'.strtolower($this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');";
-  $topToolbar->attributes["'.$name.'"] = $sfExtjs3Plugin->asMethod($configArr);
-?>');
+$this->createPartialFile('_listaction_'.$name, <<<EOT
+<?php
+/* @object \$sfExtjs3Plugin string \$className and @object \$topToolbar provided
+*** Method example with no parameters
+\$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod("
+  //method code
+");
+
+*** Method example with parameters
+\$configArr->['parameters'] = 'grid, record, action, row, col';
+\$configArr->['source'] = "
+  //method code
+");
+\$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+*/
+\$configArr["source"] = "
+  Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_listaction_$actionName.js.php\" from cache to your application/modules/'.strtolower(\$this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');
+";
+\$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+?>
+EOT
+
+);
 ?>
 <?php endif; ?>
 <?php if(in_array($name, array('_new'))): ?>
@@ -138,7 +157,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.Toolbar',
-  $topToolbar->attributes
+  array_merge(
+    $topToolbar->methods,
+    $topToolbar->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

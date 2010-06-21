@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $objectActions = new stdClass();
-$objectActions->attributes = array();
+$objectActions->methods = array();
+$objectActions->variables = array();
 
 /* objectActions configuration */
 //$objectActions->config_array = array(
@@ -19,11 +20,29 @@ $objectActions->attributes = array();
 <?php if ($actions = $this->configuration->getValue('list.object_actions')): ?>
 <?php foreach ($actions as $name => $params): ?>
 <?php if(! isset($params['handler_function']) && $name[0] != '_'):
-$this->createPartialFile('_list_rowaction_'.$name,'<?php // @object $sfExtjs3Plugin and @object $objectActions provided
-  $configArr["parameters"] = "grid, record, action, row, col";
-  $configArr["source"] = "Ext.Msg.alert(\'Error\',\'callback is not defined!<br><br>Copy the template file from cache \"_list_action_'.$actionName.'.php\" to your application/modules/'.strtolower($this->getModuleName()).'/templates folder and alter it or define the \"callback\" in your generator.yml file\');";
-  $objectActions->attributes["'.$name.'"] = $sfExtjs3Plugin->asMethod($configArr);
-?>');
+$this->createPartialFile('_objectAction_'.$name, <<<EOT
+<?php
+/* @object \$sfExtjs3Plugin string \$className and @object \$objectActions provided
+*** Method example with no parameters
+\$objectActions->methods['$name'] = \$sfExtjs3Plugin->asMethod("
+  //method code
+");
+
+*** Method example with parameters
+\$configArr->['parameters'] = 'grid, record, action, row, col';
+\$configArr->['source'] = "
+  //method code
+");
+\$objectActions->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+*/
+\$configArr["source"] = "
+  Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_objectAction_$actionName.js.php\" from cache to your application/modules/'.strtolower(\$this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');
+";
+\$objectActions->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
+?>
+EOT
+
+);
 ?>
 <?php endif; ?>
 <?php if(in_array($name, array('_delete', '_edit'))): ?>
@@ -41,7 +60,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.ux.grid.RowActions',
-  $objectActions->attributes
+  array_merge(
+    $objectActions->methods,
+    $objectActions->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

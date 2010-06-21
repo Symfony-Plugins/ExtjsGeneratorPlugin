@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $columnModel = new stdClass();
-$columnModel->attributes = array();
+$columnModel->methods = array();
+$columnModel->variables = array();
 
 $columnModel->config_array = array(
 <?php foreach ($this->configuration->getColumnModelConfig() as $name => $params): ?>
@@ -34,7 +35,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.app.sf.<?php echo $moduleName."ColumnRenderers" ?>',
-  $columnModel->attributes
+  array_merge(
+    $columnModel->methods,
+    $columnModel->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

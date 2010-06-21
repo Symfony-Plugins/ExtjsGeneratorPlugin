@@ -6,7 +6,8 @@
 [?php
 $className = '<?php echo $className ?>';
 $tabpanel = new stdClass();
-$tabpanel->attributes = array();
+$tabpanel->methods = array();
+$tabpanel->variables = array();
 
 /* tabpanel configuration */
 $tabpanel->config_array = array(
@@ -23,7 +24,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.TabPanel',
-  $tabpanel->attributes
+  array_merge(
+    $tabpanel->methods,
+    $tabpanel->variables
+  )
 );
 
 $sfExtjs3Plugin->endClass();

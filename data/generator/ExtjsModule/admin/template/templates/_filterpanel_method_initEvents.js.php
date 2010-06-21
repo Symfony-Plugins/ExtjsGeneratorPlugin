@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $filterpanel provided
 // constructor
 $configArr = array(
   'source' => "
@@ -32,5 +32,5 @@ this.on({
   "
 );
 
-$filterpanel->attributes['initEvents'] = $sfExtjs3Plugin->asMethod($configArr);
+$filterpanel->methods['initEvents'] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

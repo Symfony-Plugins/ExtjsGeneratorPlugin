@@ -1,4 +1,4 @@
-[?php
+[?php // @object $sfExtjs3Plugin string $className and @object $formpanel provided
 // setKey
 $formpanel->methods['setKey'] = $sfExtjs3Plugin->asMethod(array(
   'parameters'  => 'key',

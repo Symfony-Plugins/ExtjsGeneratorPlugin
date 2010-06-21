@@ -6,10 +6,11 @@
 [?php
 $className = '<?php echo $className ?>';
 $gridpanel = new stdClass();
-$gridpanel->attributes = array();
+$gridpanel->methods = array();
+$gridpanel->variables = array();
 $gridpanelPlugins = array();
 
-$gridpanel->attributes['cm'] = $sfExtjs3Plugin->asVar("Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName() ?>columnmodel'})");
+$gridpanel->variables['cm'] = $sfExtjs3Plugin->asVar("Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName() ?>columnmodel'})");
 
 /* gridpanel Configuration */
 $gridpanel->config_array = array(
@@ -87,7 +88,10 @@ $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
   'Ext.grid.EditorGridPanel',
-  $gridpanel->attributes
+  array_merge(
+    $gridpanel->methods,
+    $gridpanel->variables
+  )
 );
 $sfExtjs3Plugin->endClass();
 ?]
