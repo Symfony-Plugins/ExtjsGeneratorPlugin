@@ -5,13 +5,35 @@ Ext.ux.form.IsEmptyCheckbox = Ext.extend(Ext.form.Checkbox, {
 
   // private
   onRender : function(ct, position) {
-    Ext.ux.form.IsEmptyCheckbox.superclass.onRender.call(this, ct, position);
-    this.el.wrap({
+    Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
+    if (this.inputValue !== undefined) {
+      this.el.dom.value = this.inputValue;
+    }
+    this.wrap = this.el.wrap({
       cls : 'x-form-check-wrap'
     }).setStyle({
       paddingLeft : '5px',
       marginTop : '-10px'
     });
+    if (this.boxLabel) {
+      this.wrap.createChild({
+        tag : 'label',
+        htmlFor : this.el.id,
+        cls : 'x-form-cb-label',
+        html : this.boxLabel
+      });
+    }
+    if (this.checked) {
+      this.setValue(true);
+    } else {
+      this.checked = this.el.dom.checked;
+    }
+    // Need to repaint for IE, otherwise positioning is broken
+    if (Ext.isIE) {
+      this.wrap.repaint();
+    }
+    this.resizeEl = this.positionEl = this.wrap;
+
     this.sibling = this.previousSibling();
   },
 
