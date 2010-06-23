@@ -265,11 +265,11 @@ class ExtjsGenerator extends sfPropelGenerator
 
     if($field->getKey() == 'object_actions')
     {
-      return sprintf("\$columnModel->attributes['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.create({xtype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
+      return sprintf("\$columnModel->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.create({xtype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
     }
 
     //TODO refactor this to provide il8n support for header
-    return sprintf("\$columnModel->attributes['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", $field->getName(), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
+    return sprintf("\$columnModel->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", $field->getName(), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
       'ptype' => $field->getConfig('plugin'),
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
       'header' => $field->getConfig('label', '', true),
