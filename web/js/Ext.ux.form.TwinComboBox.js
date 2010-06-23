@@ -40,7 +40,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   submitOnSelect : true,
   submitOnClear : true,
   allowClear : true,
-  defaultValue: null,
+  defaultValue : null,
   plugins : [
     Ext.ux.ComboListAutoSizer
   ],
@@ -108,7 +108,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       this.store.each(function(r) {
         if (r.data[prop] == value) {
           record = r;
-          //return false;
+          // return false;
         }
       });
     }
@@ -116,8 +116,8 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   },
 
   reset : Ext.form.Field.prototype.reset.createSequence(function() {
-  	this.originalValue = this.defaultValue;
-  	this.setValue(this.defaultValue);
+    this.originalValue = this.defaultValue;
+    this.setValue(this.defaultValue);
     if (this.allowClear)
       this.triggers[0].hide();
   }),
@@ -132,7 +132,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   },
 
   onTrigger1Click : function() {
-  	if(!this.disabled) {
+    if (!this.disabled) {
       this.clearValue();
       this.triggers[0].hide();
       if (this.submitOnClear && this.ownerCt && this.ownerCt.buttons) {
@@ -140,7 +140,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       }
       this.el.dom.qtip = null;
       this.fireEvent('clear', this);
-  	}
+    }
   }
 });
 Ext.ComponentMgr.registerType('twincombo', Ext.ux.form.TwinComboBox);

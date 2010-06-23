@@ -43,7 +43,7 @@ Ext.ns('Ext.ux.grid');
  * column.
  */
 Ext.ux.grid.CheckColumn = function(config) {
-	this.editable = false;
+  this.editable = false;
   Ext.apply(this, config);
   if (!this.id) {
     this.id = Ext.id();

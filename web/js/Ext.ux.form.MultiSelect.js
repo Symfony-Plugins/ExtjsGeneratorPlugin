@@ -603,7 +603,7 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
           data.viewNodes.shift();
         }
       } else { // If the last element to be inserted above is the target node,
-                // remove it
+        // remove it
         if (data.viewNodes[data.viewNodes.length - 1] == n) {
           data.viewNodes.pop();
         }

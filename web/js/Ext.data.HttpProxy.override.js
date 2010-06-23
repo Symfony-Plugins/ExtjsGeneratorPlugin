@@ -18,7 +18,11 @@ Ext.override(Ext.data.HttpProxy, {
     var confMethod = this.conn.method;
     this.conn.method = method;
     if (!makePermanent) {
-      this.on('load', function(){this.conn.method = confMethod;}, this, {single:true});
+      this.on('load', function() {
+        this.conn.method = confMethod;
+      }, this, {
+        single : true
+      });
     }
   }
 });

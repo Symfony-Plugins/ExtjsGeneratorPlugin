@@ -23,6 +23,7 @@ $filterpanel->config_array['buttons'] = array(
     'handler' => $sfExtjs3Plugin->asMethod("
       var params=this.form.getValues();
       this.fireEvent('filter_set', params, this);
+      this.fireEvent('click');
     "),
     'scope' => 'this'
   )),

@@ -58,6 +58,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ItemSelector.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinDateField.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method
     );

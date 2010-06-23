@@ -440,7 +440,7 @@ Ext.ux.form.ItemSelector = Ext.extend(Ext.form.Field, {
     this.reset();
     if (!val)
       return;
-      
+
     if (!Ext.isArray(val)) {
       val = val.split(this.delimiter);
     }

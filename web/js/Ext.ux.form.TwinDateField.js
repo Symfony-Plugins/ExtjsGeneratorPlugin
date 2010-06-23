@@ -64,14 +64,14 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   },
 
   onTrigger1Click : function() {
-  	if(!this.disabled) {  	
+    if (!this.disabled) {
       this.clearValue();
       this.triggers[0].hide();
       if (this.ownerCt && this.ownerCt.buttons && this.submitOnClear) {
         this.ownerCt.buttons[0].handler.call(this.ownerCt);
       }
       this.fireEvent('clear', this);
-  	}
+    }
   },
 
   /**
@@ -86,7 +86,7 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
     this.applyEmptyText();
     this.value = '';
   },
-  
+
   setValue : Ext.form.DateField.prototype.setValue.createSequence(function(v) {
     if (v !== null && v != '') {
       this.triggers[0].show();

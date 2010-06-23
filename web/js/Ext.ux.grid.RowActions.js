@@ -3,31 +3,31 @@
 /**
  * @class Ext.ux.grid.RowActions
  * @extends Ext.util.Observable
- *
+ * 
  * RowActions plugin for Ext grid. Contains renderer for icons and fires events
  * when an icon is clicked. CSS rules from Ext.ux.RowActions.css are mandatory
- *
+ * 
  * Important general information: Actions are identified by iconCls. Wherever an
  * <i>action</i> is referenced (event argument, callback argument), the iconCls
  * of clicked icon is used. In other words, action identifier === iconCls.
- *
+ * 
  * @author Ing. Jozef Sakáloš
  * @copyright (c) 2008, by Ing. Jozef Sakáloš
  * @date 22. March 2008
  * @version 1.0
  * @revision $Id: Ext.ux.grid.RowActions.js 747 2009-09-03 23:30:52Z jozo $
- *
+ * 
  * @license Ext.ux.grid.RowActions is licensed under the terms of the Open
  *          Source LGPL 3.0 license. Commercial use is permitted to the extent
  *          that the code/component(s) do NOT become part of another Open Source
  *          or Commercially licensed development library or toolkit without
  *          explicit permission.
- *
+ * 
  * <p>
  * License details: <a href="http://www.gnu.org/licenses/lgpl.html"
  * target="_blank">http://www.gnu.org/licenses/lgpl.html</a>
  * </p>
- *
+ * 
  * @forum 29961
  * @demo http://rowactions.extjs.eu
  * @download
@@ -38,7 +38,7 @@
  *       href="http://rowactions.extjs.eu/rowactions.tar.gz">rowactions.tar.gz</a></li>
  *       <li><a href="http://rowactions.extjs.eu/rowactions.zip">rowactions.zip</a></li>
  *       </ul>
- *
+ * 
  * @donate <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
  *         target="_blank"> <input type="hidden" name="cmd" value="_s-xclick">
  *         <input type="hidden" name="hosted_button_id" value="3430419"> <input
@@ -65,7 +65,7 @@ if ('function' !== typeof RegExp.escape) {
 
 /**
  * Creates new RowActions plugin
- *
+ * 
  * @constructor
  * @param {Object}
  *          config A config object
@@ -75,66 +75,67 @@ Ext.ux.grid.RowActions = function(config) {
 
   // {{{
   this.addEvents(
-      /**
-       * @event beforeaction Fires before action event. Return false to cancel
-       *        the subsequent action event.
-       * @param {Ext.grid.GridPanel}
-       *          grid
-       * @param {Ext.data.Record}
-       *          record Record corresponding to row clicked
-       * @param {String}
-       *          action Identifies the action icon clicked. Equals to icon css
-       *          class name.
-       * @param {Integer}
-       *          rowIndex Index of clicked grid row
-       * @param {Integer}
-       *          colIndex Index of clicked grid column that contains all action
-       *          icons
-       */
-      'beforeaction'
-      /**
-       * @event action Fires when icon is clicked
-       * @param {Ext.grid.GridPanel}
-       *          grid
-       * @param {Ext.data.Record}
-       *          record Record corresponding to row clicked
-       * @param {String}
-       *          action Identifies the action icon clicked. Equals to icon css
-       *          class name.
-       * @param {Integer}
-       *          rowIndex Index of clicked grid row
-       * @param {Integer}
-       *          colIndex Index of clicked grid column that contains all action
-       *          icons
-       */
-      , 'action'
-      /**
-       * @event beforegroupaction Fires before group action event. Return false
-       *        to cancel the subsequent groupaction event.
-       * @param {Ext.grid.GridPanel}
-       *          grid
-       * @param {Array}
-       *          records Array of records in this group
-       * @param {String}
-       *          action Identifies the action icon clicked. Equals to icon css
-       *          class name.
-       * @param {String}
-       *          groupId Identifies the group clicked
-       */
-      , 'beforegroupaction'
-      /**
-       * @event groupaction Fires when icon in a group header is clicked
-       * @param {Ext.grid.GridPanel}
-       *          grid
-       * @param {Array}
-       *          records Array of records in this group
-       * @param {String}
-       *          action Identifies the action icon clicked. Equals to icon css
-       *          class name.
-       * @param {String}
-       *          groupId Identifies the group clicked
-       */
-      , 'groupaction');
+    /**
+     * @event beforeaction Fires before action event. Return false to cancel the
+     *        subsequent action event.
+     * @param {Ext.grid.GridPanel}
+     *          grid
+     * @param {Ext.data.Record}
+     *          record Record corresponding to row clicked
+     * @param {String}
+     *          action Identifies the action icon clicked. Equals to icon css
+     *          class name.
+     * @param {Integer}
+     *          rowIndex Index of clicked grid row
+     * @param {Integer}
+     *          colIndex Index of clicked grid column that contains all action
+     *          icons
+     */
+    'beforeaction'
+    /**
+     * @event action Fires when icon is clicked
+     * @param {Ext.grid.GridPanel}
+     *          grid
+     * @param {Ext.data.Record}
+     *          record Record corresponding to row clicked
+     * @param {String}
+     *          action Identifies the action icon clicked. Equals to icon css
+     *          class name.
+     * @param {Integer}
+     *          rowIndex Index of clicked grid row
+     * @param {Integer}
+     *          colIndex Index of clicked grid column that contains all action
+     *          icons
+     */
+    , 'action'
+    /**
+     * @event beforegroupaction Fires before group action event. Return false to
+     *        cancel the subsequent groupaction event.
+     * @param {Ext.grid.GridPanel}
+     *          grid
+     * @param {Array}
+     *          records Array of records in this group
+     * @param {String}
+     *          action Identifies the action icon clicked. Equals to icon css
+     *          class name.
+     * @param {String}
+     *          groupId Identifies the group clicked
+     */
+    , 'beforegroupaction'
+    /**
+     * @event groupaction Fires when icon in a group header is clicked
+     * @param {Ext.grid.GridPanel}
+     *          grid
+     * @param {Array}
+     *          records Array of records in this group
+     * @param {String}
+     *          action Identifies the action icon clicked. Equals to icon css
+     *          class name.
+     * @param {String}
+     *          groupId Identifies the group clicked
+     */
+    , 'groupaction'
+  );
   // }}}
 
   // call parent
@@ -241,7 +242,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   /**
    * @cfg {Object} callbacks iconCls keyed object that contains callback
    *      functions. For example:
-   *
+   * 
    * <pre>
    * callbacks:{
    *      'icon-open':function(...) {...}
@@ -300,7 +301,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
    */
   ,
   tplRow : '<div class="ux-row-action">' + '<tpl for="actions">' + '<div class="ux-row-action-item {cls} <tpl if="text">' + 'ux-row-action-text</tpl>" style="{hide}{style}" qtip="{qtip}">'
-      + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></div>' + '</tpl>' + '</div>'
+    + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></div>' + '</tpl>' + '</div>'
 
   /**
    * @cfg {String} hideMode How to hide hidden icons. Valid values are:
@@ -331,7 +332,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Init function
-   *
+   * 
    * @param {Ext.grid.GridPanel}
    *          grid Grid this plugin is in
    */
@@ -348,11 +349,12 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
     delete(lookup[undefined]);
     lookup[this.id] = this;
 
-    if(!this.actions)
-    {
+    if (!this.actions) {
       var colIndex = grid.getColumnModel().getIndexById(this.id);
       var config = grid.getColumnModel().config;
-      grid.getColumnModel().config = [config[colIndex]];
+      grid.getColumnModel().config = [
+        config[colIndex]
+      ];
       config.splice(colIndex, 1);
       grid.getColumnModel().setConfig(config);
       return;
@@ -379,9 +381,9 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
     };
     cfg[this.actionEvent] = this.onClick;
     grid.afterRender = grid.afterRender.createSequence(function() {
-          view.mainBody.on(cfg);
-          grid.on('destroy', this.purgeListeners, this);
-        }, this);
+      view.mainBody.on(cfg);
+      grid.on('destroy', this.purgeListeners, this);
+    }, this);
 
     // setup renderer
     if (!this.renderer) {
@@ -394,34 +396,34 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
     // actions in grouping grids support
     if (view.groupTextTpl && this.groupActions) {
       view.interceptMouse = view.interceptMouse.createInterceptor(function(e) {
-            if (e.getTarget('.ux-grow-action-item')) {
-              return false;
-            }
-          });
+        if (e.getTarget('.ux-grow-action-item')) {
+          return false;
+        }
+      });
       view.groupTextTpl = '<div class="ux-grow-action-text">' + view.groupTextTpl + '</div>' + this.processActions(this.groupActions, this.tplGroup).apply();
     }
 
     // cancel click
     if (true === this.keepSelection) {
       grid.processEvent = grid.processEvent.createInterceptor(function(name, e) {
-            if ('mousedown' === name) {
-              return !this.getAction(e);
-            }
-          }, this);
+        if ('mousedown' === name) {
+          return !this.getAction(e);
+        }
+      }, this);
     }
 
     // do our CSS here so we don't have to include it
     if (Ext.util.CSS.getRule('.ux-row-action-cell') == null) {
       var styleBody = '.ux-row-action-cell .x-grid3-cell-inner {padding: 1px 0 0 0;}'
-          + '.ux-row-action-item {float: left;min-width: 16px;height: 16px;background-repeat: no-repeat;margin: 0 5px 0 0;cursor: pointer;overflow: hidden;}'
-          + '.ext-ie .ux-row-action-item {width: 16px;}'
-          + '.ext-ie .ux-row-action-text {width: auto;}'
-          + '.ux-row-action-item span {vertical-align:middle; padding: 0 0 0 20px;  line-height: 18px;}'
-          + '.ext-ie .ux-row-action-item span {width: auto;}'
-          + '.x-grid-group-hd div {position: relative;height: 16px;}'
-          + '.ux-grow-action-item {min-width: 16px;height: 16px;background-repeat: no-repeat;background-position: 0 50% ! important;margin: 0 0 0 4px;padding: 0 ! important;cursor: pointer;float: left;}'
-          + '.ext-ie .ux-grow-action-item {width: 16px;}' + '.ux-action-right {float: right;margin: 0 3px 0 2px;padding: 0 ! important;}'
-          + '.ux-grow-action-text {padding: 0 ! important;margin: 0 ! important;background: transparent none ! important;float: left;}'
+        + '.ux-row-action-item {float: left;min-width: 16px;height: 16px;background-repeat: no-repeat;margin: 0 5px 0 0;cursor: pointer;overflow: hidden;}'
+        + '.ext-ie .ux-row-action-item {width: 16px;}'
+        + '.ext-ie .ux-row-action-text {width: auto;}'
+        + '.ux-row-action-item span {vertical-align:middle; padding: 0 0 0 20px;  line-height: 18px;}'
+        + '.ext-ie .ux-row-action-item span {width: auto;}'
+        + '.x-grid-group-hd div {position: relative;height: 16px;}'
+        + '.ux-grow-action-item {min-width: 16px;height: 16px;background-repeat: no-repeat;background-position: 0 50% ! important;margin: 0 0 0 4px;padding: 0 ! important;cursor: pointer;float: left;}'
+        + '.ext-ie .ux-grow-action-item {width: 16px;}' + '.ux-action-right {float: right;margin: 0 3px 0 2px;padding: 0 ! important;}'
+        + '.ux-grow-action-text {padding: 0 ! important;margin: 0 ! important;background: transparent none ! important;float: left;}'
 
       var styleSheet = Ext.util.CSS.createStyleSheet('/* Ext.ux.grid.RowActions stylesheet */\n' + styleBody, 'RowActions');
       Ext.util.CSS.refreshCache();
@@ -432,7 +434,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Returns data to apply to template. Override this if needed.
-   *
+   * 
    * @param {Mixed}
    *          value
    * @param {Object}
@@ -455,7 +457,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Processes actions configs and returns template.
-   *
+   * 
    * @param {Array}
    *          actions
    * @param {String}
@@ -469,31 +471,30 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
 
     // actions loop
     Ext.each(actions, function(a, i) {
-          // save callback
-          if (a.iconCls && 'function' === typeof(a.callback || a.cb)) {
-            this.callbacks = this.callbacks || {};
-            this.callbacks[a.iconCls] = a.callback || a.cb;
-          }
+      // save callback
+      if (a.iconCls && 'function' === typeof(a.callback || a.cb)) {
+        this.callbacks = this.callbacks || {};
+        this.callbacks[a.iconCls] = a.callback || a.cb;
+      }
 
-          // data for intermediate template
-          var o = {
-            cls : a.iconIndex ? '{' + a.iconIndex + '}' : (a.iconCls ? a.iconCls : ''),
-            qtip : a.qtipIndex ? '{' + a.qtipIndex + '}' : (a.tooltip || a.qtip ? a.tooltip || a.qtip : ''),
-            text : a.textIndex ? '{' + a.textIndex + '}' : (a.text ? a.text : ''),
-            hide : a.hideIndex ? '<tpl if="' + a.hideIndex + '">' + ('display' === this.hideMode ? 'display:none' : 'visibility:hidden') + ';</tpl>' : (a.hide ? ('display' === this.hideMode
-                ? 'display:none'
-                : 'visibility:hidden;') : ''),
-            align : a.align || 'right',
-            style : a.style ? a.style : ''
-          };
-          acts.push(o);
+      // data for intermediate template
+      var o = {
+        cls : a.iconIndex ? '{' + a.iconIndex + '}' : (a.iconCls ? a.iconCls : ''),
+        qtip : a.qtipIndex ? '{' + a.qtipIndex + '}' : (a.tooltip || a.qtip ? a.tooltip || a.qtip : ''),
+        text : a.textIndex ? '{' + a.textIndex + '}' : (a.text ? a.text : ''),
+        hide : a.hideIndex ? '<tpl if="' + a.hideIndex + '">' + ('display' === this.hideMode ? 'display:none' : 'visibility:hidden') + ';</tpl>' : (a.hide ? ('display' === this.hideMode
+          ? 'display:none' : 'visibility:hidden;') : ''),
+        align : a.align || 'right',
+        style : a.style ? a.style : ''
+      };
+      acts.push(o);
 
-        }, this); // eo actions loop
+    }, this); // eo actions loop
 
     var xt = new Ext.XTemplate(template || this.tplRow);
     return new Ext.XTemplate(xt.apply({
-          actions : acts
-        }));
+      actions : acts
+    }));
 
   } // eo function processActions
   // }}}
@@ -513,7 +514,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
   // {{{
   /**
    * Grid body actionEvent event handler
-   *
+   * 
    * @private
    */
   ,
@@ -564,8 +565,8 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
       if (groupId) {
         var re = new RegExp(RegExp.escape(groupId));
         records = this.grid.store.queryBy(function(r) {
-              return r._groupId.match(re);
-            });
+          return r._groupId.match(re);
+        });
         records = records ? records.items : [];
       }
       action = t.className.replace(/ux-grow-action-item (ux-action-right )*/, '');
@@ -582,9 +583,10 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
       this.fireEvent('groupaction', this.grid, records, action, groupId);
     }
   } // eo function onClick
-    // }}}
+  // }}}
 
-});
+}
+);
 
 // registre xtype
 Ext.reg('rowactions', Ext.ux.grid.RowActions);

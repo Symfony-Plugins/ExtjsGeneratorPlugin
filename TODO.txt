@@ -19,12 +19,6 @@ look at how to handle a form with another form embedded in it, document if not p
 foreign columns should show __toString() output in list
 foreign columns should be clickable to open an adminstration for that foreign table if one exists
 
-### filter
-move is_empty checkbox for filter to an Ext.ux extension
-is_empty doesn't reset when value is set from the session
-is_empty should clear associated fields when set
-is_empty oncheck listener to submit the filter
-
 ### generic
 add time display for datetime fields to list, filter, and edit
 add support for objects with multiple fields as primary key

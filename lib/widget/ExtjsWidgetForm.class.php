@@ -18,18 +18,10 @@ abstract class ExtjsWidgetForm extends sfWidgetForm
 
   public function renderExtjsFilterIsEmptyCheckbox($name, $values)
   {
-    return $this->renderExtjsContentBlock('filter', 'Checkbox', array(
+    return $this->renderExtjsContentBlock('filter', 'IsEmptyCheckbox', array(
       'name' => $name . '[is_empty]',
       'boxLabel' => $this->translate($this->getOption('empty_label')),
-      'checked' => $values['is_empty'] ? true : false,
-      'inputValue' => 'true',
-      'hideLabel' => true,
-      'listeners' => array(
-        'render' => array(
-          'fn' => "function(){this.getEl().up('div.x-form-item').setStyle({paddingLeft:'5px',marginTop:'-10px'});}",
-          'single' => true
-        )
-      )
+      'checked' => $values['is_empty'] ? true : false
     ));
   }
 }
