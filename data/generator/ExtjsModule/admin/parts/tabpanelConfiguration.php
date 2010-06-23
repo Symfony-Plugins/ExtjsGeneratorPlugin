@@ -14,7 +14,7 @@
   {
 <?php
   // default plugins go in this array
-  $pluginsArr = array('new Ext.ux.TabCloseMenu()');
+  $pluginsArr = array('new Ext.ux.tabpanel.plugin.TabCloseMenu()');
   if(isset($this->config['tabpanel']['plugins']))
   {
     if(!is_array($this->config['tabpanel']['plugins']))

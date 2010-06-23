@@ -1,7 +1,7 @@
 // vim: ts=4:sw=4:nu:fdc=4:nospell
 /* global Ext */
 /**
- * @class Ext.ux.grid.RowActions
+ * @class Ext.ux.grid.plugin.RowActions
  * @extends Ext.util.Observable
  * 
  * RowActions plugin for Ext grid. Contains renderer for icons and fires events
@@ -15,9 +15,9 @@
  * @copyright (c) 2008, by Ing. Jozef Sakáloš
  * @date 22. March 2008
  * @version 1.0
- * @revision $Id: Ext.ux.grid.RowActions.js 747 2009-09-03 23:30:52Z jozo $
+ * @revision $Id: Ext.ux.grid.plugin.RowActions.js 747 2009-09-03 23:30:52Z jozo $
  * 
- * @license Ext.ux.grid.RowActions is licensed under the terms of the Open
+ * @license Ext.ux.grid.plugin.RowActions is licensed under the terms of the Open
  *          Source LGPL 3.0 license. Commercial use is permitted to the extent
  *          that the code/component(s) do NOT become part of another Open Source
  *          or Commercially licensed development library or toolkit without
@@ -50,7 +50,7 @@
  *         height="1"> </form>
  */
 
-Ext.ns('Ext.ux.grid');
+Ext.ns('Ext.ux.grid.plugin');
 
 // add RegExp.escape if it has not been already added
 if ('function' !== typeof RegExp.escape) {
@@ -70,7 +70,7 @@ if ('function' !== typeof RegExp.escape) {
  * @param {Object}
  *          config A config object
  */
-Ext.ux.grid.RowActions = function(config) {
+Ext.ux.grid.plugin.RowActions = function(config) {
   Ext.apply(this, config);
 
   // {{{
@@ -139,10 +139,10 @@ Ext.ux.grid.RowActions = function(config) {
   // }}}
 
   // call parent
-  Ext.ux.grid.RowActions.superclass.constructor.call(this);
+  Ext.ux.grid.plugin.RowActions.superclass.constructor.call(this);
 };
 
-Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
+Ext.extend(Ext.ux.grid.plugin.RowActions, Ext.util.Observable, {
 
   // configuration options
   // {{{
@@ -425,7 +425,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
         + '.ext-ie .ux-grow-action-item {width: 16px;}' + '.ux-action-right {float: right;margin: 0 3px 0 2px;padding: 0 ! important;}'
         + '.ux-grow-action-text {padding: 0 ! important;margin: 0 ! important;background: transparent none ! important;float: left;}'
 
-      var styleSheet = Ext.util.CSS.createStyleSheet('/* Ext.ux.grid.RowActions stylesheet */\n' + styleBody, 'RowActions');
+      var styleSheet = Ext.util.CSS.createStyleSheet('/* Ext.ux.grid.plugin.RowActions stylesheet */\n' + styleBody, 'RowActions');
       Ext.util.CSS.refreshCache();
     }
 
@@ -588,7 +588,7 @@ Ext.extend(Ext.ux.grid.RowActions, Ext.util.Observable, {
 }
 );
 
-// registre xtype
-Ext.reg('rowactions', Ext.ux.grid.RowActions);
+// register ptype
+Ext.preg('rowactions', Ext.ux.grid.plugin.RowActions);
 
 // eof

@@ -2,10 +2,10 @@
  * ! Ext JS Library 3.2.0 Copyright(c) 2006-2010 Ext JS, Inc.
  * licensing@extjs.com http://www.extjs.com/license
  */
-Ext.ns('Ext.ux.grid');
+Ext.ns('Ext.ux.grid.plugin');
 
 /**
- * @class Ext.ux.grid.CheckColumn
+ * @class Ext.ux.grid.plugin.CheckColumn
  * @extends Object GridPanel plugin to add a column with check boxes to a grid.
  *          <p>
  *          Example usage:
@@ -13,7 +13,7 @@ Ext.ns('Ext.ux.grid');
  * 
  * <pre><code>
  *  // create the column
- *  var checkColumn = new Ext.grid.CheckColumn({
+ *  var checkColumn = new Ext.ux.grid.plugin.CheckColumn({
  *  header: 'Indoor?',
  *  dataIndex: 'indoor',
  *  id: 'check',
@@ -42,7 +42,7 @@ Ext.ns('Ext.ux.grid');
  * <tt>'x-grid3-check-col-on'</tt> to alter the background image used for a
  * column.
  */
-Ext.ux.grid.CheckColumn = function(config) {
+Ext.ux.grid.plugin.CheckColumn = function(config) {
   this.editable = false;
   Ext.apply(this, config);
   if (!this.id) {
@@ -51,7 +51,7 @@ Ext.ux.grid.CheckColumn = function(config) {
   this.renderer = this.renderer.createDelegate(this);
 };
 
-Ext.ux.grid.CheckColumn.prototype = {
+Ext.ux.grid.plugin.CheckColumn.prototype = {
   init : function(grid) {
     this.grid = grid;
     this.grid.on('render', function() {
@@ -80,4 +80,4 @@ Ext.ux.grid.CheckColumn.prototype = {
 };
 
 // register ptype
-Ext.preg('checkcolumn', Ext.ux.grid.CheckColumn);
+Ext.preg('checkcolumn', Ext.ux.grid.plugin.CheckColumn);

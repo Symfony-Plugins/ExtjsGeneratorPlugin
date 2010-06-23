@@ -59,7 +59,7 @@ include_partial('<?php echo 'objectAction_'.$name ?>', array('sfExtjs3Plugin' =>
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.ux.grid.RowActions',
+  'Ext.ux.grid.plugin.RowActions',
   array_merge(
     $objectActions->methods,
     $objectActions->variables

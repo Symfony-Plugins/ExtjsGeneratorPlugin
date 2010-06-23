@@ -1,14 +1,6 @@
-Ext.namespace("Ext.ux");
+Ext.namespace('Ext.ux.tabpanel.plugin');
 
-/*
- * Ext JS Library 2.0 Beta 1 Copyright(c) 2006-2007, Ext JS, LLC.
- * licensing@extjs.com
- * 
- * http://extjs.com/license
- */
-
-// Very simple plugin for adding a close context menu to tabs
-Ext.ux.TabCloseMenu = function() {
+Ext.ux.tabpanel.plugin.TabCloseMenu = function() {
   var tabs, menu, ctxItem;
   this.init = function(tp) {
     tabs = tp;
@@ -51,3 +43,5 @@ Ext.ux.TabCloseMenu = function() {
     menu.showAt(e.getPoint());
   }
 };
+
+Ext.preg('tabclosemenu', Ext.ux.tabpanel.plugin.TabCloseMenu);
