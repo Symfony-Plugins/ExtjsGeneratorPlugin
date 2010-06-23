@@ -63,7 +63,12 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method
     );
     
-    sfConfig::set('extjs_gen_default_javascripts', $default_javascripts);
+    $prod_javascripts = array(
+      '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr-min.js',
+      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-min.js' // YUI Compressor file of all files in web/js
+    );
+    
+    sfConfig::set('extjs_gen_default_javascripts', (sfConfig::get('sf_environment') == 'dev') ? $default_javascripts : $prod_javascripts);
     sfConfig::set('extjs_gen_default_stylesheets', $default_stylesheets);
     
     // add support for our javascript ux files to sfExtjs3Plugin
