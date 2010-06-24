@@ -22,6 +22,17 @@
       $this->pager = $this->getPager();
       $this->sort = $this->getSort();
     }
+    
+    if($request->getRequestFormat() == 'csv')
+    {
+      $this->setLayout(false);
+      $this->getResponse()->setHttpHeader('Content-Type', 'application/csv', true);
+      $this->getResponse()->setHttpHeader('Content-Disposition', 'attachment; filename="<?php echo $this->configuration->getExportTitle() ?>.csv"', true);
+      $this->getResponse()->setHttpHeader('Pragma','public', true);
+      $query = $this->buildQuery();
+      $query->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+      $this-><?php echo $this->getSingularName() ?>s = $query->find();
+    }
 
     // dynamic javascript
     if($request->getRequestFormat() == 'js')

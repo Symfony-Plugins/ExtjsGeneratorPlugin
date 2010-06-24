@@ -58,6 +58,25 @@ else
     return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
+  
+  public function getExportTitle()
+  {
+<?php
+if(isset($this->config['export']['title']))
+{
+  $title = $this->config['export']['title'];
+} else if(isset($this->params['object_name']))
+{
+  $title = sfInflector::humanize($this->params['object_name']);
+}
+else
+{
+  $title = sfInflector::humanize($this->getModuleName());
+}
+?>
+    return '<?php echo $this->escapeString($title) ?>';
+<?php unset($this->config['export']['title']) ?>
+  }
 
   public function getEditDisplay()
   {
@@ -71,7 +90,7 @@ else
 <?php unset($this->config['new']['display']) ?>
   }
 
-<?php foreach (array('list', 'filter', 'form') as $context): ?>
+<?php foreach (array('list', 'filter', 'form', 'export') as $context): ?>
   public function get<?php echo ucfirst($context) ?>Display()
   {
 <?php if (isset($this->config[$context]['display'])): ?>
@@ -101,7 +120,7 @@ if(
     );
   }
 
-<?php foreach (array('list', 'filter', 'form', 'edit', 'new') as $context): ?>
+<?php foreach (array('list', 'filter', 'form', 'edit', 'new', 'export') as $context): ?>
   public function getFields<?php echo ucfirst($context) ?>()
   {
     return array(
@@ -112,3 +131,20 @@ if(
   }
 
 <?php endforeach; ?>
+  public function getExportBooleanAsString()
+  {
+    return <?php echo isset($this->config['export']['boolean_as_string']) ? (bool)$this->config['export']['boolean_as_string'] : true ?>;
+<?php unset($this->config['export']['boolean_as_string']) ?>
+  }
+  
+  public function getExportDateFormat()
+  {
+    return <?php echo $this->asPhp(isset($this->config['export']['default_date_format']) ? $this->config['export']['default_date_format'] : false) ?>;
+<?php unset($this->config['export']['default_date_format']) ?>
+  }
+  
+  public function getExportBooleanStringValues()
+  {
+    return <?php echo $this->asPhp(isset($this->config['export']['boolean_string_values']) ? $this->config['export']['boolean_string_values'] : array()) ?>;
+<?php unset($this->config['export']['boolean_string_values']) ?>
+  }

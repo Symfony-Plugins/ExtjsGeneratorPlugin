@@ -9,6 +9,24 @@
  */
 class ExtjsGeneratorUtil
 {
+  /*
+   * converts a boolean value to a string
+   * 
+   *  renderer:            ExtjsGeneratorUtil::renderBooleanToString
+   *  renderer_arguments:
+   *    args:
+   *      trueValue:       'True'
+   *      falseValue:      'False'
+   *    
+   *  @param $value boolean value
+   *  @param $args array of arguments
+   *  
+   *  @returns string boolean as configured string
+   */
+  public static function renderBooleanToString($value, $args = array( 'trueValue' => 'true', 'falseValue' => 'false'))
+  {
+    return (($value == true) ? $args['trueValue'] : $args['falseValue'])."\r";
+  }
 
   /**
    * Returns an array of params for a column name.

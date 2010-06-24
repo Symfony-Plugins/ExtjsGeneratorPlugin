@@ -172,7 +172,7 @@ class ExtjsGenerator extends sfPropelGenerator
 
     if($renderer = $field->getRenderer())
     {
-      $html = sprintf("$html ? call_user_func_array(%s, array_merge(array(%s), %s)) : '&nbsp;'", $this->asPhp($renderer), $html, $this->asPhp($field->getRendererArguments()));
+      $html = sprintf("$html !== null ? call_user_func_array(%s, array_merge(array(%s), %s)) : ''", $this->asPhp($renderer), $html, $this->asPhp($field->getRendererArguments()));
     }
     //        else //    {
     //      return sprintf("get_component('%s', '%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
@@ -183,7 +183,7 @@ class ExtjsGenerator extends sfPropelGenerator
     //    }
     if('Date' == $field->getType())
     {
-      $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : '&nbsp;'", $html, $field->getConfig('date_format', 'f'));
+      $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : ''", $html, $field->getConfig('date_format', 'f'));
     }
 
     return $html;
@@ -434,6 +434,12 @@ EOF;
         $configArr['icon'] = 'table_row_insert';
         $configArr['name'] = 'New';
         $configArr['help'] = 'Create a new record';
+        break;
+       
+      case 'export':
+        $configArr['icon'] = 'page_white_csv';
+        $configArr['name'] = 'CSV Export';
+        $configArr['help'] = 'Export list to CSV';
         break;
     }
 

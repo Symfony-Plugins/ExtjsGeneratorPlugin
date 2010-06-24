@@ -130,6 +130,16 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
 
     return $escaped ? str_replace("'", "\\'", $value) : $value;
   }
+  
+  /**
+   * Sets the date format for the field.
+   *
+   * @param strig $format
+   */
+  public function setDateFormat($format)
+  {
+    $this->config['date_format'] = $format;
+  }
 
   /**
    * Sets or unsets the invisible flag.

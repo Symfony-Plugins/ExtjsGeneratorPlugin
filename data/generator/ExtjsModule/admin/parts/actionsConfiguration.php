@@ -30,7 +30,7 @@
 
   public function getListActions()
   {
-    return <?php echo $this->asPhp(isset($this->config['list']['actions']) ? $this->config['list']['actions'] : array('_new' => null)) ?>;
+    return <?php echo $this->asPhp(isset($this->config['list']['actions']) ? $this->config['list']['actions'] : array('_new' => null, '_export' => null)) ?>;
 <?php unset($this->config['list']['actions']) ?>
   }
 

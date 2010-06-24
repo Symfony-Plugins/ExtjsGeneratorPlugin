@@ -142,7 +142,7 @@ EOT
 );
 ?>
 <?php endif; ?>
-<?php if(in_array($name, array('_new'))): ?>
+<?php if(in_array($name, array('_new', '_export'))): ?>
 include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar));
 
 <?php endif; ?>

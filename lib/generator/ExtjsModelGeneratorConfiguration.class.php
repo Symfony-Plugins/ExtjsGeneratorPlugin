@@ -21,9 +21,13 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
     // list < default
     // filter < default
     $this->configuration = array(
+      'export' => array(
+        'fields' => array(),
+        'title' => $this->getExportTitle(),
+      ), 
       'list' => array(
         'fields' => array(), 
-        'layout' => $this->getListLayout(), 
+//        'layout' => $this->getListLayout(), 
         'title' => $this->getListTitle(), 
         'actions' => $this->getListActions(), 
         'object_actions' => $this->getListObjectActions(), 
@@ -97,6 +101,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
     {
       $formConfig = array_merge($config['default'][$field], isset($config['form'][$field]) ? $config['form'][$field] : array());
 
+      $this->configuration['export']['fields'][$field]   = new ExtjsModelGeneratorConfigurationField($field, array_merge(array('label' => sfInflector::humanize(sfInflector::underscore($field))), $config['default'][$field], isset($config['export'][$field]) ? $config['export'][$field] : array()));
       $this->configuration['list']['fields'][$field]   = new ExtjsModelGeneratorConfigurationField($field, array_merge(array('label' => sfInflector::humanize(sfInflector::underscore($field))), $config['default'][$field], isset($config['list'][$field]) ? $config['list'][$field] : array()));
       $this->configuration['filter']['fields'][$field] = new ExtjsModelGeneratorConfigurationField($field, array_merge($config['default'][$field], isset($config['filter'][$field]) ? $config['filter'][$field] : array()));
       $this->configuration['new']['fields'][$field]    = new ExtjsModelGeneratorConfigurationField($field, array_merge($formConfig, isset($config['new'][$field]) ? $config['new'][$field] : array()));
@@ -112,6 +117,19 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
         array('type' => 'Text', 'label' => sfInflector::humanize(sfInflector::underscore($field))),
         isset($config['default'][$field]) ? $config['default'][$field] : array(),
         isset($config['list'][$field]) ? $config['list'][$field] : array(),
+        array('flag' => $flag)
+      ));
+    }
+    
+    // "virtual" fields for export
+    foreach ($this->getExportDisplay() as $field)
+    {
+      list($field, $flag) = ExtjsModelGeneratorConfigurationField::splitFieldWithFlag($field);
+
+      $this->configuration['export']['fields'][$field] = new ExtjsModelGeneratorConfigurationField($field, array_merge(
+        array('type' => 'Text', 'label' => sfInflector::humanize(sfInflector::underscore($field))),
+        isset($config['default'][$field]) ? $config['default'][$field] : array(),
+        isset($config['export'][$field]) ? $config['export'][$field] : array(),
         array('flag' => $flag)
       ));
     }
@@ -161,6 +179,20 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
       $field->setFlag($flag);
       $this->configuration['list']['display'][$name] = $field;
     }
+    
+    // export field configuration
+    $this->configuration['export']['display'] = array();
+    foreach ($this->getExportDisplay() as $name)
+    {
+      list($name, $flag) = ExtjsModelGeneratorConfigurationField::splitFieldWithFlag($name);
+      if (!isset($this->configuration['export']['fields'][$name]))
+      {
+        throw new InvalidArgumentException(sprintf('The field "%s" does not exist.', $name));
+      }
+      $field = $this->configuration['export']['fields'][$name];
+      $field->setFlag($flag);
+      $this->configuration['export']['display'][$name] = $field;
+    }
 
     // parse the %%..%% variables, remove flags and add default fields where
     // necessary (fixes #7578)
@@ -168,6 +200,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
     $this->parseVariables('edit', 'title');
     $this->parseVariables('list', 'title');
     $this->parseVariables('new', 'title');
+    $this->parseVariables('export', 'title');
 
     // action credentials
     $this->configuration['credentials'] = array(
@@ -318,5 +351,18 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
       $this->configuration[$context][$key] = str_replace('%%'.$flag.$name.'%%', '%%'.$name.'%%', $this->configuration[$context][$key]);
     }
+  }
+  
+  protected function getConfig()
+  {
+    return array(
+      'default' => $this->getFieldsDefault(),
+      'list'    => $this->getFieldsList(),
+      'export'  => $this->getFieldsExport(),
+      'filter'  => $this->getFieldsFilter(),
+      'form'    => $this->getFieldsForm(),
+      'new'     => $this->getFieldsNew(),
+      'edit'    => $this->getFieldsEdit(),
+    );
   }
 }
