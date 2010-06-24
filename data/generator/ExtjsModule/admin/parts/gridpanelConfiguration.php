@@ -14,7 +14,7 @@
         'forceFit'      => sfConfig::get('app_extjs_gen_plugin_list_forceFit', false),
       ),
       'sm'              => 'this.cm.sm',
-      'plugins'         => $this->getFormpanelPlugins(),
+      'plugins'         => $this->getGridpanelPlugins(),
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_tabbed', true)) echo "      'header' => false," ?>
     ), <?php echo $this->asPhp(isset($this->config['gridpanel']['config']) ? $this->config['gridpanel']['config'] : array()) ?>);
 <?php unset($this->config['gridpanel']['config']) ?>
