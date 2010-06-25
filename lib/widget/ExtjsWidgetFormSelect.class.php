@@ -136,7 +136,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
       $configArr = array(
         'hiddenName' => $name,
         'name' => $name,
-        'value' => (string) $value,
+        'value' => (string)(($value) ? $value : $this->getOption('defaultValue')),
         'store' => $store,
         'allowClear' => $this->getOption('allowClear'),
         'defaultValue' => $this->getOption('defaultValue'),
