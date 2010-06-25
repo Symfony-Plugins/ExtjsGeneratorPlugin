@@ -247,14 +247,15 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
     $withEmpty = $column->isNotNull() && ! $column->isForeignKey() ? array(
       "'with_empty' => false"
     ) : array();
+    
     switch($column->getType())
     {
       case PropelColumnTypes::BOOLEAN:
         $options[] = "'defaultValue' => '', 'allowClear' => false, 'context' => 'filter', 'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no')";
-        break;
-      default:
-        $options = array_merge($options, $withEmpty);
+        break;        
     }
+    
+    $options = array_merge($options, $withEmpty);
 
     if($column->isForeignKey())
     {

@@ -51,6 +51,7 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
     $this->addOption('renderer', false);
     $this->addOption('allowClear', true);
     $this->addOption('defaultValue');
+    $this->addOption('with_empty', true);
   }
 
   /**
@@ -102,6 +103,7 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
     return new $class(array_merge(array(
       'defaultValue' => $this->getOption('defaultValue'),
       'allowClear' => $this->getOption('allowClear'),
+      'with_empty' => $this->getOption('with_empty'),
       'context' => $this->getOption('context'),
       'choices' => new sfCallable(array(
         $this,
