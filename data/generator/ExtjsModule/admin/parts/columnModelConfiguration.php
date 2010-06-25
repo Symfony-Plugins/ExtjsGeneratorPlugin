@@ -1,3 +1,4 @@
+  
   public function getColumnModelConfig()
   {
     $columns = array();
@@ -22,5 +23,4 @@
   {
     return <?php echo $this->asPhp(isset($this->config['column_model']['partials']) ? $this->config['column_model']['partials'] : array()) ?>;
 <?php unset($this->config['column_model']['partials']) ?>
-  }
-  
+  }  

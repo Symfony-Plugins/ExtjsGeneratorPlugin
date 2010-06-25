@@ -9,7 +9,7 @@
       'plugins'   => $this->getFilterpanelPlugins(),
       'defaults'   => array('anchor' => '85%'),
     ), <?php echo $this->asPhp(isset($this->config['filterpanel']['config']) ? $this->config['filterpanel']['config'] : array()) ?>);
-<?php unset($this->config['filterpanel']['config']) ?>    
+<?php unset($this->config['filterpanel']['config']) ?>
   }
 
   public function getFilterpanelPlugins()

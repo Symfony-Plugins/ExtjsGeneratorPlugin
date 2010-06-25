@@ -5,7 +5,7 @@
       'autoWidth' => false,
       'height'    => 26,
     ), <?php echo $this->asPhp(isset($this->config['top_toolbar']['config']) ? $this->config['top_toolbar']['config'] : array()) ?>);
-<?php unset($this->config['top_toolbar']['config']) ?>    
+<?php unset($this->config['top_toolbar']['config']) ?>
   }
 
   public function getTopToolbarPlugins()

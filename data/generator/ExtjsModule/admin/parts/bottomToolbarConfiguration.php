@@ -34,5 +34,5 @@
   public function getBottomToolbarPartials()
   {
     return <?php echo $this->asPhp(isset($this->config['bottom_toolbar']['partials']) ? $this->config['bottom_toolbar']['partials'] : array()) ?>;
-<?php unset($this->config['bottom_toolbar']['partials']) ?>    
+<?php unset($this->config['bottom_toolbar']['partials']) ?>
   }

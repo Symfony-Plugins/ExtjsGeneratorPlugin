@@ -11,7 +11,7 @@
     if(count($this->getDatastoreSortConfig())) $config = array_merge($this->getDatastoreSortConfig(), $config);
         
     return array_merge($config, <?php echo $this->asPhp(isset($this->config['datastore']['config']) ? $this->config['datastore']['config'] : array()) ?>);
-<?php unset($this->config['datastore']['config']) ?>    
+<?php unset($this->config['datastore']['config']) ?>
   }
   
   public function getDatastoreGroupingConfig()
@@ -54,5 +54,5 @@ if(isset($this->config['list']['sort']))
   public function getDatastorePartials()
   {
     return <?php echo $this->asPhp(isset($this->config['datastore']['partials']) ? $this->config['datastore']['partials'] : array()) ?>;
-<?php unset($this->config['datastore']['partials']) ?>    
+<?php unset($this->config['datastore']['partials']) ?>
   }

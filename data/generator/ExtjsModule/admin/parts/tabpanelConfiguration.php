@@ -7,7 +7,7 @@
       'plugins'         => $this->getTabpanelPlugins(),
       'activeTab'       => $this->getTabpanelActiveTab(),
     ), <?php echo $this->asPhp(isset($this->config['tabpanel']['config']) ? $this->config['tabpanel']['config'] : array()) ?>);
-<?php unset($this->config['tabpanel']['config']) ?>    
+<?php unset($this->config['tabpanel']['config']) ?>
   }
 
   public function getTabpanelPlugins()

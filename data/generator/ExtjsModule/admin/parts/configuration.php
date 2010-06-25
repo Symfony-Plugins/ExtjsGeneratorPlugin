@@ -34,11 +34,6 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 
 <?php include dirname(__FILE__).'/objectActionsConfiguration.php' ?>
 
-  /**
-   * Gets the form class name.
-   *
-   * @return string The form class name
-   */
   public function getFormClass()
   {
     return '<?php echo isset($this->config['form']['class']) ? $this->config['form']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'Form' ?>';
@@ -50,11 +45,6 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
     return <?php echo !isset($this->config['filter']['class']) || false !== $this->config['filter']['class'] ? 'true' : 'false' ?>;
   }
 
-  /**
-   * Gets the filter form class name
-   *
-   * @return string The filter form class name associated with this generator
-   */
   public function getFilterFormClass()
   {
     return '<?php echo isset($this->config['filter']['class']) ? $this->config['filter']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'FormFilter' ?>';
@@ -87,6 +77,4 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
   {
     return '<?php echo isset($this->params['object_name']) ? $this->params['object_name'] : sfInflector::humanize($this->getModuleName()) ?>';
   }
-
-
 }

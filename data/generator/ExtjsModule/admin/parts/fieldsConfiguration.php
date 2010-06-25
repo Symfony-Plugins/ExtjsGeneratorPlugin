@@ -1,6 +1,24 @@
   public function getListParams(){}
 
-  public function getListLayout(){}
+  public function getListLayout(){}  
+
+  public function getExportBooleanAsString()
+  {
+    return <?php echo isset($this->config['export']['boolean_as_string']) ? (bool)$this->config['export']['boolean_as_string'] : true ?>;
+<?php unset($this->config['export']['boolean_as_string']) ?>
+  }
+  
+  public function getExportDateFormat()
+  {
+    return <?php echo $this->asPhp(isset($this->config['export']['default_date_format']) ? $this->config['export']['default_date_format'] : false) ?>;
+<?php unset($this->config['export']['default_date_format']) ?>
+  }
+  
+  public function getExportBooleanStringValues()
+  {
+    return <?php echo $this->asPhp(isset($this->config['export']['boolean_string_values']) ? $this->config['export']['boolean_string_values'] : array()) ?>;
+<?php unset($this->config['export']['boolean_string_values']) ?>
+  }
 
   public function getListTitle()
   {
@@ -120,31 +138,28 @@ if(
     );
   }
 
+<?php $filterDefaults = array(); ?>
 <?php foreach (array('list', 'filter', 'form', 'edit', 'new', 'export') as $context): ?>
   public function getFields<?php echo ucfirst($context) ?>()
   {
     return array(
 <?php foreach ($this->getFieldsConfiguration($context) as $name => $params): ?>
+<?php if($context == 'filter' && isset($params['widgetOptions']['defaultValue'])): ?>
+<?php $filterDefaults[$name] = $params['widgetOptions']['defaultValue']; ?>
+<?php endif;?>
       '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
 <?php endforeach; ?>
     );
   }
 
 <?php endforeach; ?>
-  public function getExportBooleanAsString()
+<?php if(count($filterDefaults)):?>
+  public function getFilterDefaults()
   {
-    return <?php echo isset($this->config['export']['boolean_as_string']) ? (bool)$this->config['export']['boolean_as_string'] : true ?>;
-<?php unset($this->config['export']['boolean_as_string']) ?>
+    return array(
+<?php foreach ($filterDefaults as $name => $value): ?>
+      '<?php echo $name ?>' => <?php echo $this->asPhp($value) ?>,
+<?php endforeach; ?>
+    );
   }
-  
-  public function getExportDateFormat()
-  {
-    return <?php echo $this->asPhp(isset($this->config['export']['default_date_format']) ? $this->config['export']['default_date_format'] : false) ?>;
-<?php unset($this->config['export']['default_date_format']) ?>
-  }
-  
-  public function getExportBooleanStringValues()
-  {
-    return <?php echo $this->asPhp(isset($this->config['export']['boolean_string_values']) ? $this->config['export']['boolean_string_values'] : array()) ?>;
-<?php unset($this->config['export']['boolean_string_values']) ?>
-  }
+<?php endif;?>    
