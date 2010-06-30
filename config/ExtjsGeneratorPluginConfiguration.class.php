@@ -50,7 +50,8 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr.js',  // icon manager extension.  goes first so we can use it anywhere
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants           
       '/ExtjsGeneratorPlugin/js/Ext.form.TextField.override.js',  //adds reset event
-      '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js', 
+      '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.ComboBox.plugin.ComboListAutoSizer.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.MessageBox.js',  // adds autohiding info and error message types
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.MultiSelect.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ItemSelector.js', 
@@ -58,7 +59,8 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',  
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs 
       '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method
     );
@@ -77,7 +79,8 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       'TwinComboBox' => 'Ext.ux.form.TwinComboBox', 
       'MultiSelect' => 'Ext.ux.form.MultiSelect', 
       'ItemSelector' => 'Ext.ux.form.ItemSelector', 
-      'IsEmptyCheckbox' => 'Ext.ux.form.IsEmptyCheckbox'
+      'IsEmptyCheckbox' => 'Ext.ux.form.IsEmptyCheckbox',
+      'TwinFileUploadField' => 'Ext.ux.form.TwinFileUploadField',
     ), sfConfig::get('sf_extjs3_classes', array())));
     
     sfConfig::set('Ext.ux.form.TwinDateField', array(
@@ -102,6 +105,11 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     
     sfConfig::set('Ext.ux.form.IsEmptyCheckbox', array(
       'class' => 'Ext.ux.form.IsEmptyCheckbox', 
+      'attributes' => array()
+    ));
+    
+    sfConfig::set('Ext.ux.form.TwinFileUploadField', array(
+      'class' => 'Ext.ux.form.TwinFileUploadField', 
       'attributes' => array()
     ));
   

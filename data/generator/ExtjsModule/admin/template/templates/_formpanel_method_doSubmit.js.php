@@ -14,11 +14,13 @@ $formpanel->methods['doSubmit'] = $sfExtjs3Plugin->asMethod(array(
     )).");
   }
   else
-  {
+  {      
     var params = {
-      sf_format: 'json'
+      sf_format: 'json'    
     };
     
+    if(this.findByType('twinfileuploadfield')) this.getForm().fileUpload = true;
+        
     var url_key = '';
     
     // add key to url if key is set to an existing primary-key and submitnew
