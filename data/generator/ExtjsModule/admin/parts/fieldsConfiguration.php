@@ -122,7 +122,10 @@ if(
     (isset($this->config['list']['object_actions']) && count($this->config['list']['object_actions'])) ||
     !isset($this->config['list']['object_actions'])
   )
-) $allFieldNames[] = '^object_actions' ?>
+): ?>
+<?php $allFieldNames[] = '^object_actions' ?>
+<?php $allFieldNames['id'] = '+id' ?>
+<?php endif;?>
     return <?php echo $this->asPhp($allFieldNames) ?>;
 <?php endif; ?>
 <?php unset($this->config[$context]['display'], $this->config[$context]['hide']) ?>
