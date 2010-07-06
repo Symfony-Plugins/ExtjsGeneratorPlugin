@@ -99,19 +99,21 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
   }
 
   /**
-   * Returns a RelationMap object for a one-to-one table if it exists.
+   * Returns an array of RelationMap objects for a one-to-one tables if they exist.
    *
-   * @return object RelationMap.
+   * @return array RelationMaps.
    */
-  public function getOneToOneTable()
+  public function getOneToOneTables()
   {
+    $tables = array();
     foreach($this->table->getRelations() as $relation)
     {
       if($relation->getType() == RelationMap::ONE_TO_ONE)
       {
-        return $relation;
+        $tables[] = $relation;
       }
     }
+    return $tables;
   }
 
   /**

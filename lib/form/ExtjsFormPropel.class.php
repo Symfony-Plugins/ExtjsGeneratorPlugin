@@ -608,7 +608,7 @@ abstract class ExtjsFormPropel extends sfFormObject
     }
     catch (sfException $e)
     {
-      // no profile
+      // relation not found
       return null;
     }
   }

@@ -58,7 +58,7 @@ class ExtjsGenerator extends sfPropelGenerator
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 
-    if($oneToOne = $this->getOneToOneTable())
+    foreach($this->getOneToOneTables() as $oneToOne)
     {
       foreach($oneToOne->getLocalTable()->getColumns() as $column)
       {
@@ -97,19 +97,21 @@ class ExtjsGenerator extends sfPropelGenerator
   }
 
   /**
-   * Returns a RelationMap object for a one-to-one table if it exists.
+   * Returns an array of RelationMap objects for a one-to-one tables if they exist.
    *
-   * @return object RelationMap.
+   * @return array RelationMaps.
    */
-  public function getOneToOneTable()
+  public function getOneToOneTables()
   {
+    $tables = array();
     foreach($this->getTableMap()->getRelations() as $relation)
     {
       if($relation->getType() == RelationMap::ONE_TO_ONE)
       {
-        return $relation;
+        $tables[] = $relation;
       }
     }
+    return $tables;
   }
 
   /**
@@ -709,6 +711,21 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $customization = '';
     $form = $this->configuration->getForm(); // fallback field definition
+    if($this->configuration->getWiths() && $view != 'filter')
+    {
+      $withs = array();
+      foreach($this->configuration->getWiths() as $with)
+      {
+        foreach($this->getTableMap()->getRelations() as $relation)
+        {
+          if($relation->getType() == RelationMap::ONE_TO_ONE && $relation->getName() == $with)
+          {
+            $withs[] = $with;
+          }
+        }
+      }
+      if(count($withs)) $customization .= sprintf("    \$this->%s->active_one_to_one_relations = %s;\n", $formVariableName, $this->asPhp($withs));
+    }
     $defaultFieldNames = array_keys($form->getWidgetSchema()->getFields());
     $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
     $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);

@@ -19,12 +19,12 @@ abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormF
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
       '<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($tables['middleTable']->getClassname()).'_list')) ?> => new ExtjsWidgetFormPropelChoice(array('context' => 'filter', 'model' => '<?php echo $tables['relatedTable']->getClassname() ?>')),
 <?php endforeach; ?>
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
 <?php foreach ($oneToOne->getLocalTable()->getColumns() as $column):?>
 <?php if($column->isPrimaryKey()) continue ?>
-      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
+      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', ($this->getColumnNameMaxLength() - strlen($column->getName()) > 0)  ? $this->getColumnNameMaxLength() - strlen($column->getName()) : 1) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
-<?php endif;?>
+<?php endforeach; ?>
     ));
 
     $this->setValidators(array(
@@ -35,12 +35,12 @@ abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormF
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
       '<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($tables['middleTable']->getClassname()).'_list')) ?> => new sfValidatorPropelChoice(array('model' => '<?php echo $tables['relatedTable']->getClassname() ?>', 'required' => false)),
 <?php endforeach; ?>
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
 <?php foreach ($oneToOne->getLocalTable()->getColumns() as $column):?>
 <?php if($column->isPrimaryKey()) continue ?>
-      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getName())) ?> => <?php echo $this->getValidatorForColumn($column) ?>,
+      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', ($this->getColumnNameMaxLength() - strlen($column->getName()) > 0)  ? $this->getColumnNameMaxLength() - strlen($column->getName()) : 1) ?> => <?php echo $this->getValidatorForColumn($column) ?>,
 <?php endforeach; ?>
-<?php endif;?>
+<?php endforeach; ?>
     ));
 
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->table->getClassname()) ?>_filters[%s]');
@@ -91,24 +91,24 @@ abstract class BaseExtjs<?php echo ucfirst($this->table->getClassname()) ?>FormF
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
       '<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($tables['middleTable']->getClassname()).'_list')) ?> => 'ManyKey',
 <?php endforeach; ?>
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
 <?php foreach ($oneToOne->getLocalTable()->getColumns() as $column):?>
 <?php if($column->isPrimaryKey()) continue ?>
-      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getName())) ?> => '<?php echo $this->getType($column) ?>',
+      '<?php echo $this->translateColumnName($column) ?>'<?php echo str_repeat(' ', ($this->getColumnNameMaxLength() - strlen($column->getName()) > 0)  ? $this->getColumnNameMaxLength() - strlen($column->getName()) : 1)  ?> => '<?php echo $this->getType($column) ?>',
 <?php endforeach; ?>
-<?php endif;?>
+<?php endforeach; ?>
     );
   }
 
   public function getForeignColumnQueries()
   {
     return array(
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
 <?php foreach ($oneToOne->getLocalTable()->getColumns() as $column):?>
 <?php if($column->isPrimaryKey()) continue ?>
       '<?php echo $this->translateColumnName($column) ?>' => '<?php echo sprintf('use%sQuery', $oneToOne->getName()) ?>',
 <?php endforeach; ?>
-<?php endif;?>
+<?php endforeach; ?>
     );
   }
 }

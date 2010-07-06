@@ -48,10 +48,10 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->table->getClassname()) ?>[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
 
     $this->mergeOneToOneRelation('<?php echo $oneToOne->getName() ?>');
-<?php endif;?>
+<?php endforeach; ?>
 
     parent::setup();
   }
@@ -73,11 +73,10 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
   }
 <?php endif; ?>
 
-<?php if ($this->getManyToManyTables() || $this->getOneToOneTable()): ?>
+<?php if ($this->getManyToManyTables() || $this->getOneToOneTables()): ?>
   public function updateDefaultsFromObject()
   {
     parent::updateDefaultsFromObject();
-<?php if ($this->getManyToManyTables()): ?>
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
     if (isset($this->widgetSchema['<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list']))
     {
@@ -91,8 +90,7 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
     }
 
 <?php endforeach; ?>
-<?php endif; ?>
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
     if (!is_null($<?php echo $oneToOne->getName() ?> = $this->getRelatedObject('get<?php echo $oneToOne->getName() ?>')))
     {
       $values = $<?php echo $oneToOne->getName() ?>->toArray(BasePeer::TYPE_FIELDNAME);
@@ -112,23 +110,21 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
       }
     }
 
-<?php endif; ?>
+<?php endforeach; ?>
   }
 
   protected function doSave($con = null)
   {
     parent::doSave($con);
-<?php if ($this->getManyToManyTables()): ?>
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
     $this->save<?php echo $tables['middleTable']->getPhpName() ?>List($con);
 <?php endforeach; ?>
-<?php endif; ?>
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
     $this->save<?php echo $oneToOne->getName() ?>();
-<?php endif; ?>
+<?php endforeach; ?>
   }
 
-<?php if($oneToOne = $this->getOneToOneTable()):?>
+<?php foreach ($this->getOneToOneTables() as $oneToOne):?>
   public function save<?php echo $oneToOne->getName() ?>()
   {
     if (!$this->isValid())
@@ -136,21 +132,24 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
       throw $this->getErrorSchema();
     }
 
-    if (!is_null($<?php echo $oneToOne->getName() ?> = $this->getRelatedObject('get<?php echo $oneToOne->getName() ?>')))
+    if (is_null($<?php echo $oneToOne->getName() ?> = $this->getRelatedObject('get<?php echo $oneToOne->getName() ?>')))
     {
-      $values = $this->getValues();
-<?php foreach($oneToOne->getLocalTable()->getPrimaryKeys() as $primaryKey): ?>
-      $<?php echo $oneToOne->getName() ?>->set<?php echo $primaryKey->getPhpName() ?>($this->object->getPrimaryKey());
+      $<?php echo $oneToOne->getName() ?> = new <?php echo $oneToOne->getName() ?>();
+    }
+    $values = $this->getValues();
+<?php foreach($oneToOne->getLocalTable()->getPrimaryKeys() as $primaryKey): ?>      
 <?php $pk = call_user_func(array($oneToOne->getLocalTable()->getClassname().'Peer', 'translateFieldname'), $primaryKey->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME) ?>
-      unset($values['<?php echo $pk ?>']);
+    unset($values['<?php echo $pk ?>']);
 <?php endforeach; ?>
-      $<?php echo $oneToOne->getName() ?>->fromArray($values, BasePeer::TYPE_FIELDNAME);
+    $<?php echo $oneToOne->getName() ?>->fromArray($values, BasePeer::TYPE_FIELDNAME);
+    if($<?php echo $oneToOne->getName() ?>->isModified() || (isset($this->active_one_to_one_relations) && in_array('<?php echo $oneToOne->getName() ?>', $this->active_one_to_one_relations)))
+    {
+      $<?php echo $oneToOne->getName() ?>->set<?php echo $primaryKey->getPhpName() ?>($this->object->getPrimaryKey());
       $<?php echo $oneToOne->getName() ?>->save();
     }
   }
 
-<?php endif; ?>
-<?php if ($this->getManyToManyTables()): ?>
+<?php endforeach; ?>
 <?php foreach ($this->getManyToManyTables() as $tables): ?>
   public function save<?php echo $tables['middleTable']->getPhpName() ?>List($con = null)
   {
@@ -188,6 +187,5 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
   }
 
 <?php endforeach; ?>
-<?php endif; ?>
 <?php endif; ?>
 }
