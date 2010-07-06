@@ -4,7 +4,7 @@ $header = '';
 <?php $fields = $this->configuration->getValue('export.display') ?>
 <?php foreach ($fields as $name => $field): ?>
 <?php if(($field->hasFlag() && $field->isPlugin()) || $field->isHidden()) continue ?>
-<?php echo $this->addCredentialCondition(sprintf("\$header .= '\"'.str_replace('\"', '\"\"', '%s').'\",';\n", $field->getConfig('label', ''))) ?>
+<?php echo $this->addCredentialCondition(sprintf("\$header .= '\"'.str_replace('\"', '\"\"', '%s').'\",';\n", addslashes($field->getConfig('label', '')))) ?>
 <?php endforeach; ?>
 $header = preg_replace("/\n|\r/", " ", $header);
 $header = preg_replace("/\s\s+/", " ", $header);
