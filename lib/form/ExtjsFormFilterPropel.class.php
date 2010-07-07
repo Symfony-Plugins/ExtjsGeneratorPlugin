@@ -184,7 +184,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
       {
         $columnParams = ExtjsGeneratorUtil::getColumnParams($field, $this->getModelName());
         $foreignQueryMethod = sprintf('use%sQuery', $columnParams['relation_name']);
-        if(! method_exists($this, $method = sprintf('add%sCriteria', $columnParams['type'])) ||! method_exists($criteria, $foreignQueryMethod))
+        if(! method_exists($this, $method = sprintf('add%sCriteria', $columnParams['type'])) ||! method_exists($criteria, $foreignQueryMethod) || !isset($columnParams['relation_name']))
         {
           throw new LogicException(sprintf('You must define a "%s" method in the %s class to be able to filter with the "%s" field.', sprintf('filterBy%s', $ucField), get_class($criteria), $field));
         }

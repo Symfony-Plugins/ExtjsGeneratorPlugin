@@ -711,6 +711,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $customization = '';
     $form = $this->configuration->getForm(); // fallback field definition
+    
+    //add active_one_to_one_relations array to the form from with in generator
     if($this->configuration->getWiths() && $view != 'filter')
     {
       $withs = array();
@@ -725,7 +727,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         }
       }
       if(count($withs)) $customization .= sprintf("    \$this->%s->active_one_to_one_relations = %s;\n", $formVariableName, $this->asPhp($withs));
-    }
+    }  
+    
     $defaultFieldNames = array_keys($form->getWidgetSchema()->getFields());
     $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
     $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);
@@ -805,9 +808,34 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
               $widgetConfig['attributes'] = $widgetAttributes;
             }
           }
+          
+          // custom combo config option for local
+          if($field->getConfig('combo', false))
+          {
+            if(!isset($widgetConfig['class']))
+            {
+              $widgetConfig['class'] = 'ExtjsWidgetFormPropelChoice';
+            }            
+            
+            $options = array(
+              'model' => $field->getConfig('model'),
+              'group_by' => $field->getConfig('php_name')
+            );
+            
+            $widgetConfig['options'] = (isset($widgetConfig['options'])) ? array_merge($options, $widgetConfig['options']) : $options;
+
+            if(!isset($widgetConfig['attributes']))
+            {
+              $widgetConfig['attributes'] = array(
+                'forceSelection' => false
+              );
+            }
+          }         
+          
           if($widgetConfig)
           {
             $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
+            if($view == 'filter') $options['context'] = 'filter';
             $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
             if(isset($widgetConfig['class']))
             {

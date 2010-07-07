@@ -31,6 +31,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%input%  %empty_checkbox%');
+    $this->addOption('context');
   }
 
   /**
