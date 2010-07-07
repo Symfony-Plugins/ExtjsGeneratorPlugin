@@ -23,8 +23,13 @@ class ExtjsGeneratorUtil
    *  
    *  @returns string boolean as configured string
    */
-  public static function renderBooleanToString($value, $args = array( 'trueValue' => 'true', 'falseValue' => 'false'))
+  public static function renderBooleanToString($value, $args = array())
   {
+    if(!count($args))
+    {
+      $args['trueValue'] = 'true';
+      $args['falseValue'] = 'false';
+    } 
     return (($value == true) ? $args['trueValue'] : $args['falseValue'])."\r";
   }
 
