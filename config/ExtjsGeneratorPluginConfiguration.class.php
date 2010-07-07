@@ -60,6 +60,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.field.plugin.FieldHelp.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs 
       '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method

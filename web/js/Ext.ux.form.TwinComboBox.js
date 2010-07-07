@@ -1,7 +1,7 @@
-Ext.namespace("Ext.ux");
+Ext.namespace('Ext.ux');
 Ext.ux.ComboListAutoSizer = (function() {
   function autoSizeList(combo) {
-    var itemEl = combo.view && combo.view.getEl() && combo.view.getEl().child(combo.itemSelector || ".x-combo-list-item");
+    var itemEl = combo.view && combo.view.getEl() && combo.view.getEl().child(combo.itemSelector || '.x-combo-list-item');
     if (!itemEl)
       return;
     var textMetrics = Ext.util.TextMetrics.createInstance(itemEl);
@@ -10,21 +10,21 @@ Ext.ux.ComboListAutoSizer = (function() {
       autoWidth = Math.max(autoWidth, textMetrics.getWidth(record.get(combo.displayField)) + 10);
     });
     combo.list.setWidth(autoWidth);
-    combo.innerList.setWidth(autoWidth - combo.list.getFrameWidth("lr"));
+    combo.innerList.setWidth(autoWidth - combo.list.getFrameWidth('lr'));
     combo.list.alignTo(combo.wrap, combo.listAlign);
   }
 
   // Public API
   return {
     init : function(combo) {
-      combo.on("expand", autoSizeList, null, {
+      combo.on('expand', autoSizeList, null, {
         single : true
       });
       var store = combo.getStore();
-      store.on("load", function() {
+      store.on('load', function() {
         autoSizeList(combo);
       });
-      store.on("update", function() {
+      store.on('update', function() {
         autoSizeList(combo);
       });
     }

@@ -147,7 +147,20 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'triggerAction' => 'all',
         'mode' => $attributes['mode']
       );
-    }    
+    } 
+
+    if(isset($attributes['help']) && $this->getOption('context') == 'form')
+    {      
+      $configArr['helpText'] = addslashes($attributes['help']);
+      unset($attributes['help']);
+      
+      $configArr['plugins'] = array("'fieldHelp'");
+      if(isset($attributes['plugins']))
+      {
+        $configArr['plugins'] = array_merge($configArr['plugins'], $attributes['plugins']);
+        unset($attributes['plugins']);
+      }      
+    }
 
     return strtr($this->getOption('template'), array(
       '%input%' => $this->renderExtjsContentBlock($this->getOption('context'), $type, array_merge($configArr, $attributes)),

@@ -52,6 +52,19 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
       'name' => $name,
       'value' => $value
     );
+    
+    if(isset($attributes['help']))
+    {
+      $config['helpText'] = addslashes($attributes['help']);
+      unset($attributes['help']);
+      
+      $config['plugins'] = array("'fieldHelp'");
+      if(isset($attributes['plugins']))
+      {
+        $config['plugins'] = array_merge($config['plugins'], $attributes['plugins']);
+        unset($attributes['plugins']);
+      }      
+    }
 
     if($this->getOption('type') == 'Checkbox') $config['inputValue'] = 'true';
 
