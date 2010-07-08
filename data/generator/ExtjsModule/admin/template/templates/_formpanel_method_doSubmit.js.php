@@ -18,8 +18,8 @@ $formpanel->methods['doSubmit'] = $sfExtjs3Plugin->asMethod(array(
     var params = {
       sf_format: 'json'    
     };
-    
-    if(this.findByType('twinfileuploadfield')) this.getForm().fileUpload = true;
+
+    if(this.findByType('twinfileuploadfield').length >= 1) this.getForm().fileUpload = true;
         
     var url_key = '';
     
