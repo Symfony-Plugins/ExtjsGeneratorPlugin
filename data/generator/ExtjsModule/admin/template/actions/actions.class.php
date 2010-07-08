@@ -55,8 +55,6 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 <?php include dirname(__FILE__).'/../../parts/filterAction.php' ?>
 <?php endif; ?>
 
-<?php include dirname(__FILE__).'/../../parts/newAction.php' ?>
-
 <?php include dirname(__FILE__).'/../../parts/createAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/editAction.php' ?>

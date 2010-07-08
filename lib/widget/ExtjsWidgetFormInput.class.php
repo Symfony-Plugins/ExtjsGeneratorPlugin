@@ -52,6 +52,8 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
       'name' => $name
     );
     
+    if($value) $configArr['value'] = $value;
+    
     if(isset($attributes['help']))
     {
       $configArr['helpText'] = addslashes($attributes['help']);      

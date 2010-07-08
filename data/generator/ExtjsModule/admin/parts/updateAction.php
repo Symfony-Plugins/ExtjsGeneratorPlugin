@@ -5,5 +5,9 @@
 <?php echo $this->getFormCustomization('edit') ?>
     $this->processForm($request, $this->form);
 
-    $this->setTemplate('update');
+    if($request->getContentType() == 'multipart/form-data')
+    {
+      sfConfig::set('sf_web_debug', false);
+      $request->setFormat('json', 'text/html');
+    }
   }

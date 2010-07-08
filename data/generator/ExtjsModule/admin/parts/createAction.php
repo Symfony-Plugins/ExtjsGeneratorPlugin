@@ -5,6 +5,10 @@
     $this-><?php echo $this->getSingularName() ?> = $this->form->getObject();
 
     $this->processForm($request, $this->form);
-
-    $this->setTemplate('new');
+  
+    if($request->getContentType() == 'multipart/form-data')
+    {
+      sfConfig::set('sf_web_debug', false);
+      $request->setFormat('json', 'text/html');
+    }
   }
