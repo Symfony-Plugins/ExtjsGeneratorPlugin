@@ -18,7 +18,7 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
   public function initialize(sfGeneratorManager $generatorManager)
   {
     parent::initialize($generatorManager);
-
+    
     $this->setGeneratorClass('ExtjsForm');
   }
 
@@ -32,26 +32,26 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
   public function generate($params = array())
   {
     $this->params = $params;
-
+    
     if(! isset($this->params['connection']))
     {
       throw new sfParseException('You must specify a "connection" parameter.');
     }
-
+    
     if(! isset($this->params['model_dir_name']))
     {
       $this->params['model_dir_name'] = 'model';
     }
-
+    
     if(! isset($this->params['form_dir_name']))
     {
       $this->params['form_dir_name'] = 'form';
     }
-
+    
     $this->dbMap = Propel::getDatabaseMap($this->params['connection']);
-
+    
     $this->loadBuilders();
-
+    
     // create the project base class for all forms
     $file = sfConfig::get('sf_lib_dir') . '/form/BaseExtjsFormPropel.class.php';
     if(! file_exists($file))
@@ -60,10 +60,10 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
       {
         mkdir($directory, 0777, true);
       }
-
+      
       file_put_contents($file, $this->evalTemplate('ExtjsFormBaseTemplate.php'));
     }
-
+    
     // create a form class for every Propel class
     foreach($this->dbMap->getTables() as $tableName => $table)
     {
@@ -72,9 +72,9 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
       {
         continue;
       }
-
+      
       $this->table = $table;
-
+      
       // find the package to store forms in the same directory as the model classes
       $packages = explode('.', constant(constant($table->getClassname() . '::PEER') . '::CLASS_DEFAULT'));
       array_pop($packages);
@@ -84,12 +84,12 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
       }
       $packages[$pos] = $this->params['form_dir_name'];
       $baseDir = sfConfig::get('sf_root_dir') . '/' . implode(DIRECTORY_SEPARATOR, $packages);
-
+      
       if(! is_dir($baseDir . '/base'))
       {
         mkdir($baseDir . '/base', 0777, true);
       }
-
+      
       file_put_contents($baseDir . '/base/BaseExtjs' . ucfirst($table->getClassname()) . 'Form.class.php', $this->evalTemplate('ExtjsFormGeneratedTemplate.php'));
       if(! file_exists($classFile = $baseDir . '/Extjs' . ucfirst($table->getClassname()) . 'Form.class.php'))
       {
@@ -157,7 +157,7 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
       default:
         $name = 'InputText';
     }
-
+    
     if($column->isPrimaryKey())
     {
       $name = 'InputHidden';
@@ -166,8 +166,17 @@ class ExtjsFormGenerator extends sfPropelFormGenerator
     {
       $name = 'PropelChoice';
     }
-
+    
     return sprintf('ExtjsWidgetForm%s', $name);
   }
 
+  public function getValidatorClassForColumn(ColumnMap $column)
+  {
+    if($column->isPrimaryKey() || $column->isForeignKey())
+    {
+      return 'ExtjsValidatorPropelChoice';
+    }
+    
+    return parent::getValidatorClassForColumn($column);
+  }
 }

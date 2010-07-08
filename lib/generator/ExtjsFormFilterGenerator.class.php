@@ -272,4 +272,14 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
+  
+  public function getValidatorClassForColumn(ColumnMap $column)
+  {
+    if($column->isPrimaryKey() || $column->isForeignKey())
+    {
+      return 'ExtjsValidatorPropelChoice';
+    }
+    
+    return parent::getValidatorClassForColumn($column);
+  }
 }

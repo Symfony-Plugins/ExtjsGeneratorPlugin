@@ -6,6 +6,10 @@ look at _assets.js index.js and fix to properly use route_prefix instead of modu
 getXtype module should support routing and be called with the route instead of the moduleName()
 
 ### forms
+refactor mutliple value handling in ExtjsValidatorPropelChoice.  
+- There could be an issue if one of the values should actually have a comma in it
+- should move to sending an array from the form instead
+
 show combobox for related fields (field is not always added)
 - this is a problem with the standard generator too
 
