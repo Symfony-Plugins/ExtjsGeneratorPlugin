@@ -51,6 +51,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants           
       '/ExtjsGeneratorPlugin/js/Ext.form.TextField.override.js',  //adds reset event
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
+      '/ExtjsGeneratorPlugin/js/Ext.form.Field.override.js',  //adds support for required config
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ComboBox.plugin.ComboListAutoSizer.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.MessageBox.js',  // adds autohiding info and error message types
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.MultiSelect.js', 

@@ -134,7 +134,7 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field, {
 
   // private
   defaultAutoCreate : {
-    tag : "div"
+    tag : 'div'
   },
 
   // private
@@ -182,7 +182,7 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field, {
       title : this.legend,
       height : this.height,
       width : this.width,
-      style : "padding:0;",
+      style : 'padding:0;',
       tbar : this.tbar,
       autoScroll: true
     });
@@ -209,9 +209,9 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field, {
 
     this.hiddenName = this.name || Ext.id();
     var hiddenTag = {
-      tag : "input",
-      type : "hidden",
-      value : "",
+      tag : 'input',
+      type : 'hidden',
+      value : '',
       name : this.hiddenName
     };
     this.hiddenField = this.el.createChild(hiddenTag);
@@ -298,7 +298,7 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field, {
       values = values.split(this.delimiter);
     }
     for (var i = 0; i < values.length; i++) {
-      index = this.view.store.indexOf(this.view.store.query(this.valueField, new RegExp('^' + values[i] + '$', "i")).itemAt(0));
+      index = this.view.store.indexOf(this.view.store.query(this.valueField, new RegExp('^' + values[i] + '$', 'i')).itemAt(0));
       selections.push(index);
     }
     this.view.select(selections);
@@ -422,7 +422,7 @@ Ext.extend(Ext.ux.form.MultiSelect.DragZone, Ext.dd.DragZone, {
   // override
   onEndDrag : function(data, e) {
     var d = Ext.get(this.dragData.ddel);
-    if (d && d.hasClass("multi-proxy")) {
+    if (d && d.hasClass('multi-proxy')) {
       d.remove();
     }
   },
@@ -507,15 +507,15 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
   // private
   getDropPoint : function(e, n, dd) {
     if (n == this.ms.fs.body.dom) {
-      return "below";
+      return 'below';
     }
     var t = Ext.lib.Dom.getY(n), b = t + n.offsetHeight;
     var c = t + (b - t) / 2;
     var y = Ext.lib.Event.getPageY(e);
     if (y <= c) {
-      return "above";
+      return 'above';
     } else {
-      return "below";
+      return 'below';
     }
   },
 
@@ -528,10 +528,10 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
     if (d == n) {
       return false;
     }
-    if ((pt == "below") && (n.nextSibling == d)) {
+    if ((pt == 'below') && (n.nextSibling == d)) {
       return false;
     }
-    if ((pt == "above") && (n.previousSibling == d)) {
+    if ((pt == 'above') && (n.previousSibling == d)) {
       return false;
     }
     return true;
@@ -548,18 +548,18 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
     var pt = this.getDropPoint(e, n, dd);
     if (this.isValidDropPoint(pt, n, data)) {
       if (this.ms.appendOnly) {
-        return "x-tree-drop-ok-below";
+        return 'x-tree-drop-ok-below';
       }
 
       // set the insert point style on the target node
       if (pt) {
         var targetElClass;
-        if (pt == "above") {
-          dragElClass = n.previousSibling ? "x-tree-drop-ok-between" : "x-tree-drop-ok-above";
-          targetElClass = "x-view-drag-insert-above";
+        if (pt == 'above') {
+          dragElClass = n.previousSibling ? 'x-tree-drop-ok-between' : 'x-tree-drop-ok-above';
+          targetElClass = 'x-view-drag-insert-above';
         } else {
-          dragElClass = n.nextSibling ? "x-tree-drop-ok-between" : "x-tree-drop-ok-below";
-          targetElClass = "x-view-drag-insert-below";
+          dragElClass = n.nextSibling ? 'x-tree-drop-ok-between' : 'x-tree-drop-ok-below';
+          targetElClass = 'x-view-drag-insert-below';
         }
         if (this.lastInsertClass != targetElClass) {
           Ext.fly(n).replaceClass(this.lastInsertClass, targetElClass);
@@ -577,7 +577,7 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
 
   // private
   onNodeDrop : function(n, dd, e, data) {
-    if (this.ms.fireEvent("drop", this, n, dd, e, data) === false) {
+    if (this.ms.fireEvent('drop', this, n, dd, e, data) === false) {
       return false;
     }
     var pt = this.getDropPoint(e, n, dd);
@@ -588,7 +588,7 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
       insertAt = this.view.store.getCount();
     } else {
       insertAt = n == this.ms.fs.body.dom ? this.view.store.getCount() - 1 : this.view.indexOf(n);
-      if (pt == "below") {
+      if (pt == 'below') {
         insertAt++;
       }
     }
@@ -598,7 +598,7 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
     // Validate if dragging within the same MultiSelect
     if (data.sourceView == this.view) {
       // If the first element to be inserted below is the target node, remove it
-      if (pt == "below") {
+      if (pt == 'below') {
         if (data.viewNodes[0] == n) {
           data.viewNodes.shift();
         }
@@ -640,9 +640,9 @@ Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
   removeDropIndicators : function(n) {
     if (n) {
       Ext.fly(n).removeClass([
-        "x-view-drag-insert-above", "x-view-drag-insert-left", "x-view-drag-insert-right", "x-view-drag-insert-below"
+        'x-view-drag-insert-above', 'x-view-drag-insert-left', 'x-view-drag-insert-right', 'x-view-drag-insert-below'
       ]);
-      this.lastInsertClass = "_noclass";
+      this.lastInsertClass = '_noclass';
     }
   },
 

@@ -1,4 +1,17 @@
-/* whitespace normal for grids using formatLongstring renderer */
+/* white-space: normal; for grids using formatLongstring renderer */
 .x-grid3-cell-wrap .x-grid3-cell-inner {
 	white-space: normal;
+}
+
+/* .x-form-item-required for 'required' under field label */
+.x-form-item-required label.x-form-item-label {
+  padding: 0px 3px 0px 0px;
+  line-height: 11px;
+}
+.x-form-item-required .x-form-item-label em {
+  display: block;
+  color: #933 !important;
+  font-weight: bold !important;
+  font-size: 65%;
+  text-transform: uppercase;
 }
