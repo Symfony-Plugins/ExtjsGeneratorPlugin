@@ -20,6 +20,7 @@ Ext.ux.form.IsEmptyCheckbox = Ext.extend(Ext.form.Checkbox, {
         tag : 'label',
         htmlFor : this.el.id,
         cls : 'x-form-cb-label',
+        style: 'color: #808080;',
         html : this.boxLabel
       });
     }
