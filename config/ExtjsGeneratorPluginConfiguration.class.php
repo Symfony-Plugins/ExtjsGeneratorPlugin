@@ -50,6 +50,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr.js',  // icon manager extension.  goes first so we can use it anywhere
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants           
       '/ExtjsGeneratorPlugin/js/Ext.form.TextField.override.js',  //adds reset event
+      '/ExtjsGeneratorPlugin/js/Ext.form.Hidden.override.js',  //disables reset method
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.form.Field.override.js',  //adds support for required config
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ComboBox.plugin.ComboListAutoSizer.js',

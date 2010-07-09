@@ -327,6 +327,46 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
 
     return array('NONE' => $fields);
   }
+  
+  public function getFormFilterFields(sfForm $form)
+  {
+    $config = $this->getConfig();
+
+    if ($this->getFilterDisplay())
+    {
+      $fields = array();
+      foreach ($this->getFilterDisplay() as $name)
+      {
+        list($name, $flag) = ExtjsModelGeneratorConfigurationField::splitFieldWithFlag($name);
+        if (!isset($this->configuration['filter']['fields'][$name]))
+        {
+          $this->configuration['filter']['fields'][$name] = new ExtjsModelGeneratorConfigurationField($name, array_merge(
+            isset($config['default'][$name]) ? $config['default'][$name] : array(),
+            isset($config['filter'][$name]) ? $config['filter'][$name] : array(),
+            array('is_real' => false, 'type' => 'Text', 'flag' => $flag)
+          ));
+        }
+        $field = $this->configuration['filter']['fields'][$name];
+        $field->setFlag($flag);
+        $fields[$name] = $field;
+      }
+
+      return $fields;
+    }
+
+    $fields = array();
+    foreach ($form->getWidgetSchema()->getPositions() as $name)
+    {
+      $fields[$name] = new ExtjsModelGeneratorConfigurationField($name, array_merge(
+        array('type' => 'Text'),
+        isset($config['default'][$name]) ? $config['default'][$name] : array(),
+        isset($config['filter'][$name]) ? $config['filter'][$name] : array(),
+        array('is_real' => false)
+      ));
+    }
+
+    return $fields;
+  }
 
   protected function parseVariables($context, $key)
   {

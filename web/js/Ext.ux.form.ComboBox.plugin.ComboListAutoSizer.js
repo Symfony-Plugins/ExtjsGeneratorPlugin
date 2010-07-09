@@ -7,7 +7,7 @@ Ext.ux.form.ComboBox.plugin.ComboListAutoSizer = (function() {
     var textMetrics = Ext.util.TextMetrics.createInstance(itemEl);
     var autoWidth = Math.max(combo.minListWidth, combo.getWidth());
     combo.getStore().each(function(record) {
-      autoWidth = Math.max(autoWidth, textMetrics.getWidth(record.get(combo.displayField)) + 10);
+      autoWidth = Math.max(autoWidth, textMetrics.getWidth(record.get(combo.displayField)) + 25);
     });
     combo.list.setWidth(autoWidth);
     combo.innerList.setWidth(autoWidth - combo.list.getFrameWidth('lr'));
@@ -30,3 +30,5 @@ Ext.ux.form.ComboBox.plugin.ComboListAutoSizer = (function() {
     }
   };
 })();
+
+Ext.preg('comboListAutoSizer', Ext.ux.form.ComboBox.plugin.ComboListAutoSizer);

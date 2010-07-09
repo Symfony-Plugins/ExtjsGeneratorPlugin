@@ -33,7 +33,9 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
    */
   protected function configure($options = array(), $attributes = array())
   {
+    $this->addOption('context', 'form');
     $this->addRequiredOption('type');
+    $this->addOption('defaultValue', false);
   }
 
   /**
@@ -52,7 +54,8 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
       'name' => $name
     );
     
-    if($value) $configArr['value'] = $value;
+    if($value) $configArr['value'] = (string)(($value) ? $value : $this->getOption('defaultValue'));
+    if($this->getOption('defaultValue')) $configArr['defaultValue'] = $this->getOption('defaultValue');
     
     if(isset($attributes['help']))
     {
@@ -70,6 +73,6 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
 
     if($this->getOption('type') == 'Checkbox') $configArr['inputValue'] = 'true';
 
-    return $this->renderExtjsContentBlock('form', $this->getOption('type'), array_merge($configArr, $attributes));
+    return $this->renderExtjsContentBlock($this->getOption('context'), $this->getOption('type'), array_merge($configArr, $attributes));
   }
 }

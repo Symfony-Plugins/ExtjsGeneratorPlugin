@@ -831,7 +831,18 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
                 'forceSelection' => false
               );
             }
-          }         
+          }
+
+          //hidden fields
+          if($field->isInvisible())
+          {
+            $widgetConfig['class'] = 'ExtjsWidgetFormInputHidden';
+            unset($widgetConfig['options']);
+            if($widgetOptions = $field->getConfig('widgetOptions', false) && isset($widgetOptions['defaultvalue']))
+            {
+              $widgetConfig['options']['defaultValue'] = $widgetOptions['defaultValue'];
+            } 
+          }
           
           if($widgetConfig)
           {

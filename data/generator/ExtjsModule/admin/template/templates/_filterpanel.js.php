@@ -40,8 +40,8 @@ $filterpanel->config_array['buttons'] = array(
 
 foreach ($configuration->getFormFilterFields($filters) as $name => $field)
 {
-  if ((isset($filters[$name]) && $filters[$name]->isHidden()) || (!isset($filters[$name]) && $field->isReal())) continue;
-  //if (!isset($filters[$name]) || $filters[$name]->isHidden()) continue;
+  //if ((isset($filters[$name]) && $filters[$name]->isHidden()) || (!isset($filters[$name]) && $field->isReal())) continue;
+  if (!isset($filters[$name])) continue;
 
   $attributes = array_merge(array(
     'help' => $field->getConfig('help'),
