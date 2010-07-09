@@ -513,7 +513,7 @@ EOF;
 
       case 'reload':
         $configArr['icon'] = 'page_white_refresh_arrows';
-        $hide_when_new = true;
+        $configArr['hideWhenNew'] = true;
         break;
 
       case 'save':
@@ -525,12 +525,12 @@ EOF;
         $configArr['icon'] = 'page_white_add';
         $configArr['name'] = 'Save as New';
         $type = 'submit';
-        $hide_when_new = true;
+        $configArr['hideWhenNew'] = true;
         break;
 
       case 'delete':
         $configArr['icon'] = 'page_white_delete';
-        $hide_when_new = true;
+        $configArr['hideWhenNew'] = true;
         break;
 
     }
@@ -554,6 +554,7 @@ EOF;
 
     // no default help
     if(isset($configArr['help'])) $configStr .= "  'tooltip' => '{$configArr['help']}',";
+    if(isset($configArr['hideWhenNew'])) $configStr .= "  'hideWhenNew' => '{$configArr['hideWhenNew']}',";
     return $configStr . "\n);";
   }
 

@@ -296,7 +296,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
           isset($config['default'][$key]) ? $config['default'][$key] : array(),
           isset($config['form'][$key]) ? $config['form'][$key] : array(),
           isset($config[$context][$key]) ? $config[$context][$key] : array(),
-          array('is_real' => false, 'flag' => '+')
+          array('is_real' => false, 'flag' => '+', 'attributes' => array('dataIndex' => 'primary_key'))
         ));
       }
 
@@ -306,7 +306,6 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
           array('type' => 'Text'),
           isset($config['default'][$csrfToken]) ? $config['default'][$csrfToken] : array(),
           isset($config['form'][$csrfToken]) ? $config['form'][$csrfToken] : array(),
-          isset($config[$context][$csrfToken]) ? $config[$context][$csrfToken] : array(),
           array('is_real' => false, 'flag' => '+')
         ));
       }

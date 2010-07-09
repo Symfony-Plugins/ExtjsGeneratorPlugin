@@ -2,14 +2,14 @@
 // updateButtonsVisibility
 $formpanel->methods['updateButtonsVisibility'] = $sfExtjs3Plugin->asMethod("
   // hide delete button when new item
-  if (this.topToolbar)
+  if (this.topToolbar && typeof this.topToolbar.items != 'undefined')
   {
     var len;
-    var topToolbar = (typeof this.topToolbar.items != 'undefined')?this.topToolbar.items.items:this.topToolbar;
-    for(var i = 0, len = topToolbar.length; i < len; i++)
+    var buttons = this.topToolbar.items.items;
+    for(var i = 0, len = buttons.length; i < len; i++)
     {
-      var button = topToolbar[i];
-      if((typeof button.hide_when_new!='undefined') && button.hide_when_new)
+      var button = buttons[i];
+      if(button.hideWhenNew)
       {
         if(typeof button.rendered == 'undefined')
         {

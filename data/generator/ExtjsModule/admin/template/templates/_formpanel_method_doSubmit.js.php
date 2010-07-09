@@ -26,10 +26,11 @@ $formpanel->methods['doSubmit'] = $sfExtjs3Plugin->asMethod(array(
     // add key to url if key is set to an existing primary-key and submitnew
     // isn't set
     if(!this.isNew()&& typeof submitnew == 'undefined'){
-      url_key ='/'+this.key;
+      url_key ='/'+this.key;      
       params['action'] = 'update';
       params['sf_method'] = 'put';
     } else {
+      this.form.findField('primary_key').setDisabled(true);
       params['action'] = 'create';
     }
 

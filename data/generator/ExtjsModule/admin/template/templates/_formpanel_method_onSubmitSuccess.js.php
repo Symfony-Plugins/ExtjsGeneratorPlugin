@@ -7,13 +7,14 @@ $formpanel->methods['onSubmitSuccess'] = $sfExtjs3Plugin->asMethod(array(
   this.setTitle(action.result.title);
   
   // clean dirty form
-  if (this.trackResetOnLoad){
-    form.items.each(function (f){
-      f.originalValue = f.getValue();
-    });
-  }
+  //if (this.trackResetOnLoad){
+  //  form.items.each(function (f){
+  //    f.originalValue = f.getValue();
+  //  });
+  //}
 
   this.updateButtonsVisibility();
+  this.form.findField('primary_key').setDisabled(false);
 
   this.fireEvent('saved', this);
     

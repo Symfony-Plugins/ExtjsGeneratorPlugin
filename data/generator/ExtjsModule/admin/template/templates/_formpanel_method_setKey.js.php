@@ -6,6 +6,7 @@ $formpanel->methods['setKey'] = $sfExtjs3Plugin->asMethod(array(
   var old_key = this.key;
   if (old_key != key)
   {
+    this.form.findField('primary_key').setValue(key);
     this.key = key;
     this.fireEvent('keychange', this.key, old_key, this);
   }

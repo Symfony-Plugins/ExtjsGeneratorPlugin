@@ -134,7 +134,7 @@ abstract class BaseExtjs<?php echo $this->table->getClassname() ?>Form extends B
 
     if (is_null($<?php echo $oneToOne->getName() ?> = $this->getRelatedObject('get<?php echo $oneToOne->getName() ?>')))
     {
-      $<?php echo $oneToOne->getName() ?> = new <?php echo $oneToOne->getName() ?>();
+      $<?php echo $oneToOne->getName() ?> = new <?php echo $oneToOne->getRightTable()->getPhpName() ?>();
     }
     $values = $this->getValues();
 <?php foreach($oneToOne->getLocalTable()->getPrimaryKeys() as $primaryKey): ?>      
