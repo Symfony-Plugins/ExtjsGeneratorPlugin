@@ -1,37 +1,6 @@
 <?php
-
-/*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-/**
- * sfFormFilterPropel is the base class for filter forms based on Propel objects.
- *
- * @package    symfony
- * @subpackage form
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFormFilterPropel.class.php 23018 2009-10-13 22:44:18Z Kris.Wallsmith $
- */
-abstract class ExtjsFormFilterPropel extends sfFormFilter
+abstract class ExtjsFormFilterPropel extends sfFormFilterPropel
 {
-
-  /**
-   * Returns the current model name.
-   *
-   * @return string The model class name
-   */
-  abstract public function getModelName();
-
-  /**
-   * Returns the fields and their filter type.
-   *
-   * @return array An array of fields with their filter type
-   */
-  abstract public function getFields();
 
   /**
    * Returns the fields and their foreign query method.
@@ -39,82 +8,6 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
    * @return array An array of fields with their foreign query method
    */
   abstract public function getForeignColumnQueries();
-
-  /**
-   * Returns a Propel Criteria based on the current values form the form.
-   *
-   * @return Criteria A Propel Criteria object
-   */
-  public function getCriteria()
-  {
-    if(! $this->isValid())
-    {
-      throw $this->getErrorSchema();
-    }
-
-    return $this->buildCriteria($this->getValues());
-  }
-
-  /**
-   * Processes cleaned up values with user defined methods.
-   *
-   * To process a value before it is used by the buildCriteria() method,
-   * you need to define an convertXXXValue() method where XXX is the PHP name
-   * of the column.
-   *
-   * The method must return the processed value or false to remove the value
-   * from the array of cleaned up values.
-   *
-   * @param  array An array of cleaned up values to process
-   *
-   * @return array An array of cleaned up values processed by the user defined methods
-   */
-  public function processValues($values)
-  {
-    // see if the user has overridden some column setter
-    $originalValues = $values;
-    foreach($originalValues as $field => $value)
-    {
-      try
-      {
-        $method = sprintf('convert%sValue', call_user_func(array(
-          constant($this->getModelName() . '::PEER'),
-          'translateFieldName'
-        ), $field, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_PHPNAME));
-      }
-      catch(Exception $e)
-      {
-        // no a "real" column of this object
-        continue;
-      }
-
-      if(method_exists($this, $method))
-      {
-        if(false === $ret = $this->$method($value))
-        {
-          unset($values[$field]);
-        }
-        else
-        {
-          $values[$field] = $ret;
-        }
-      }
-    }
-
-    return $values;
-  }
-
-  /**
-   * Builds a Propel Criteria based on the passed values.
-   *
-   * @param  array    An array of parameters to build the Criteria object
-   *
-   * @return Criteria A Propel Criteria object
-   */
-  public function buildCriteria(array $values)
-  {
-    return $this->doBuildCriteria($this->processValues($values));
-  }
 
   /**
    * Builds a Propel Criteria with processed values.
@@ -130,25 +23,25 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   {
     $criteria = PropelQuery::from($this->getModelName());
     $peer = $criteria->getModelPeerName();
-
+    
     $fields = $this->getFields();
     $foreignQueries = $this->getForeignColumnQueries();
-
+    
     // add those fields that are not represented in getFields() with a null type
     $names = array_merge($fields, array_diff(array_keys($this->validatorSchema->getFields()), array_keys($fields)));
     $fields = array_merge($fields, array_combine($names, array_fill(0, count($names), null)));
-
+    
     foreach($fields as $field => $type)
     {
       if(! isset($values[$field]) || null === $values[$field] || '' === $values[$field])
       {
         continue;
       }
-
+      
       try
       {
         $ucField = call_user_func(array(
-          $peer,
+          $peer, 
           'translateFieldName'
         ), $field, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_PHPNAME);
         $isReal = true;
@@ -158,7 +51,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
         $ucField = self::camelize($field);
         $isReal = false;
       }
-
+      
       if(isset($foreignQueries[$field]) && method_exists($this, $method = sprintf('add%sCriteria', $type)))
       {
         $foreignCriteria = $criteria->$foreignQueries[$field]();
@@ -184,7 +77,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
       {
         $columnParams = ExtjsGeneratorUtil::getColumnParams($field, $this->getModelName());
         $foreignQueryMethod = sprintf('use%sQuery', $columnParams['relation_name']);
-        if(! method_exists($this, $method = sprintf('add%sCriteria', $columnParams['type'])) ||! method_exists($criteria, $foreignQueryMethod) || !isset($columnParams['relation_name']))
+        if(! method_exists($this, $method = sprintf('add%sCriteria', $columnParams['type'])) || ! method_exists($criteria, $foreignQueryMethod) || ! isset($columnParams['relation_name']))
         {
           throw new LogicException(sprintf('You must define a "%s" method in the %s class to be able to filter with the "%s" field.', sprintf('filterBy%s', $ucField), get_class($criteria), $field));
         }
@@ -193,31 +86,31 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
         $criteria = $foreignCriteria->endUse();
       }
     }
-
+    
     return $criteria;
   }
 
   protected function addForeignKeyCriteria(Criteria $criteria, $field, $value)
   {
     $colname = $this->getColumnName($field, $criteria->getModelName());
-
+    
     if(is_array($value) && isset($value['is_empty']) && $value['is_empty'])
     {
       $criterion = $criteria->getNewCriterion($colname, '');
       $criterion->addOr($criteria->getNewCriterion($colname, null, Criteria::ISNULL));
       $criteria->add($criterion);
-    } 
+    }
     else if(is_array($value))
     {
       $values = $value;
       $value = array_pop($values);
       $criterion = $criteria->getNewCriterion($colname, $value);
-
+      
       foreach($values as $value)
       {
         $criterion->addOr($criteria->getNewCriterion($colname, $value));
       }
-
+      
       $criteria->add($criterion);
     }
     else
@@ -229,7 +122,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   protected function addTextCriteria(Criteria $criteria, $field, $values)
   {
     $colname = $this->getColumnName($field, $criteria->getModelName());
-
+    
     if(is_array($values) && isset($values['is_empty']) && $values['is_empty'])
     {
       $criterion = $criteria->getNewCriterion($colname, '');
@@ -249,7 +142,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   protected function addNumberCriteria(Criteria $criteria, $field, $values)
   {
     $colname = $this->getColumnName($field, $criteria->getModelName());
-
+    
     if(is_array($values) && isset($values['is_empty']) && $values['is_empty'])
     {
       $criterion = $criteria->getNewCriterion($colname, '');
@@ -274,7 +167,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   protected function addDateCriteria(Criteria $criteria, $field, $values)
   {
     $colname = $this->getColumnName($field, $criteria->getModelName());
-
+    
     if(isset($values['is_empty']) && $values['is_empty'])
     {
       $criteria->add($colname, null, Criteria::ISNULL);
@@ -295,7 +188,7 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
       {
         $criterion = $criteria->getNewCriterion($colname, $values['to'], Criteria::LESS_EQUAL);
       }
-
+      
       if(null !== $criterion)
       {
         $criteria->add($criterion);
@@ -306,16 +199,8 @@ abstract class ExtjsFormFilterPropel extends sfFormFilter
   protected function getColumnName($field, $model)
   {
     return call_user_func(array(
-      constant($model . '::PEER'),
+      constant($model . '::PEER'), 
       'translateFieldName'
     ), $field, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
-  }
-
-  protected function camelize($text)
-  {
-    return sfToolkit::pregtr($text, array(
-      '#/(.?)#e' => "'::'.strtoupper('\\1')",
-      '/(^|_|-)+(.)/e' => "strtoupper('\\2')"
-    ));
   }
 }
