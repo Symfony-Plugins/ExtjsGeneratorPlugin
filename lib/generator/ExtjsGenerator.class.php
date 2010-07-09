@@ -837,11 +837,14 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
           if($field->isInvisible())
           {
             $widgetConfig['class'] = 'ExtjsWidgetFormInputHidden';
-            unset($widgetConfig['options']);
-            if($widgetOptions = $field->getConfig('widgetOptions', false) && isset($widgetOptions['defaultvalue']))
+            if(isset($widgetConfig['options']['defaultValue']))
             {
-              $widgetConfig['options']['defaultValue'] = $widgetOptions['defaultValue'];
-            } 
+              $widgetConfig['options'] = array('defaultValue' => $widgetConfig['options']['defaultValue']);
+            }
+            else
+            {
+              unset($widgetConfig['options']);
+            }
           }
           
           if($widgetConfig)

@@ -54,8 +54,12 @@ class ExtjsWidgetFormInput extends ExtjsWidgetForm
       'name' => $name
     );
     
-    if($value) $configArr['value'] = (string)(($value) ? $value : $this->getOption('defaultValue'));
-    if($this->getOption('defaultValue')) $configArr['defaultValue'] = $this->getOption('defaultValue');
+    if($value) $configArr['value'] = $value;;
+    if($this->getOption('defaultValue')) 
+    {
+      $configArr['defaultValue'] = $this->getOption('defaultValue');
+      if($value) $value = $this->getOption('defaultValue');
+    }
     
     if(isset($attributes['help']))
     {
