@@ -430,7 +430,7 @@ EOF;
       case 'separator':
       case 'spacer':
       case 'fill':
-        return "\$topToolbar->config_array['items'][] = array('xtype' => 'tbfill');";
+        return "\$topToolbar->config_array['items'][] = array('xtype' => 'tb$realName');";
 
       case 'new':
         $configArr['icon'] = 'table_row_insert';
@@ -504,7 +504,7 @@ EOF;
       case 'separator':
       case 'spacer':
       case 'fill':
-        return "\$formpanel->config_array['tbar'][] = array('xtype' => 'tbfill');";
+        return "\$formpanel->config_array['tbar'][] = array('xtype' => 'tb$realName');";
 
       case 'cancel':
         $configArr['name'] = 'Close/Cancel';

@@ -133,7 +133,7 @@ $this->createPartialFile('_listaction_'.$name, <<<EOT
 \$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
 */
 \$configArr["source"] = "
-  Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_listaction_$actionName.js.php\" from cache to your application/modules/'.strtolower(\$this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');
+  Ext.Msg.alert('Error','handler_function is not defined!<br><br>Copy the template \"_listaction_$name.js.php\" from cache to your application/modules/{$this->getModuleName()}/templates folder and alter it or define the \"handler_function\" in your generator.yml file');
 ";
 \$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
 ?>
@@ -141,6 +141,8 @@ EOT
 
 );
 ?>
+include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar));
+
 <?php endif; ?>
 <?php if(in_array($name, array('_new', '_export'))): ?>
 include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar));

@@ -42,7 +42,7 @@ $this->createPartialFile('_editaction_'.$name, <<<EOT
 \$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
 */
 \$configArr["source"] = "
-  Ext.Msg.alert(\'Error\',\'handler_function is not defined!<br><br>Copy the template \"_editaction_$actionName.js.php\" from cache to your application/modules/'.strtolower(\$this->getModuleName()).'/templates folder and alter it or define the \"handler_function\" in your generator.yml file\');
+  Ext.Msg.alert('Error','handler_function is not defined!<br><br>Copy the template \"_editaction_$name.js.php\" from cache to your application/modules/{$this->getModuleName()}/templates folder and alter it or define the \"handler_function\" in your generator.yml file');
 ";
 \$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
 ?>
@@ -50,10 +50,12 @@ EOT
 
 );
 ?>
+include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
+
 <?php endif; ?>
 <?php if(in_array($name, array('_reload', '_save', '_savenew', '_delete', '_cancel'))): ?>
-
 include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
+
 <?php endif; ?>
 <?php echo $this->addCredentialCondition($this->getEditActionButton($name, $params), $params)."\n" ?>
 <?php endforeach; ?>
