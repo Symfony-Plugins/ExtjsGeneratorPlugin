@@ -38,7 +38,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
     this.on({
       select : {
         fn : function() {
-          if (this.submitOnSelect && this.getValue() && this.ownerCt && this.ownerCt.buttons) {
+          if (this.submitOnSelect && this.ownerCt && this.ownerCt.buttons) {
             this.ownerCt.buttons[0].handler.call(this.ownerCt);
           }
         },
