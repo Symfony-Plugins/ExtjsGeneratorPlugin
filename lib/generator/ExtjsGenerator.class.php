@@ -210,7 +210,7 @@ class ExtjsGenerator extends sfPropelGenerator
     if(isset($form))
     {
       $fieldArr['mapping'] = $field->getName();
-      $fieldArr['name'] = sprintf($form[$field->getName()]->getParent()->getWidget()->getNameFormat(), $field->getName());
+      $fieldArr['name'] = sprintf($form->getWidgetSchema()->getOption('name_format'), $field->getName());
       if($fieldArr['type'] == 'date') $fieldArr['dateFormat'] = 'Y-m-d H:i:s';
     }
 
@@ -437,7 +437,7 @@ EOF;
         $configArr['name'] = 'New';
         $configArr['help'] = 'Create a new record';
         break;
-       
+
       case 'export':
         $configArr['icon'] = 'page_white_csv';
         $configArr['name'] = 'CSV Export';
@@ -572,9 +572,9 @@ EOF;
       {
         if($partial[0] == '_') $partial = substr($partial, 1);
         $partialStr .= "include_partial('" . $partial . "', array('sfExtjs3Plugin' => \$sfExtjs3Plugin, '$objName' => \$$objName, 'className' => \$className));\n";
-        
+
         $partialContent = <<<EOF
-<?php 
+<?php
 // @object \$sfExtjs3Plugin string \$className and @object $$objName provided
 /*
 *** Method example with no parameters
@@ -594,9 +594,9 @@ EOF;
   //variable creation or string
 ");
 */
-?>        
+?>
 EOF;
-        
+
         $this->createPartialFile('_' . $partial, $partialContent);
       }
     }
@@ -712,7 +712,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $customization = '';
     $form = $this->configuration->getForm(); // fallback field definition
-    
+
     //add active_one_to_one_relations array to the form from with in generator
     if($this->configuration->getWiths() && $view != 'filter')
     {
@@ -728,8 +728,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         }
       }
       if(count($withs)) $customization .= sprintf("    \$this->%s->active_one_to_one_relations = %s;\n", $formVariableName, $this->asPhp($withs));
-    }  
-    
+    }
+
     $defaultFieldNames = array_keys($form->getWidgetSchema()->getFields());
     $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
     $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);
@@ -809,20 +809,20 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
               $widgetConfig['attributes'] = $widgetAttributes;
             }
           }
-          
+
           // custom combo config option for local
           if($field->getConfig('combo', false))
           {
             if(!isset($widgetConfig['class']))
             {
               $widgetConfig['class'] = 'ExtjsWidgetFormPropelChoice';
-            }            
-            
+            }
+
             $options = array(
               'model' => $field->getConfig('model'),
               'group_by' => $field->getConfig('php_name')
             );
-            
+
             $widgetConfig['options'] = (isset($widgetConfig['options'])) ? array_merge($options, $widgetConfig['options']) : $options;
 
             if(!isset($widgetConfig['attributes']))
@@ -846,7 +846,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
               unset($widgetConfig['options']);
             }
           }
-          
+
           if($widgetConfig)
           {
             $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
