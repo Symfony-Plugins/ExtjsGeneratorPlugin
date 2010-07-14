@@ -77,7 +77,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
       'key_method' => $this->getOption('key_method'),
       'order_by' => $this->getOption('order_by'),
       'group_by' => $this->getOption('group_by'),
-      'query_methods' => $this->getOption('query_methods'),
+      'query_methods' => json_encode($this->getOption('query_methods')),
       'criteria' => $this->getOption('criteria'),
       'connection' => $this->getOption('connection'),
       'multiple' => $this->getOption('multiple')

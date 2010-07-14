@@ -6,7 +6,7 @@ look at _assets.js index.js and fix to properly use route_prefix instead of modu
 getXtype module should support routing and be called with the route instead of the moduleName()
 
 ### forms
-refactor mutliple value handling in ExtjsValidatorPropelChoice.  
+refactor mutliple value handling in ExtjsValidatorPropelChoice.
 - There could be an issue if one of the values should actually have a comma in it
 - should move to sending an array from the form instead
 
@@ -34,7 +34,6 @@ filterpanel support
 displays the value instead of display field when no combo store is loaded
 type ahead filtering not implemented
 no return limit or paging
-support for query_method options not implemented
 
 ### defered
 add ext components not lazy loaded list to app.yml
