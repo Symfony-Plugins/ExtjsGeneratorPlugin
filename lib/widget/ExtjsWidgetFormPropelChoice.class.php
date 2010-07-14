@@ -54,6 +54,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   protected function configure($options = array(), $attributes = array())
   {
     $this->addRequiredOption('model');
+    $this->addOption('php_name', null);
     $this->addOption('add_empty', false);
     $this->addOption('method', '__toString');
     $this->addOption('key_method', 'getPrimaryKey');
@@ -73,6 +74,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   {
     $params = array(
       'model' => $this->getOption('model'),
+      'php_name' => $this->getOption('php_name'),
       'method' => $this->getOption('method'),
       'key_method' => $this->getOption('key_method'),
       'multiple' => $this->getOption('multiple')

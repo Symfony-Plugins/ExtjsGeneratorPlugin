@@ -6,6 +6,7 @@
 
     $widgetConfig = array(
       'model' => $request->getParameter('model'),
+      'php_name' => $request->getParameter('php_name', null),
       'method' => $request->getParameter('method', '__toString'),
       'key_method' => $request->getParameter('key_method', 'getPrimaryKey'),
       'order_by' => $request->getParameter('order_by', null),
@@ -16,10 +17,10 @@
     if(count($widgetConfig['group_by'])) $$widgetConfig['group_by'] = json_decode($widgetConfig['group_by']);
     if(count($widgetConfig['query_methods'])) $$widgetConfig['query_methods'] = json_decode($widgetConfig['query_methods']);
 
-    if($request->getParameter('query', false))
+    if($request->getParameter('query', false) && $request->getParameter('php_name', false))
     {
       $criteria = PropelQuery::from($request->getParameter('model'));
-      $criteria->add($request->getParameter('group_by'), '%' . $request->getParameter('query') . '%', Criteria::LIKE);
+      $criteria->add($request->getParameter('php_name'), '%' . $request->getParameter('query') . '%', Criteria::LIKE);
       $widgetConfig['criteria'] = $criteria;
     }
 

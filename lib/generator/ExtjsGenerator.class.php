@@ -698,7 +698,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
 
       $options = array(
         'model' => $field->getConfig('model'),
-        'group_by' => $field->getConfig('php_name')
+        'group_by' => $field->getConfig('php_name'),
+        'php_name' => $field->getConfig('php_name')
       );
 
       $widgetConfig['options'] = (isset($widgetConfig['options'])) ? array_merge($options, $widgetConfig['options']) : $options;
@@ -762,19 +763,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
     $gen = new $generatorClass($this->getGeneratorManager());
-
     $relationMap = $this->getTableMap()->getRelation($field->getConfig('relation_name'));
-
-//    $relationMap = call_user_func(array(
-//      $field->getConfig('model') . 'Peer',
-//      'getTableMap'
-//    ));
-
-//    if($relationMap->getType() == RelationMap::ONE_TO_MANY)
-//    {
-//      $relationMap->getRightTable()->getPrimaryKeys();
-//    }
-
     $column = $relationMap->getRightTable()->getColumn($field->getConfig('field_name'));
 
     $widgetConfig['class'] = (isset($widgetConfig['class'])) ? $widgetConfig['class'] : $gen->getWidgetClassForColumn($column);
@@ -786,17 +775,12 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
     $gen = new $generatorClass($this->getGeneratorManager());
+    $relationMap = $this->getTableMap()->getRelation($field->getConfig('relation_name'));
+    $column = $relationMap->getRightTable()->getColumn($field->getConfig('field_name'));
 
-    $relationMap = call_user_func(array(
-      $field->getConfig('model') . 'Peer',
-      'getTableMap'
-    ));
-
-    $column = $relationMap->getColumn($field->getConfig('field_name'));
     $validatorConfig['class'] = (isset($validatorConfig['class'])) ? $validatorConfig['class'] : $gen->getValidatorClassForColumn($column);
     $validatorOptions = $gen->getValidatorOptionsForColumn($column);
     if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
-
   }
 
   /**
