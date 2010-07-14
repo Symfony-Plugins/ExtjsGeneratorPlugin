@@ -35,6 +35,7 @@ abstract class ExtjsWidgetFormChoiceBase extends ExtjsWidgetForm
   {
     $this->addRequiredOption('choices');
     $this->addOption('baseParams');
+    $this->addOption('mode', 'remote');
   }
 
   /**

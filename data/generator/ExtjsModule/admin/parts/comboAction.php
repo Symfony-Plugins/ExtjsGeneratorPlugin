@@ -11,9 +11,7 @@
       'order_by' => $request->getParameter('order_by', null),
       'group_by' => $request->getParameter('group_by', null),
       'query_methods' => json_decode($request->getParameter('query_methods', array()), true),
-      //'criteria' => $request->getParameter('criteria', null),
-      //'connection' => $request->getParameter('connection', null),
-      //'multiple' => $request->getParameter('multiple', false),
+      'multiple' => $request->getParameter('multiple', false),
     ));
 
     $options = array();

@@ -71,17 +71,16 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
 
   public function getBaseParams()
   {
-    return array(
+    $params = array(
       'model' => $this->getOption('model'),
       'method' => $this->getOption('method'),
       'key_method' => $this->getOption('key_method'),
-      'order_by' => $this->getOption('order_by'),
-      'group_by' => $this->getOption('group_by'),
-      'query_methods' => json_encode($this->getOption('query_methods')),
-      'criteria' => $this->getOption('criteria'),
-      'connection' => $this->getOption('connection'),
       'multiple' => $this->getOption('multiple')
     );
+    if(is_array($this->getOption('order_by'))) $params['order_by'] = json_encode($this->getOption('order_by'));
+    if(count($this->getOption('query_methods'))) $params['query_methods'] = json_encode($this->getOption('query_methods'));
+    if(!is_null($this->getOption('group_by'))) $params['group_by'] = $this->getOption('group_by');
+    return $params;
   }
 
   /**

@@ -83,6 +83,7 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
     {
       $attributes['multiple'] = 'multiple';
     }
+    if(!isset($attributes['mode'])) $attributes['mode'] = $this->getOption('mode');
 
     return $this->getRenderer()->render($name, $value, $attributes, $errors);
   }

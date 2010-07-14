@@ -59,9 +59,9 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     $values = array_merge(array(
       'is_empty' => false
     ), is_array($value) ? $value : array());
-    
+
     if(is_array($value)) $value = null;
-    
+
     $type = 'TwinComboBox';
     $choices = $this->getChoices();
     if(isset($attributes['multiple']) && $attributes['multiple'] == 'multiple')
@@ -106,7 +106,18 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     }
     else
     {
-      if(isset($attributes['mode']) && $attributes['mode'] == 'remote')
+      if($attributes['mode'] == 'local')
+      {
+        $store = array(
+          'xtype' => 'arraystore',
+          'fields' => array(
+            'value',
+            'display'
+          ),
+          'data' => $this->getOptionsForSelect($value, $choices)
+        );
+      }
+      else
       {
         $store = array(
           'xtype' => 'jsonstore',
@@ -118,20 +129,8 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
           'url' => $attributes['url'],
           'baseParams' => $this->getBaseParams()
         );
-        unset($attributes['url']);
       }
-      else
-      {
-        $attributes['mode'] = 'local';
-        $store = array(
-          'xtype' => 'arraystore',
-          'fields' => array(
-            'value',
-            'display'
-          ),
-          'data' => $this->getOptionsForSelect($value, $choices)
-        );
-      }
+      unset($attributes['url']);
 
       $configArr = array(
         'hiddenName' => $name,
@@ -146,20 +145,20 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'triggerAction' => 'all',
         'mode' => $attributes['mode']
       );
-    } 
+    }
 
     if(isset($attributes['help']) && $this->getOption('context') == 'form')
-    {      
-      $configArr['helpText'] = addslashes($attributes['help']);      
-      
+    {
+      $configArr['helpText'] = addslashes($attributes['help']);
+
       $configArr['plugins'] = array("'fieldHelp'");
       if(isset($attributes['plugins']))
       {
         $configArr['plugins'] = array_merge($configArr['plugins'], $attributes['plugins']);
         unset($attributes['plugins']);
-      }      
+      }
     }
-    
+
     unset($attributes['help']);
 
     return strtr($this->getOption('template'), array(

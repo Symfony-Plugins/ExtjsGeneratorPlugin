@@ -77,10 +77,10 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
     $attributes = array(
       'help' => $field->getConfig('help'),
       'fieldLabel' => addslashes($field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name))),
+      'url' => $this->getModuleName().'/combo.json'
     );
 
     $fieldAttributes = $field->getConfig('attributes', array());
-    if(isset($fieldAttributes['mode']) && $fieldAttributes['mode'] == 'remote') $attributes['url'] = $this->getModuleName().'/combo.json';
     echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $fieldAttributes))), $field->getConfig());
   }
 

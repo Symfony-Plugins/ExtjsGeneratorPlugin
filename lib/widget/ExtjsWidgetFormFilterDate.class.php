@@ -30,6 +30,7 @@ class ExtjsWidgetFormFilterDate extends ExtjsWidgetForm
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%from_date% %to_date% %empty_checkbox%');
+    $this->addOption('context', 'filter');
   }
 
   /**
@@ -53,7 +54,7 @@ class ExtjsWidgetFormFilterDate extends ExtjsWidgetForm
     unset($attributes['fieldLabel']);
 
     return strtr($this->getOption('template'), array(
-      '%from_date%' => $this->renderExtjsContentBlock('filter', 'TwinDateField', array_merge(array(
+      '%from_date%' => $this->renderExtjsContentBlock($this->getOption('context'), 'TwinDateField', array_merge(array(
         'name' => $name . '[from]',
         'value' => $value['from'],
         'labelSeparator' => ':<div style="color: #808080;padding-top:2px;">&nbsp;&nbsp;From:</div>',

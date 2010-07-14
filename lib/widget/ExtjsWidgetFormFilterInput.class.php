@@ -31,7 +31,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
     $this->addOption('with_empty', true);
     $this->addOption('empty_label', 'is empty');
     $this->addOption('template', '%input%  %empty_checkbox%');
-    $this->addOption('context');
+    $this->addOption('context', 'filter');
   }
 
   /**
@@ -52,7 +52,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
     ), is_array($value) ? $value : array());
 
     return strtr($this->getOption('template'), array(
-      '%input%' => $this->renderExtjsContentBlock('filter', $this->getOption('type'), array_merge(array(
+      '%input%' => $this->renderExtjsContentBlock($this->getOption('context'), $this->getOption('type'), array_merge(array(
         'name' => $name . '[text]',
         'value' => $values['text'],
         'listeners' => array(
