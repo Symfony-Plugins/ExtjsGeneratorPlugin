@@ -249,14 +249,14 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
     $withEmpty = $column->isNotNull() && ! $column->isForeignKey() ? array(
       "'with_empty' => false"
     ) : array();
-    
+
     switch($column->getType())
     {
       case PropelColumnTypes::BOOLEAN:
-        $options[] = "'defaultValue' => '', 'allowClear' => false, 'context' => 'filter', 'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no')";
-        break;        
+        $options[] = "'mode' => 'local', 'defaultValue' => '', 'allowClear' => false, 'context' => 'filter', 'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no')";
+        break;
     }
-    
+
     $options = array_merge($options, $withEmpty);
 
     if($column->isForeignKey())
@@ -272,14 +272,14 @@ class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
-  
+
   public function getValidatorClassForColumn(ColumnMap $column)
   {
     if($column->isPrimaryKey() || $column->isForeignKey())
     {
       return 'ExtjsValidatorPropelChoice';
     }
-    
+
     return parent::getValidatorClassForColumn($column);
   }
 }

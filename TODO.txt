@@ -30,7 +30,6 @@ error handling
 - need to show errors on ajax requests and show them in a window
 
 ###remote combos (WIP set attributes.mode.remote to test )
-filterpanel support
 displays the value instead of display field when no combo store is loaded
 type ahead filtering not implemented
 no return limit or paging
