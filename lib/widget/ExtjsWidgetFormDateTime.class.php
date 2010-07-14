@@ -59,28 +59,26 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
    */
   function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    unset($attributes['url']);
+
     $configArr = array(
       'name' => $name
     );
-    
+
     if(isset($attributes['help']))
     {
       $configArr['helpText'] = addslashes($attributes['help']);
-      unset($attributes['help']);
-      
+
       $configArr['plugins'] = array("'fieldHelp'");
       if(isset($attributes['plugins']))
       {
         $configArr['plugins'] = array_merge($configArr['plugins'], $attributes['plugins']);
         unset($attributes['plugins']);
-      }      
+      }
     }
-    
-    if(isset($attributes['help_over']))
-    {
-      
-    }
-    
+
+    unset($attributes['help']);
+
     return $this->renderExtjsContentBlock('form', 'TwinDateField', array_merge($configArr, $attributes));
 
   //    $date = $this->getDateWidget($attributes)->render($name, $value);

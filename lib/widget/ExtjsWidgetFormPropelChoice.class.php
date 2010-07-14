@@ -98,6 +98,7 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     }
 
     $criteria = PropelQuery::from($this->getOption('model'));
+    $criteria->limit(100);
 
     if($this->getOption('criteria'))
     {

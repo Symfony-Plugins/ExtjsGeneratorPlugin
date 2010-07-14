@@ -32,57 +32,57 @@ class ExtjsGenerator extends sfPropelGenerator
     $fields = array();
 
     $names = array();
-    foreach($this->getTableMap()->getColumns() as $column)
+    foreach ($this->getTableMap()->getColumns() as $column)
     {
       $name = $this->translateColumnName($column);
       $names[] = $name;
       $fields[$name] = array_merge(array(
-        'is_link' => (boolean)$column->isPrimaryKey(),
-        'is_real' => true,
-        'getter' => 'get' . $column->getPhpName(),
-        'model' => $column->getTable()->getPhpName(),
-        'php_name' => $column->getPhpName(),
+        'is_link'    => (boolean) $column->isPrimaryKey(),
+        'is_real'    => true,
+        'getter'     => 'get' . $column->getPhpName(),
+        'model'      => $column->getTable()->getPhpName(),
+        'php_name'   => $column->getPhpName(),
         'field_name' => $name,
-        'type' => $this->getType($column)
+        'type'       => $this->getType($column)
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 
-    foreach($this->getManyToManyTables() as $tables)
+    foreach ($this->getManyToManyTables() as $tables)
     {
       $name = sfInflector::underscore($tables['middleTable']->getClassname()) . '_list';
       $names[] = $name;
       $fields[$name] = array_merge(array(
         'is_link' => false,
         'is_real' => false,
-        'type' => 'Text'
+        'type'    => 'Text'
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 
-    foreach($this->getOneToOneTables() as $oneToOne)
+    foreach ($this->getOneToOneTables() as $oneToOne)
     {
-      foreach($oneToOne->getLocalTable()->getColumns() as $column)
+      foreach ($oneToOne->getLocalTable()->getColumns() as $column)
       {
         $name = $this->translateColumnName($column);
         $names[] = $name;
         $fields[$name] = array_merge(array(
-          'is_link' => (boolean)$column->isPrimaryKey(),
-          'is_real' => true,
-          'getter' => sprintf('get%s()->get%s', $oneToOne->getName(), $column->getPhpName()),
-          'model' => $column->getTable()->getPhpName(),
-          'php_name' => $column->getPhpName(),
-          'field_name' => $name,
+          'is_link'       => (boolean) $column->isPrimaryKey(),
+          'is_real'       => true,
+          'getter'        => sprintf('get%s()->get%s', $oneToOne->getName(), $column->getPhpName()),
+          'model'         => $column->getTable()->getPhpName(),
+          'php_name'      => $column->getPhpName(),
+          'field_name'    => $name,
           'relation_name' => $oneToOne->getName(),
-          'sort_method' => sprintf('orderBy%s.%s', $oneToOne->getName(), $column->getPhpName()),
-          'type' => $this->getType($column)
+          'sort_method'   => sprintf('orderBy%s.%s', $oneToOne->getName(), $column->getPhpName()),
+          'type'          => $this->getType($column)
         ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
       }
     }
 
-    if(isset($this->config['fields']))
+    if (isset($this->config['fields']))
     {
-      foreach($this->config['fields'] as $name => $params)
+      foreach ($this->config['fields'] as $name => $params)
       {
-        if(in_array($name, $names))
+        if (in_array($name, $names))
         {
           continue;
         }
@@ -104,9 +104,9 @@ class ExtjsGenerator extends sfPropelGenerator
   public function getOneToOneTables()
   {
     $tables = array();
-    foreach($this->getTableMap()->getRelations() as $relation)
+    foreach ($this->getTableMap()->getRelations() as $relation)
     {
-      if($relation->getType() == RelationMap::ONE_TO_ONE)
+      if ($relation->getType() == RelationMap::ONE_TO_ONE)
       {
         $tables[] = $relation;
       }
@@ -125,10 +125,10 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function getColumnGetter($column, $developed = false, $prefix = '', $modelClass = null)
   {
-    if(!$modelClass) $modelClass = $this->getSingularName();
+    if (!$modelClass) $modelClass = $this->getSingularName();
     $defaults = $this->configuration->getFieldsDefault();
 
-    if(isset($defaults[$column]))
+    if (isset($defaults[$column]))
     {
       $getter = $defaults[$column]['getter'];
     }
@@ -138,22 +138,21 @@ class ExtjsGenerator extends sfPropelGenerator
       $getter = $params['getter'];
     }
 
-    if(! $developed)
+    if (!$developed)
     {
       return $getter;
     }
 
-    if(strpos($getter,'()->'))
+    if (strpos($getter, '()->'))
     {
       $relatedGetters = explode('->', $getter);
-      for($i = 0; $i < count($relatedGetters); $i++)
+      for ($i = 0; $i < count($relatedGetters); $i++)
       {
-        $relatedGetters[$i] = ($i == 0) ? $relatedGetters[$i] : $relatedGetters[$i-1] . '->' .$relatedGetters[$i];
+        $relatedGetters[$i] = ($i == 0) ? $relatedGetters[$i] : $relatedGetters[$i - 1] . '->' . $relatedGetters[$i];
       }
 
       $getter = sprintf('$%s->%s()', $modelClass, array_pop($relatedGetters));
-      $relatedCheck = implode(sprintf(') && is_object($%s->',$modelClass), $relatedGetters);
-
+      $relatedCheck = implode(sprintf(') && is_object($%s->', $modelClass), $relatedGetters);
 
       return sprintf("(is_object(\$%s->%s)) ? %s : ''", $modelClass, $relatedCheck, $getter);
     }
@@ -172,7 +171,7 @@ class ExtjsGenerator extends sfPropelGenerator
   {
     $html = $this->getColumnGetter($field->getName(), true);
 
-    if($renderer = $field->getRenderer())
+    if ($renderer = $field->getRenderer())
     {
       $html = sprintf("$html !== null ? call_user_func_array(%s, array_merge(array(%s), %s)) : ''", $this->asPhp($renderer), $html, $this->asPhp($field->getRendererArguments()));
     }
@@ -183,7 +182,7 @@ class ExtjsGenerator extends sfPropelGenerator
     //    {
     //      return sprintf("get_partial('%s/%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
     //    }
-    if('Date' == $field->getType())
+    if ('Date' == $field->getType())
     {
       $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : ''", $html, $field->getConfig('date_format', 'f'));
     }
@@ -200,18 +199,18 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderJsonReaderField(ExtjsModelGeneratorConfigurationField $field, $form = null)
   {
-    if($field->isComponent() || $field->isPartial() || $field->getKey() == 'expander' || $field->getKey() == 'object_actions') return false;
+    if ($field->isComponent() || $field->isPartial() || $field->getKey() == 'expander' || $field->getKey() == 'object_actions') return false;
 
     $fieldArr = array(
       'name' => $field->getName(),
       'type' => $field->getReaderFieldType()
     );
 
-    if(isset($form))
+    if (isset($form))
     {
       $fieldArr['mapping'] = $field->getName();
       $fieldArr['name'] = sprintf($form->getWidgetSchema()->getOption('name_format'), $field->getName());
-      if($fieldArr['type'] == 'date') $fieldArr['dateFormat'] = 'Y-m-d H:i:s';
+      if ($fieldArr['type'] == 'date') $fieldArr['dateFormat'] = 'Y-m-d H:i:s';
     }
 
     return sprintf("\$readerFields[] = %s", $this->asPhp($fieldArr));
@@ -226,18 +225,18 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnModelField($field)
   {
-    if($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
+    if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
 
-    if($field->isPlugin())
+    if ($field->isPlugin())
     {
-      if($field->getKey() == 'expander')
+      if ($field->getKey() == 'expander')
       {
         return sprintf("\$columnModel->config_array['columns'][] = %s", $this->asPhp(array(
           'xtype' => 'rowexpander'
         )));
       }
 
-      if($field->getKey() == 'object_actions')
+      if ($field->getKey() == 'object_actions')
       {
         return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_objectactions'", $this->getModuleName());
       }
@@ -246,11 +245,11 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     $colArr = array(
-      'header' => "[?php echo __('" . addslashes($field->getConfig('label', '', true)) . "', array(), '" . $this->getI18nCatalogue() . "'); ?]",
+      'header'    => "[?php echo __('" . addslashes($field->getConfig('label', '', true)) . "', array(), '" . $this->getI18nCatalogue() . "'); ?]",
       'dataIndex' => $field->getName()
     );
 
-    if($field->getColumnModelRenderer()) $colArr['renderer'] = $field->getColumnModelRenderer();
+    if ($field->getColumnModelRenderer()) $colArr['renderer'] = $field->getColumnModelRenderer();
     return sprintf("\$columnModel->config_array['columns'][] = %s", $this->asPhp(array_merge($colArr, $field->getConfig('config', array()))));
   }
 
@@ -263,18 +262,18 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnModelPlugin($field)
   {
-    if(! $field->isPlugin()) return false;
+    if (!$field->isPlugin()) return false;
 
-    if($field->getKey() == 'object_actions')
+    if ($field->getKey() == 'object_actions')
     {
       return sprintf("\$columnModel->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.create({xtype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
     }
 
     //TODO refactor this to provide il8n support for header
     return sprintf("\$columnModel->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", $field->getName(), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
-      'ptype' => $field->getConfig('plugin'),
+      'ptype'     => $field->getConfig('plugin'),
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
-      'header' => $field->getConfig('label', '', true),
+      'header'    => $field->getConfig('label', '', true),
       'dataIndex' => $field->getName()
     ), $field->getConfig('config', array()))));
   }
@@ -288,7 +287,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderGridPanelPlugin($field)
   {
-    if(! $field->isPlugin()) return false;
+    if (!$field->isPlugin()) return false;
 
     //    if($field->getKey() == 'expander')
     //    {
@@ -297,8 +296,7 @@ class ExtjsGenerator extends sfPropelGenerator
     //      )));
     //    }
 
-
-    if($field->getKey() == 'object_actions')
+    if ($field->getKey() == 'object_actions')
     {
       return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_objectactions'", $this->getModuleName());
     }
@@ -316,7 +314,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function addCredentialCondition($content, $params = array())
   {
-    if(isset($params['credentials']))
+    if (isset($params['credentials']))
     {
       $credentials = $this->asPhp($params['credentials']);
 
@@ -672,6 +670,135 @@ $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);
 $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
   }
 
+  protected function getWidgetConfigForField(ExtjsModelGeneratorConfigurationField $field, $view)
+  {
+    $widgetConfig = array();
+    if(! $widgetConfig = $field->getConfig('widget', array()))
+    {
+      if($widgetClass = $field->getConfig('widgetClass', false))
+      {
+        $widgetConfig['class'] = $widgetClass;
+      }
+      if($widgetOptions = $field->getConfig('widgetOptions', false))
+      {
+        $widgetConfig['options'] = $widgetOptions;
+      }
+      if($widgetAttributes = $field->getConfig('widgetAttributes', false))
+      {
+        $widgetConfig['attributes'] = $widgetAttributes;
+      }
+    }
+
+    if($field->getConfig('combo', false))
+    {
+      if(!isset($widgetConfig['class']))
+      {
+        $widgetConfig['class'] = 'ExtjsWidgetFormPropelChoice';
+      }
+
+      $options = array(
+        'model' => $field->getConfig('model'),
+        'group_by' => $field->getConfig('php_name')
+      );
+
+      $widgetConfig['options'] = (isset($widgetConfig['options'])) ? array_merge($options, $widgetConfig['options']) : $options;
+
+      if(!isset($widgetConfig['attributes']))
+      {
+        $widgetConfig['attributes'] = array(
+          'forceSelection' => false
+        );
+      }
+    }
+
+    if(!isset($widgetConfig['options']) || !is_array($widgetConfig['options'])) $widgetConfig['options'] = array();
+    if(!isset($widgetConfig['attributes']) || !is_array($widgetConfig['attributes'])) $widgetConfig['attributes'] = array();
+
+    if($field->getConfig('relation_name', false) && strpos($field->getName(), '-'))
+    {
+      $this->getWidgetConfigForForeignField($field, $widgetConfig, $view);
+    }
+
+    //hidden fields
+    if($field->isInvisible())
+    {
+      $widgetConfig['class'] = 'ExtjsWidgetFormInputHidden';
+      $widgetConfig['options'] = (isset($widgetConfig['options']['defaultValue'])) ? array('defaultValue' => $widgetConfig['options']['defaultValue']) : array();
+    }
+
+    return $widgetConfig;
+  }
+
+  protected function getValidatorConfigForField(ExtjsModelGeneratorConfigurationField $field, $view)
+  {
+    $validatorConfig = array();
+    if(! $validatorConfig = $field->getConfig('validator', array()))
+    {
+      if($validatorClass = $field->getConfig('validatorClass', false))
+      {
+        $validatorConfig['class'] = $validatorClass;
+      }
+      if($validatorOptions = $field->getConfig('validatorOptions', false))
+      {
+        $validatorConfig['options'] = $validatorOptions;
+      }
+      if($validatorMessages = $field->getConfig('validatorMessages', false))
+      {
+        $validatorConfig['messages'] = $validatorMessages;
+      }
+    }
+    if(!isset($validatorConfig['options']) || !is_array($validatorConfig['options'])) $validatorConfig['options'] = array();
+    if(!isset($validatorConfig['messages']) || !is_array($validatorConfig['messages'])) $validatorConfig['messages'] = array();
+
+    if($field->getConfig('relation_name', false) && strpos($field->getName(), '-'))
+    {
+      $this->getValidatorConfigForForeignField($field, $validatorConfig, $view);
+    }
+
+    return $validatorConfig;
+  }
+
+  protected function getWidgetConfigForForeignField(ExtjsModelGeneratorConfigurationField $field, &$widgetConfig, $view)
+  {
+    $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
+    $gen = new $generatorClass($this->getGeneratorManager());
+
+    $relationMap = $this->getTableMap()->getRelation($field->getConfig('relation_name'));
+
+//    $relationMap = call_user_func(array(
+//      $field->getConfig('model') . 'Peer',
+//      'getTableMap'
+//    ));
+
+//    if($relationMap->getType() == RelationMap::ONE_TO_MANY)
+//    {
+//      $relationMap->getRightTable()->getPrimaryKeys();
+//    }
+
+    $column = $relationMap->getRightTable()->getColumn($field->getConfig('field_name'));
+
+    $widgetConfig['class'] = (isset($widgetConfig['class'])) ? $widgetConfig['class'] : $gen->getWidgetClassForColumn($column);
+    $widgetOptions = $gen->getWidgetOptionsForColumn($column);
+    if(!count($widgetConfig['options']) && $widgetOptions != '') eval("\$widgetConfig['options'] = $widgetOptions;");
+  }
+
+  protected function getValidatorConfigForForeignField(ExtjsModelGeneratorConfigurationField $field, &$validatorConfig, $view)
+  {
+    $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
+    $gen = new $generatorClass($this->getGeneratorManager());
+
+    $relationMap = call_user_func(array(
+      $field->getConfig('model') . 'Peer',
+      'getTableMap'
+    ));
+
+    $column = $relationMap->getColumn($field->getConfig('field_name'));
+    $validatorConfig['class'] = (isset($validatorConfig['class'])) ? $validatorConfig['class'] : $gen->getValidatorClassForColumn($column);
+    $validatorOptions = $gen->getValidatorOptionsForColumn($column);
+    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
+
+  }
+
   /**
    * Get the code to modify a form object based on fields configuration.
    *
@@ -740,179 +867,74 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
     {
       foreach($fields as $fieldName => $field)
       {
-        // one-to-many widget creation
-        if($field->getConfig('relation_name', false) && strpos($fieldName, '-'))
+        // plain widget
+        if($field->getConfig('type', false) == 'plain')
         {
-          $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
-          $gen = new $generatorClass($this->getGeneratorManager());
+          $plainFields[] = $fieldName;
+          $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
+          $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
+        }
 
-          $relationMap = call_user_func(array(
-            $field->getConfig('model') . 'Peer',
-            'getTableMap'
-          ));
+        // widget customization
+        $widgetConfig = $this->getWidgetConfigForField($field, $view);
 
-          $column = $relationMap->getColumn($field->getConfig('field_name'));
-
-          $widgetConfig = array_merge(array(
-            'widgetClass' => $gen->getWidgetClassForColumn($column),
-            'widgetOptions' => $gen->getWidgetOptionsForColumn($column),
-            'validatorClass' => $gen->getValidatorClassForColumn($column),
-            'validatorOptions' => $gen->getValidatorOptionsForColumn($column)
-          ), $field->getConfig('widget', array()));
-
-          // widget creation
-          $widgetOptions = (isset($widgetConfig['widgetOptions']) && $widgetConfig['widgetOptions'] != '') ? $widgetConfig['widgetOptions'] : $this->asPhp(array());
-          $widgetAttributes = (isset($widgetConfig['widgetAttributes'])) ? $widgetConfig['widgetAttributes'] : $this->asPhp(array());
-
-          $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $widgetConfig['widgetClass'], $widgetOptions, $widgetAttributes);
-
-          // validator creation
-          $validatorOptions = (isset($widgetConfig['validatorOptions']) && $widgetConfig['validatorOptions'] != '') ? $widgetConfig['validatorOptions'] : $this->asPhp(array());
-          $validatorMessages = (isset($widgetConfig['validatorMessages'])) ? $widgetConfig['validatorMessages'] : $this->asPhp(array());
-
-          $format = 'new %s(%s, %s)';
-          if(in_array($class = $widgetConfig['widgetClass'], array('sfValidatorInteger', 'sfValidatorNumber')))
+        if(count($widgetConfig))
+        {
+          if(isset($widgetConfig['class']))
           {
-            $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
+            if($view == 'filter') $widgetConfig['options']['context'] = 'filter';
+            $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $widgetConfig['class'], $this->asPhp($widgetConfig['options']), $this->asPhp($widgetConfig['attributes']));
           }
-
-          $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $widgetConfig['validatorClass'], $validatorOptions, $validatorMessages);
-
-          if($view == 'edit' || $view == 'update')
+          else
           {
-            $customization .= sprintf("    \$this->%s->setDefault('%s', %s);\n", $formVariableName, $fieldName, $this->getColumnGetter($fieldName, true, '', 'this->'.$this->getSingularName()));
+            foreach($widgetConfig['options'] as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getWidget('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
+            foreach($widgetConfig['attributes'] as $name => $value)
+            {
+              $customization .= sprintf("    \$this->%s->getWidget('%s')->setAttribute('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
+            }
           }
         }
-        else
+
+        // validator configuration
+        $validatorConfig = $this->getValidatorConfigForField($field, $view);
+
+        if(count($validatorConfig))
         {
-          // plain widget
-          if($field->getConfig('type', false) == 'plain')
+          if(isset($validatorConfig['class']))
           {
-            $plainFields[] = $fieldName;
-            $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
-            $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
-          }
+            $format = 'new %s(%s, %s)';
+            if(in_array($class = $widgetConfig['class'], array('sfValidatorInteger', 'sfValidatorNumber')))
+            {
+              $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
+            }
 
-          // widget customization
-          if(! $widgetConfig = $field->getConfig('widget', array()))
+            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $this->asPhp($validatorConfig['options']), $this->asPhp($validatorConfig['messages']));
+          }
+          else
           {
-            if($widgetClass = $field->getConfig('widgetClass', false))
+            foreach($validatorConfig['options'] as $name => $value)
             {
-              $widgetConfig['class'] = $widgetClass;
+              $customization .= sprintf("    \$this->%s->getValidator('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
             }
-            if($widgetOptions = $field->getConfig('widgetOptions', false))
+            foreach($validatorConfig['messages'] as $name => $value)
             {
-              $widgetConfig['options'] = $widgetOptions;
-            }
-            if($widgetAttributes = $field->getConfig('widgetAttributes', false))
-            {
-              $widgetConfig['attributes'] = $widgetAttributes;
+              $customization .= sprintf("    \$this->%s->getValidator('%s')->setMessage('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
             }
           }
+        }
 
-          // custom combo config option for local
-          if($field->getConfig('combo', false))
-          {
-            if(!isset($widgetConfig['class']))
-            {
-              $widgetConfig['class'] = 'ExtjsWidgetFormPropelChoice';
-            }
-
-            $options = array(
-              'model' => $field->getConfig('model'),
-              'group_by' => $field->getConfig('php_name')
-            );
-
-            $widgetConfig['options'] = (isset($widgetConfig['options'])) ? array_merge($options, $widgetConfig['options']) : $options;
-
-            if(!isset($widgetConfig['attributes']))
-            {
-              $widgetConfig['attributes'] = array(
-                'forceSelection' => false
-              );
-            }
-          }
-
-          //hidden fields
-          if($field->isInvisible())
-          {
-            $widgetConfig['class'] = 'ExtjsWidgetFormInputHidden';
-            if(isset($widgetConfig['options']['defaultValue']))
-            {
-              $widgetConfig['options'] = array('defaultValue' => $widgetConfig['options']['defaultValue']);
-            }
-            else
-            {
-              unset($widgetConfig['options']);
-            }
-          }
-
-          if($widgetConfig)
-          {
-            $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
-            if($view == 'filter') $options['context'] = 'filter';
-            $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
-            if(isset($widgetConfig['class']))
-            {
-              $class = $widgetConfig['class'];
-              $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($attributes));
-            }
-            else
-            {
-              foreach($options as $name => $value)
-              {
-                $customization .= sprintf("    \$this->%s->getWidget('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
-              }
-              foreach($attributes as $name => $value)
-              {
-                $customization .= sprintf("    \$this->%s->getWidget('%s')->setAttribute('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
-              }
-            }
-          }
-
-          // validator configuration
-          if(! $validatorConfig = $field->getConfig('validator', array()))
-          {
-            if($validatorClass = $field->getConfig('validatorClass', false))
-            {
-              $validatorConfig['class'] = $validatorClass;
-            }
-            if($validatorOptions = $field->getConfig('validatorOptions', false))
-            {
-              $validatorConfig['options'] = $validatorOptions;
-            }
-            if($validatorMessages = $field->getConfig('validatorMessages', false))
-            {
-              $validatorConfig['messages'] = $validatorMessages;
-            }
-          }
-          if($validatorConfig)
-          {
-            $options = (isset($validatorConfig['options'])) ? $validatorConfig['options'] : array();
-            $messages = (isset($validatorConfig['messages'])) ? $validatorConfig['messages'] : array();
-            if(isset($validatorConfig['class']))
-            {
-              $class = $validatorConfig['class'];
-              $customization .= sprintf("    \$this->%s->setValidator('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $class, $this->asPhp($options), $this->asPhp($messages));
-            }
-            else
-            {
-              foreach($options as $name => $value)
-              {
-                $customization .= sprintf("    \$this->%s->getValidator('%s')->setOption('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
-              }
-              foreach($messages as $name => $value)
-              {
-                $customization .= sprintf("    \$this->%s->getValidator('%s')->setMessage('%s', %s);\n", $formVariableName, $fieldName, $name, $this->asPhp($value));
-              }
-            }
-          }
+        // must set the default value for foreign widgets
+        if(($view == 'edit' || $view == 'update') && $field->getConfig('relation_name', false) && strpos($fieldName, '-'))
+        {
+          $customization .= sprintf("    \$this->%s->setDefault('%s', %s);\n", $formVariableName, $fieldName, $this->getColumnGetter($fieldName, true, '', 'this->'.$this->getSingularName()));
         }
 
         // this field is used
         if(isset($unusedFields[$fieldName]))
         {
-//          if($field->getConfig())
           unset($unusedFields[$fieldName]);
         }
 
@@ -920,7 +942,6 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         {
           $credentialFields[$fieldName] = $field->getConfig('credentials');
         }
-
       }
     }
 

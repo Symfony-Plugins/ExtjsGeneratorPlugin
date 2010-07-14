@@ -31,8 +31,7 @@ error handling
 
 ###remote combos (WIP set attributes.mode.remote to test )
 displays the value instead of display field when no combo store is loaded
-type ahead filtering not implemented
-no return limit or paging
+type ahead filtering (WIP)
 
 ### defered
 add ext components not lazy loaded list to app.yml

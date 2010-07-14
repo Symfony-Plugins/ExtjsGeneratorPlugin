@@ -46,6 +46,9 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    unset($attributes['url']);
+    unset($attributes['help']);
+
     $values = array_merge(array(
       'text' => '',
       'is_empty' => false
