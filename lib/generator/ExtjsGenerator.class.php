@@ -123,20 +123,10 @@ class ExtjsGenerator extends sfPropelGenerator
    *
    * @return string PHP code
    */
-  public function getColumnGetter($column, $developed = false, $prefix = '', $modelClass = null)
+  public function getColumnGetter($field, $developed = false, $prefix = '', $modelClass = null)
   {
     if (!$modelClass) $modelClass = $this->getSingularName();
-    $defaults = $this->configuration->getFieldsDefault();
-
-    if (isset($defaults[$column]))
-    {
-      $getter = $defaults[$column]['getter'];
-    }
-    else
-    {
-      $params = ExtjsGeneratorUtil::getColumnParams($column, sfInflector::camelize($modelClass));
-      $getter = $params['getter'];
-    }
+    $getter = $field->getConfig('getter');
 
     if (!$developed)
     {
@@ -161,33 +151,27 @@ class ExtjsGenerator extends sfPropelGenerator
   }
 
   /**
-   * Returns HTML code for a field.
+   * Returns php code to get a field from the database.
    *
-   * @param sfModelGeneratorConfigurationField $field The field
+   * @param ExtjsModelGeneratorConfigurationField $field The field
    *
-   * @return string HTML code
+   * @return string php code
    */
   public function renderField($field)
   {
-    $html = $this->getColumnGetter($field->getName(), true);
+    $code = $this->getColumnGetter($field, true);
 
     if ($renderer = $field->getRenderer())
     {
-      $html = sprintf("$html !== null ? call_user_func_array(%s, array_merge(array(%s), %s)) : ''", $this->asPhp($renderer), $html, $this->asPhp($field->getRendererArguments()));
-    }
-    //        else //    {
-    //      return sprintf("get_component('%s', '%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
-    //    }
-    //    else if ($field->isPartial())
-    //    {
-    //      return sprintf("get_partial('%s/%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
-    //    }
-    if ('Date' == $field->getType())
-    {
-      $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : ''", $html, $field->getConfig('date_format', 'f'));
+      $code = sprintf("($code) !== null ? call_user_func_array(%s, array_merge(array(%s), %s)) : ''", $this->asPhp($renderer), $code, $this->asPhp($field->getRendererArguments()));
     }
 
-    return $html;
+    if ('Date' == $field->getType())
+    {
+      $code = sprintf("false !== strtotime($code) ? format_date(%s, \"%s\") : ''", $code, $field->getConfig('date_format', 'f'));
+    }
+
+    return $code;
   }
 
   /**
@@ -913,7 +897,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         // must set the default value for foreign widgets
         if(($view == 'edit' || $view == 'update') && $field->getConfig('relation_name', false) && strpos($fieldName, '-'))
         {
-          $customization .= sprintf("    \$this->%s->setDefault('%s', %s);\n", $formVariableName, $fieldName, $this->getColumnGetter($fieldName, true, '', 'this->'.$this->getSingularName()));
+          $customization .= sprintf("    \$this->%s->setDefault('%s', %s);\n", $formVariableName, $fieldName, $this->getColumnGetter($field, true, '', 'this->'.$this->getSingularName()));
         }
 
         // this field is used

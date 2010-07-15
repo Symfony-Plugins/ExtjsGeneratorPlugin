@@ -62,7 +62,7 @@ abstract class ExtjsFormPropel extends sfFormPropel
     $this->saveEmbeddedForms($con);
 
     // many-to-one fields
-    $this->saveManyToOneValues($con);
+//    $this->saveManyToOneValues($con);
   }
 
   protected function saveManyToOneValues($con)
