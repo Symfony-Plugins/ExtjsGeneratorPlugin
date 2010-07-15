@@ -1,31 +1,41 @@
-# these are the defaults, you should override them in your application/config/app.yml file
+# these are the defaults, you should override them in your projects config/app.yml file
 #all:
 #  extjs_gen_plugin:
-#    theme:                      aero                    # Extjs library theme
-#    adapter:                    ext                     # Extjs Adapter Type jquery, prototype, yui, or ext
+#    theme:            aero    # Extjs library theme
+#    adapter:          ext     # Extjs Adapter Type jquery, prototype, yui, or ext
+#    date_format:      'm/d/Y' # The default date formatting
 
-#    max_per_page:               20
+#    list_max_per_page:     20
+#    list_tabbed:           true   # If the gridpanel is being added to a tab panel there will be no header config
+#    list_trackMouseOver:   true   # See Extjs GridPanel config docs
+#    list_loadMask:         true   # See Extjs GridPanel config docs
+#    list_stripeRows:       true   # See Extjs GridPanel config docs
+#    list_forceFit:         false  # See Extjs GridPanel config docs
 
-#    list_tabbed:                true                    # Is the gridpanel being added to a tab panel
-#    list_trackMouseOver:        true
-#    list_loadMask:              true
-#    list_stripeRows:            true
-#    list_forceFit:              false
+    # True uses a viewport with a border layout.  By default tabpanel and filterpanel are regions under viewport
+    # Set to false if you want to use your own layout.  See module_init_app_partial.
+#    module_returns_layout:   true
 
-#    module_returns_layout:      true                    # true uses the build in viewport
-                                                        # set to false if you want to use your own layout
+    # The name of a javascript partial file located in the app/templates directory that utilizes the generated tabpanel,
+    # filterpanel, or gridpanel modules in your custom layout.
+    # Only used if module_returns_layout: false
+    # Example file name is _init_app.js.php
+#    module_init_app_partial: init_app
 
-#    module_grid_panel_name:     Ext.app.sf.GridPanel    # the global var name for the list grid panel
+    # the global var name for the list tabpanel.  By default gridpanel is an item of the tabpanel
+#    module_tabpanel_name:    Ext.app.sf.TabPanel
 
-#    module_tab_panel_name:      Ext.app.sf.TabPanel     # the global var name for the list tab panel
-                                                        # gridpanel is automatically an item of the tabpanel
+    # the global var name for the list gridpanel
+#    module_gridpanel_name:   Ext.app.sf.GridPanel
 
-#    module_filter_panel_name:   Ext.app.sf.FilterPanel  # the global var name for the list filter panel
-                                                        # filterpanel is not an item of the tabpanel
+    # the global var name for the list filterpanel.
+#    module_filterpanel_name: Ext.app.sf.FilterPanel
 
-#    module_view_port_name:      Ext.app.sf.ViewPort     # the global var name for the viewport
+#    export_boolean_as_string: false      # export booleans as a string
+#    export_boolean_true:      'True'    # exported booleans true will be string True
+#    export_boolean_false:     'False'   # exported booleans false will be string False
+#    export_date_format:       false     # exported date format.  Use a symfony date string like 'MM/dd/yy' or false for no formating
 
-#    module_app_init_partial:    init_app                # partial file located in the app/templates directory
-                                                        # that adds panels to your custom layout.
-
-#    format_date:                "m/d/Y"
+#    remote_combo_limit:     50
+#    remote_combo_pageSize:  0
+#    remote_combo_minChars:  3

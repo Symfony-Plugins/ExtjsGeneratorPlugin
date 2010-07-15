@@ -126,6 +126,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
             'display'
           ),
           'root' => 'data',
+          'totalProperty' =>'totalCount',
           'url' => $attributes['url'],
           'baseParams' => $this->getBaseParams()
         );
@@ -143,8 +144,16 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'displayField' => 'display',
         'forceSelection' => true,
         'triggerAction' => 'all',
-        'mode' => $attributes['mode']
+        'mode' => $attributes['mode'],
+        'minChars' => sfConfig::get('app_extjs_gen_plugin_remote_combo_minChars', 3),
       );
+
+      if(sfConfig::get('app_extjs_gen_plugin_remote_combo_pageSize') > 0)
+      {
+        $configArr['pageSize'] = sfConfig::get('app_extjs_gen_plugin_remote_combo_pageSize');
+        $configArr['minListWidth'] = 230;
+      }
+      if(!isset($store['baseParams']) || !isset($store['baseParams']['php_name'])) $configArr['editable'] = false;
     }
 
     if(isset($attributes['help']) && $this->getOption('context') == 'form')

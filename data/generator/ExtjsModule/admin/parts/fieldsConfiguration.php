@@ -1,22 +1,28 @@
   public function getListParams(){}
 
-  public function getListLayout(){}  
+  public function getListLayout(){}
+
+  public function getExportDateFormat()
+  {
+    return <?php echo $this->asPhp(isset($this->config['export']['default_date_format']) ? $this->config['export']['default_date_format'] : sfConfig::get('app_extjs_gen_plugin_export_date_format', false)) ?>;
+<?php unset($this->config['export']['default_date_format']) ?>
+  }
 
   public function getExportBooleanAsString()
   {
-    return <?php echo isset($this->config['export']['boolean_as_string']) ? (bool)$this->config['export']['boolean_as_string'] : true ?>;
+    return <?php echo isset($this->config['export']['boolean_as_string']) ? (bool)$this->config['export']['boolean_as_string'] : sfConfig::get('app_extjs_gen_plugin_export_boolean_as_string', true) ?>;
 <?php unset($this->config['export']['boolean_as_string']) ?>
   }
-  
-  public function getExportDateFormat()
-  {
-    return <?php echo $this->asPhp(isset($this->config['export']['default_date_format']) ? $this->config['export']['default_date_format'] : false) ?>;
-<?php unset($this->config['export']['default_date_format']) ?>
-  }
-  
+
   public function getExportBooleanStringValues()
   {
-    return <?php echo $this->asPhp(isset($this->config['export']['boolean_string_values']) ? $this->config['export']['boolean_string_values'] : array()) ?>;
+<?php
+  $boolArr = array(
+    'trueValue' => sfConfig::get('app_extjs_gen_plugin_export_boolean_true', 'True'),
+    'falseValue' => sfConfig::get('app_extjs_gen_plugin_export_boolean_false', 'False')
+  );
+?>
+    return <?php echo $this->asPhp(isset($this->config['export']['boolean_string_values']) ? $this->config['export']['boolean_string_values'] : $boolArr) ?>;
 <?php unset($this->config['export']['boolean_string_values']) ?>
   }
 
@@ -76,7 +82,7 @@ else
     return '<?php echo $this->escapeString($title) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
-  
+
   public function getExportTitle()
   {
 <?php
@@ -165,4 +171,4 @@ if(
 <?php endforeach; ?>
     );
   }
-<?php endif;?>    
+<?php endif;?>

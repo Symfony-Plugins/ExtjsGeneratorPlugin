@@ -14,17 +14,38 @@
       'query_methods' => $request->getParameter('query_methods', array()),
       'multiple' => $request->getParameter('multiple', false),
     );
-    if(count($widgetConfig['group_by'])) $$widgetConfig['group_by'] = json_decode($widgetConfig['group_by']);
-    if(count($widgetConfig['query_methods'])) $$widgetConfig['query_methods'] = json_decode($widgetConfig['query_methods']);
+    if(count($widgetConfig['order_by'])) $widgetConfig['order_by'] = json_decode($widgetConfig['order_by']);
+    if(count($widgetConfig['query_methods'])) $widgetConfig['query_methods'] = json_decode($widgetConfig['query_methods']);
 
-    if($request->getParameter('query', false) && $request->getParameter('php_name', false))
+    // if you want typeAhead to filter php_name must be provided
+    if($request->getParameter('php_name', false))
     {
       $criteria = PropelQuery::from($request->getParameter('model'));
-      $criteria->add($request->getParameter('php_name'), '%' . $request->getParameter('query') . '%', Criteria::LIKE);
+
+      // only limit if not paging
+      if(sfConfig::get('app_extjs_gen_plugin_remote_combo_pageSize', 0) == 0)
+      {
+        $criteria->limit(sfConfig::get('app_extjs_gen_plugin_remote_combo_limit', 50));
+      }
+
+      if($request->getParameter('query', false))
+      {
+        $query = str_replace('*', '%', $request->getParameter('query'));
+        $criteria->where($request->getParameter('model').'.'.$request->getParameter('php_name').' '.Criteria::LIKE.' ?', '%' . $query . '%');
+      }
       $widgetConfig['criteria'] = $criteria;
     }
 
     $widget = new ExtjsWidgetFormPropelChoice($widgetConfig);
+
+    if($request->getParameter('limit', false))
+    {
+      $totalcount = $widget->getCount();
+      $c = $widget->getCriteria();
+      $c->limit($request->getParameter('limit'));
+      $c->offset($request->getParameter('start', 0));
+      $widget->setCriteria($c);
+    }
 
     $options = array();
     foreach ($widget->getChoices() as $key => $option)
@@ -32,8 +53,10 @@
       $options[] = array('value' => $key, 'display' => $option);
     }
 
+    if(!isset($totalcount)) $totalcount = count($options);
+
     $this->jsonStr = json_encode(array(
-      'totalCount' => count($options),
+      'totalCount' => $totalcount,
       'data' => $options
     ));
   }
