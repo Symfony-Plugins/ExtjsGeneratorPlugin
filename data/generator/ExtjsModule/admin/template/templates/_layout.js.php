@@ -29,7 +29,7 @@
 <?php if($this->configuration->hasFilterForm()):?>
   $partialArr['filterpanel']    = '<?php echo sfConfig::get('app_extjs_gen_plugin_module_filterpanel_name', 'Ext.app.sf.FilterPanel') ?>';
 <?php endif; ?>
-  include_partial('global/<?php echo sfConfig::get('app_extjs_gen_plugin_module_init_app_partial') ?>', $partialArr);
+  include_partial('global/<?php echo sfConfig::get('app_extjs_gen_plugin_module_init_app_partial', 'init_app') ?>', $partialArr);
 ?]
 <?php endif; ?>
 <?php endif; ?>

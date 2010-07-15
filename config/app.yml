@@ -36,6 +36,6 @@
 #    export_boolean_false:     'False'   # exported booleans false will be string False
 #    export_date_format:       false     # exported date format.  Use a symfony date string like 'MM/dd/yy' or false for no formating
 
-#    remote_combo_limit:     50
-#    remote_combo_pageSize:  0
-#    remote_combo_minChars:  3
+#    remote_combo_limit:     50  # max number of remote combo results to return when combobox is editable
+#    remote_combo_pageSize:  0   # number of records to show when paging.  Value greater than 0 turns paging on
+#    remote_combo_minChars:  3   # minimum number of characters to type before querying when combobox is editable
