@@ -126,7 +126,11 @@ class ExtjsGenerator extends sfPropelGenerator
   public function getColumnGetter($field, $developed = false, $prefix = '', $modelClass = null)
   {
     if (!$modelClass) $modelClass = $this->getSingularName();
-    $getter = $field->getConfig('getter');
+    if(!$getter = $field->getConfig('getter'))
+    {
+      $params = ExtjsGeneratorUtil::getColumnParams($field->getName(), sfInflector::camelize($modelClass));
+      $getter = $params['getter'];
+    }
 
     if (!$developed)
     {
