@@ -225,7 +225,7 @@ class ExtjsGenerator extends sfPropelGenerator
         return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_objectactions'", $this->getModuleName());
       }
 
-      return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_%s'", $field->getName(), $field->getConfig('plugin'));
+      return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
     }
 
     $colArr = array(
@@ -254,7 +254,7 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     //TODO refactor this to provide il8n support for header
-    return sprintf("\$columnModel->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", $field->getName(), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
+    return sprintf("\$columnModel->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
       'ptype'     => $field->getConfig('plugin'),
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
       'header'    => $field->getConfig('label', '', true),
@@ -285,7 +285,7 @@ class ExtjsGenerator extends sfPropelGenerator
       return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_objectactions'", $this->getModuleName());
     }
 
-    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", $field->getName(), $field->getConfig('plugin'));
+    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
   }
 
   /**
