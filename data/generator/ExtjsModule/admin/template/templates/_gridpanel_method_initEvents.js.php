@@ -4,7 +4,8 @@ $configArr = array(
   'source' => "
   Ext.app.sf.$className.superclass.initEvents.apply(this);
 
-<?php if(!$this->configuration->hasFilterForm()):?>
+<?php $gridConfig = $this->configuration->getGridpanelConfig(); ?>
+<?php if(!$this->configuration->hasFilterForm() || (isset($gridConfig['autoLoadStore']) && $gridConfig['autoLoadStore'])):?>
   this.on({
     afterrender: {
       fn: function(){this.getStore().load()},

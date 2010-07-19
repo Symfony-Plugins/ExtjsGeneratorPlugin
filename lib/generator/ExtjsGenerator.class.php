@@ -437,7 +437,15 @@ EOF;
     // you can pass a class instead of an icon name with the class parameter
     $iconCls = isset($configArr['class']) ? $configArr['class'] : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
 
-    $handler = isset($configArr['handler_function']) ? "\$sfExtjs3Plugin->asMethod('{$configArr['handler_function']}')" : "\$sfExtjs3Plugin->asVar('this.$actionName')";
+    if(isset($configArr['handler_function']))
+    {
+      $handlerFunc = addslashes($configArr['handler_function']);
+      $handler = "\$sfExtjs3Plugin->asMethod('$handlerFunc')";
+    }
+    else
+    {
+      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";  
+    }
 
     $configStr = <<<EOF
 \$topToolbar->config_array['items'][] = array(
@@ -527,7 +535,15 @@ EOF;
     // you can pass a class instead of an icon name with the class parameter
     $iconCls = isset($configArr['class']) ? $configArr['class'] : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
 
-    $handler = isset($configArr['handler_function']) ? "\$sfExtjs3Plugin->asMethod('{$configArr['handler_function']}')" : "\$sfExtjs3Plugin->asVar('this.$actionName')";
+    if(isset($configArr['handler_function']))
+    {
+      $handlerFunc = addslashes($configArr['handler_function']);
+      $handler = "\$sfExtjs3Plugin->asMethod('$handlerFunc')";
+    }
+    else
+    {
+      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";  
+    }
 
     $configStr = <<<EOF
 \$formpanel->config_array['tbar'][] = array(
