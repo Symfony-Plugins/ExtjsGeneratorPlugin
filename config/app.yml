@@ -5,12 +5,12 @@
 #    adapter:          ext     # Extjs Adapter Type jquery, prototype, yui, or ext
 #    date_format:      'm/d/Y' # The default date formatting
 
-#    list_max_per_page:     20
-#    list_tabbed:           true   # If the gridpanel is being added to a tab panel there will be no header config
+#    list_max_per_page:          20
+#    list_tabbed:                true   # If the list is being added to a tab panel there will be no header config
+#    list_stripeRows:            true   # Sets alternating row colors on the list
 #    list_trackMouseOver:   true   # See Extjs GridPanel config docs
-#    list_loadMask:         true   # See Extjs GridPanel config docs
-#    list_stripeRows:       true   # See Extjs GridPanel config docs
-#    list_forceFit:         false  # See Extjs GridPanel config docs
+#    list_loadMask:         true   # See Extjs GridPanel config docs    
+#    gridpanel_forceFit:         false  # See Extjs GridPanel config docs
 
     # True uses a viewport with a border layout.  By default tabpanel and filterpanel are regions under viewport
     # Set to false if you want to use your own layout.  See module_init_app_partial.
@@ -25,8 +25,8 @@
     # the global var name for the list tabpanel.  By default gridpanel is an item of the tabpanel
 #    module_tabpanel_name:    Ext.app.sf.TabPanel
 
-    # the global var name for the list gridpanel
-#    module_gridpanel_name:   Ext.app.sf.GridPanel
+    # the global var name for the list panel
+#    module_listpanel_name:   Ext.app.sf.ListPanel
 
     # the global var name for the list filterpanel.
 #    module_filterpanel_name: Ext.app.sf.FilterPanel

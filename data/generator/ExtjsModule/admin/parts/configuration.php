@@ -30,6 +30,10 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 
 <?php include dirname(__FILE__).'/gridpanelConfiguration.php' ?>
 
+<?php include dirname(__FILE__).'/listpanelConfiguration.php' ?>
+
+<?php include dirname(__FILE__).'/listviewConfiguration.php' ?>
+
 <?php include dirname(__FILE__).'/formpanelConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/objectActionsConfiguration.php' ?>

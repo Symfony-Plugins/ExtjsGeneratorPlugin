@@ -1,6 +1,10 @@
   public function getListParams(){}
 
-  public function getListLayout(){}
+  public function getListLayout()
+  {
+    return '<?php echo isset($this->config['list']['layout']) ? $this->config['list']['layout'] : 'listpanel' ?>';
+<?php unset($this->config['list']['layout']) ?>
+  }
 
   public function getExportDateFormat()
   {

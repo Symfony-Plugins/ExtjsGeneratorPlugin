@@ -5,8 +5,11 @@
   {
     $csrf = "{$form->getCSRFFieldName()}: '{$form->getCSRFToken()}',\n          ";  
   }
-  
+<?php if($this->configuration->getListLayout() == 'listpanel'): ?>  
+  $configArr['parameters'] = 'view, record, action, node, index';
+<?php else: ?>
   $configArr['parameters'] = 'grid, record, action, row, col';
+<?php endif; ?>
   $configArr['source'] = "
   Ext.Msg.confirm('Confirm','Are you sure you want to delete this <?php echo $this->configuration->getObjectName() ?>?',function(btn,text){
     if(btn == 'yes')

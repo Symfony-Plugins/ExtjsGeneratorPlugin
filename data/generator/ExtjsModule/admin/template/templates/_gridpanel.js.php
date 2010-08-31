@@ -65,7 +65,7 @@ include_partial('gridpanel_method_initComponent', array('sfExtjs3Plugin' => $sfE
 // initEvents
 include_partial('gridpanel_method_initEvents', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
-// onLinkClick
+// onEditLinkClick
 include_partial('gridpanel_method_onEditLinkClick', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
 // updateDB

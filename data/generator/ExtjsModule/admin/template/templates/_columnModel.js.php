@@ -18,11 +18,11 @@ $columnModel->config_array = array(
 <?php 
 foreach ($this->configuration->getValue('list.display') as $name => $field)
 {
-  echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnModelField($field)), $field->getConfig());
+  echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnField($field)), $field->getConfig());
 
   if($field->isPlugin())
   {
-    echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnModelPlugin($field)), $field->getConfig());
+    echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnPlugin($field)), $field->getConfig());
   }
 }
 ?>

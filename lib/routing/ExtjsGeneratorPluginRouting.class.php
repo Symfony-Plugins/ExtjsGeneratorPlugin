@@ -10,12 +10,10 @@ class ExtjsGeneratorPluginRouting
    */
   static public function listenToRoutingLoadConfigurationEvent(sfEvent $event)
   {
-    $r = $event->getSubject();
-
     // preprend our routes
-    $r->appendRoute('extjs_gen_plugin_dynamic_js', new sfRoute('/:module/:action.:sf_format'));
+    $event->getSubject()->appendRoute('extjs_gen_plugin_dynamic_js', new sfRoute('/:module/:action.:sf_format'));
 
-    $r->prependRoute('extjs_gen_plugin_get_xtype', new sfRoute('/js/getXtype/:xtype/*.:sf_format', array(
+    $event->getSubject()->prependRoute('extjs_gen_plugin_get_xtype', new sfRoute('/js/getXtype/:xtype/*.:sf_format', array(
       'module' => 'ExtjsGeneratorPluginXtypeManager',
       'action' => 'find',
       'sf_format' => 'js'

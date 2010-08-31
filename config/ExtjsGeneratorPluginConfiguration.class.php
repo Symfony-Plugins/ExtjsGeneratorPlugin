@@ -48,24 +48,36 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/jit.js',  // BaseX/JIT 4.1 library, used for monitoring XHR requests (monitoring credentials) and lazy loading
       '/ExtjsGeneratorPlugin/js/Ext.ComponentMgr.create.createInterceptor.js',  // Interceptor for create method to lazy-load xtypes, REQUIRES INITIALISATION!
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr.js',  // icon manager extension.  goes first so we can use it anywhere
-      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants           
+      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorConstants.js',  // Generator javascript constants         
+      
+      '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js', // adds setMethod method
+    
+      '/ExtjsGeneratorPlugin/js/Ext.ux.MessageBox.js',  // adds autohiding info and error message types
+      
       '/ExtjsGeneratorPlugin/js/Ext.form.TextField.override.js',  //adds reset event
       '/ExtjsGeneratorPlugin/js/Ext.form.Hidden.override.js',  //disables reset method
-      '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.form.Field.override.js',  //adds support for required config
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ComboBox.plugin.ComboListAutoSizer.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.MessageBox.js',  // adds autohiding info and error message types
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.field.plugin.FieldHelp.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.MultiSelect.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.ItemSelector.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinDateField.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js', 
-      '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js', 
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js',      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js',
+      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListViewPanel.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.GroupingListView.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.list.CheckColumn.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.RowActions.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',
+      
+      '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.form.field.plugin.FieldHelp.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js', 
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',      
+      
       '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs 
-      '/ExtjsGeneratorPlugin/js/Ext.data.HttpProxy.override.js' // adds setMethod method
+      
     );
     
     $prod_javascripts = array(

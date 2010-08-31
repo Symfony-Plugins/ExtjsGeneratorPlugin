@@ -1,4 +1,4 @@
-[?php // @object $sfExtjs3Plugin string $className and @object $gridpanel provided
+[?php // @object $sfExtjs3Plugin string $className and @object $listpanel provided
 // onLinkClick
 $configArr = Array(
   'parameters' => 'e, t',
@@ -18,5 +18,5 @@ $configArr = Array(
   "
 );
 
-$gridpanel->methods['onEditLinkClick'] = $sfExtjs3Plugin->asMethod($configArr);
+$listpanel->methods['onEditLinkClick'] = $sfExtjs3Plugin->asMethod($configArr);
 ?]

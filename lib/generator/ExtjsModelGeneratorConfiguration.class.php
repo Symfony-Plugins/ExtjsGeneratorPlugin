@@ -86,6 +86,15 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
         'config' => $this->getGridpanelConfig(), 
         'plugins' => $this->getGridpanelPlugins(), 
         'partials' => $this->getGridpanelPartials()
+      ),
+      'listpanel' => array(
+        'config' => $this->getGridpanelConfig(), 
+        'plugins' => $this->getGridpanelPlugins(), 
+        'partials' => $this->getGridpanelPartials()
+      ),
+      'listview' => array(
+        'config' => $this->getGridpanelConfig(), 
+        'plugins' => $this->getGridpanelPlugins()
       ), 
       'formpanel' => array(
         'config' => $this->getFormpanelConfig(), 

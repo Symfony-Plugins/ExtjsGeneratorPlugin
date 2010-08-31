@@ -211,7 +211,7 @@ class ExtjsGenerator extends sfPropelGenerator
    *
    * @return string php code
    */
-  public function renderColumnModelField($field)
+  public function renderColumnField($field, $type ='columnModel')
   {
     if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
 
@@ -219,17 +219,17 @@ class ExtjsGenerator extends sfPropelGenerator
     {
       if ($field->getKey() == 'expander')
       {
-        return sprintf("\$columnModel->config_array['columns'][] = %s", $this->asPhp(array(
+        return sprintf("\${$type}->config_array['columns'][] = %s", $this->asPhp(array(
           'xtype' => 'rowexpander'
         )));
       }
 
       if ($field->getKey() == 'object_actions')
       {
-        return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_objectactions'", $this->getModuleName());
+        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_objectactions'", $this->getModuleName());
       }
 
-      return sprintf("\$columnModel->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
+      return sprintf("\${$type}->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
     }
 
     $colArr = array(
@@ -237,28 +237,55 @@ class ExtjsGenerator extends sfPropelGenerator
       'dataIndex' => $field->getName()
     );
 
-    if ($field->getColumnModelRenderer()) $colArr['renderer'] = $field->getColumnModelRenderer();
-    return sprintf("\$columnModel->config_array['columns'][] = %s", $this->asPhp(array_merge($colArr, $field->getConfig('config', array()))));
+    if ($field->getColumnModelRenderer() && $type == 'listView')
+    {
+      switch($field->getType())
+      {
+        case 'Time':
+        case 'Date':
+          $colArr['format'] = $field->getConfig('date_format', sfConfig::get('app_extjs_gen_plugin_format_date', 'm/d/Y'));
+          $colArr['xtype'] = 'lvdatecolumn';
+          break;
+        case 'Text':
+          $colArr['cls'] = 'x-listview-cell-wrap';
+//          $colArr['xtype'] = 'this.formatLongstring';
+          break;
+        case 'Boolean':
+          $colArr['xtype'] = 'lvcheckcolumn';
+          break;
+        case 'Int':
+        case 'Float':
+          $colArr['xtype'] = 'lvnumbercolumn';
+          break;
+      }
+      if($field->isLink()) $colArr['xtype'] = 'lvlinkcolumn';
+    }
+    else
+    {
+      $colArr['renderer'] = $field->getColumnModelRenderer();
+    }
+    
+    return sprintf("\${$type}->config_array['columns'][] = %s", $this->asPhp(array_merge($colArr, $field->getConfig('config', array()))));
   }
 
   /**
-   * Returns sfExtjs3Plugin code for a column model plugin.
+   * Returns sfExtjs3Plugin code for a columnModel or listView plugin.
    *
    * @param ExtjsModelGeneratorConfigurationField $field The field
    *
    * @return string php code
    */
-  public function renderColumnModelPlugin($field)
+  public function renderColumnPlugin($field, $type ='columnModel')
   {
     if (!$field->isPlugin()) return false;
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\$columnModel->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.create({xtype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
+      return sprintf("\${$type}->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin({ptype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
     }
 
     //TODO refactor this to provide il8n support for header
-    return sprintf("\$columnModel->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
+    return sprintf("\${$type}->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
       'ptype'     => $field->getConfig('plugin'),
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
       'header'    => $field->getConfig('label', '', true),
@@ -290,6 +317,25 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
+  }
+  
+  public function renderListViewPlugin($field)
+  {
+    if (!$field->isPlugin()) return false;
+
+    //    if($field->getKey() == 'expander')
+    //    {
+    //      return sprintf("\$gridpanelPlugins[] = %s", $this->asPhp(array(
+    //        'xtype' => 'rowexpander'
+    //      )));
+    //    }
+
+    if ($field->getKey() == 'object_actions')
+    {
+      return sprintf("\$listviewPlugins[] = 'this.%s_objectactions'", $this->getModuleName());
+    }
+
+    return sprintf("\$listviewPlugins[] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
   }
 
   /**
@@ -352,7 +398,7 @@ EOF;
       'help' => ucfirst($realName),
       'hide' => 'false',
       'handler' => 'this.' . $originalName,
-      'scope' => 'this'
+      'scope' => 'this',
     );
 
     switch($realName)
@@ -368,15 +414,19 @@ EOF;
     // merge params after setting our built in actions so defaults can be overridden
     $configArr = array_merge($configArr, $params);
 
-    return <<<EOF
+    $return = <<<EOF
 \$objectActions->config_array['actions'][] = array(
   'iconCls' => \$sfExtjs3Plugin->asVar("Ext.ux.IconMgr.getIcon('{$configArr['icon']}')"),
-  'qtip' => '{$configArr['help']}',
+  'qtip' => '{$configArr['help']}',  
   'hide' => {$configArr['hide']},
   'cb' => '{$configArr['handler']}',
   'scope' => \$sfExtjs3Plugin->asVar('{$configArr['scope']}'),
-);
 EOF;
+
+    if(isset($configArr['text'])) $return .= "  'text' => '{$configArr['text']}',\n";
+    if(isset($configArr['style'])) $return .= "  'style' => '{$configArr['style']}',\n";
+    if(isset($configArr['cls'])) $return .= "  'cls' => '{$configArr['cls']}',\n";
+    return $return."\n);";
   }
 
   /**
