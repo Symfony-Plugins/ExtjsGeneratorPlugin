@@ -3,8 +3,8 @@
  * @extends Ext.util.Observable
  *
  * @author Benjamin Runnels
- * @date 26 August 2010
- * @version 0.1
+ * @date 2 September 2010
+ * @version 0.2
  * 
  * @license Ext.ux.ListView.plugin.CheckColumn is licensed under the terms of the Open
  *          Source LGPL 3.0 license. Commercial use is permitted to the extent
@@ -21,14 +21,62 @@
 Ext.ns('Ext.ux.ListView.plugin');
 Ext.ux.ListView.plugin.CheckColumn = function(config) {
   Ext.apply(this, config);
-  this.addEvents('beforecheck', 'check');
+  this.addEvents(
+    /**
+     * @event beforecheck Fires before the datastore is changed and before the callback 
+     * is called. Return false to cancel the subsequent store change and callback.
+     * @param {Ext.list.ListView}
+     *          view
+     * @param {Ext.data.Record}
+     *          record Record corresponding to row clicked
+     * @param {Object}
+     *          checkbox The clicked Checkbox element.
+     * @param {String}
+     *          node The clicked node
+     * @param {Integer}
+     *          index Index of clicked row
+     */  
+    'beforecheck',
+    
+    /**
+     * @event check Fires when Checkbox is checked or unchecked.
+     * @param {Ext.list.ListView}
+     *          view
+     * @param {Ext.data.Record}
+     *          record Record corresponding to row clicked
+     * @param {Object}
+     *          checkbox The clicked Checkbox element.
+     * @param {String}
+     *          node The clicked node
+     * @param {Integer}
+     *          index Index of clicked row
+     */
+    'check'
+  );
+  
   Ext.ux.ListView.plugin.CheckColumn.superclass.constructor.call(this);
 };
 
 Ext.extend(Ext.ux.ListView.plugin.CheckColumn, Ext.util.Observable, {
+  /**
+   * @cfg {Boolean} isColumn Tell ListView that we are column. Do not touch!
+   * @private
+   */
   isColumn : true,
+  
+  /**
+   * @cfg {String} header CheckColumn column header
+   */
   header : '&#160;',
+  
+  /**
+   * @cfg {String} additional class to add to the column
+   */
   cls : '',
+  
+  /**
+   * @cfg {String} default column width
+   */
   width : '.1',
   
   /**
@@ -46,6 +94,12 @@ Ext.extend(Ext.ux.ListView.plugin.CheckColumn, Ext.util.Observable, {
    */
   actionEvent : 'click',
 
+  /**
+   * Init function
+   * 
+   * @param {Ext.view.ListView}
+   *          listview ListView this plugin is attached to
+   */
   init : function(listview) {
     this.tpl = this.tpl || new Ext.XTemplate('{' + this.dataIndex + ':this.format}');
 
@@ -72,6 +126,11 @@ Ext.extend(Ext.ux.ListView.plugin.CheckColumn, Ext.util.Observable, {
     }
   },
 
+  /**
+   * ListView body actionEvent event handler
+   * 
+   * @private
+   */
   onClick : function(view, index, node, e) {
     var checkbox = this.getCheckbox(e);
     if (checkbox) {
@@ -91,6 +150,11 @@ Ext.extend(Ext.ux.ListView.plugin.CheckColumn, Ext.util.Observable, {
     }
   },
 
+  /**
+   * Checks if the checkbox was clicked and if so returns the checkbox element
+   * @param {Object} e Event object
+   * @return {Object}
+   */
   getCheckbox : function(e) {
     var checkbox = false;
     var t = e.getTarget('.ux-lv-checkbox');

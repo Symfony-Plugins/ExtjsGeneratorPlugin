@@ -40,7 +40,9 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     }
     
     $default_stylesheets = array(
-      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css'
+      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',
+      '/ExtjsGeneratorPlugin/css/Ext.ux.list.ProgressColumn.css',
+      '/ExtjsGeneratorPlugin/css/Ext.ux.grid.plugin.ProgressColumn.css',
     );
     
     $default_javascripts = array(
@@ -69,12 +71,14 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListViewPanel.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.GroupingListView.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.CheckColumn.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.list.ProgressColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',      
       
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.ProgressColumn.js',      
       
       '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs 
       
