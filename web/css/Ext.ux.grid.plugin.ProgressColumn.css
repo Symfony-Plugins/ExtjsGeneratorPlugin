@@ -1,0 +1,86 @@
+/*!
+ * css file for Ext.ux.grid.plugin.ProgressColumn
+ * 
+ * @author Benjamin Runnels
+ * @date 2 September 2010
+ * @version 1.2
+ * 
+ * @license Ext.ux.grid.plugin.ProgressColumn is licensed under the terms of the Open
+ *          Source LGPL 3.0 license. Commercial use is permitted to the extent
+ *          that the code/component(s) do NOT become part of another Open Source
+ *          or Commercially licensed development library or toolkit without
+ *          explicit permission.
+ * 
+ * <p>
+ * License details: <a href="http://www.gnu.org/licenses/lgpl.html"
+ * target="_blank">http://www.gnu.org/licenses/lgpl.html</a>
+ * </p>
+ */
+.x-grid3-progresscol .x-grid3-cell-inner {
+	padding: 0px;
+}
+
+.x-grid3-progresscol.x-grid3-dirty-cell {
+	background-image: none;
+}
+
+.x-grid3-progresscol.x-grid3-dirty-cell .x-progress-text, .x-grid3-progresscol.x-grid3-dirty-cell .x-progress-text-ie, .x-grid3-progresscol.x-grid3-dirty-cell .x-progress-bar .x-progress-text-front-ie {
+  background: url(images/progress-dirty.gif) no-repeat scroll 0 0 transparent;
+}
+
+.x-grid3-progresscol .x-progress-toptext, .x-grid3-progresscol .x-progress-bottomtext {
+	text-align: center;
+}
+
+.x-grid3-progresscol .x-progress-bar {
+	height: 16px;
+}
+
+.x-grid3-progresscol .x-progress-wrap {
+	padding-right: 1px;
+}
+
+.x-grid3-progresscol .x-progress-wrap-ie {
+	padding-right: 0px !important;
+}
+
+.x-grid3-progresscol .x-progress-wrap-ie .x-progress-bar {
+	height: 18px;
+}
+
+.x-grid3-progresscol .x-progress-text {
+	width: 100%;
+}
+
+.x-grid3-progresscol .x-progress-text-front-ie {
+	padding: 2.5px 5px;
+}
+
+.x-grid3-progresscol .x-progress-text-front {
+	padding: 2px 5px;
+}
+
+.x-progress-bar-red,.x-progress-bar-orange,.x-progress-bar-green {
+	float: left;
+}
+
+.x-progress-bar-red {
+	background: #ff0000 url(images/progress-bg-red.gif) repeat-x scroll left center;
+	border-right: 1px solid #cb7878;
+	border-top: 1px solid #ecb7ad;
+	border-bottom: 1px solid #bf5f5f;
+}
+
+.x-progress-bar-orange {
+	background: #9cbfee url(images/progress-bg-orange.gif) repeat-x scroll left center;
+	border-right: 1px solid #deab7e;
+	border-top: 1px solid #d7b290;
+	border-bottom: 1px solid #d7b290;
+}
+
+.x-progress-bar-green {
+	background: #00ff00 url(images/progress-bg-green.gif) repeat-x scroll left center;
+	border-right: 1px solid #5bd976;
+	border-top: 1px solid #79e18f;
+	border-bottom: 1px solid #2da36d;
+}
