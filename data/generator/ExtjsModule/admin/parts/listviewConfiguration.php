@@ -9,12 +9,10 @@
 )";
       
     return array_merge(array(
-      'xtype' => 'listview',
+      'xtype' => $this->getListviewXtype() . 'listview',
       'trackOver' => sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true),
-      'reserveScrollOffset' => true,
-<?php if(sfConfig::get('app_extjs_gen_plugin_gridpanel_trackMouseOver', true)): ?>      
-      'overClass' => 'x-grid3-row-over',
-<?php endif; ?>       
+      'reserveScrollOffset' => true,      
+      'trackOver' => <?php echo sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true) ?>,    
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true)): ?>      
       'tpl' => $stripedRowTpl,
 <?php endif; ?>      
@@ -25,9 +23,9 @@
 <?php unset($this->config['listview']['config']) ?>
   }
 
-  public function getListviewType()
+  public function getListviewXtype()
   {
-    return '<?php echo isset($this->config['datastore']['grouping']) && isset($this->config['datastore']['grouping']['field']) ? 'Grouping' : 'Grid' ?>';
+    return '<?php echo isset($this->config['datastore']['grouping']) && isset($this->config['datastore']['grouping']['field']) && isset($this->config['datastore']['grouping']['start_grouped']) && $this->config['datastore']['grouping']['start_grouped'] ? 'grouping' : '' ?>';
   }
 
   public function getListviewGroupTextTpl()

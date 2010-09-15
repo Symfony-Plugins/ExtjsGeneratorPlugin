@@ -109,22 +109,28 @@ Ext.ux.list.ProgressColumn = Ext.extend(Ext.list.Column, {
     );       
     return (v < (this.ceiling / 1.031)) ? text.substring(0, text.length - 6) : text.substr(6);    
   }, 
+  
+  getWrapperClass: function(values, index, v)
+  {
+    return 'x-list-progresscol-wrapper';
+  },
 
   getColumnMarkup: function(values, index) {
     //we get all the values for this row so extra things can be done by overriding any of the methods
     var v = values[index];
     // the empty comment makes IE collapse empty divs
     return String.format(
-      '{0}<div class="x-progress-wrap' + (Ext.isIE ? ' x-progress-wrap-ie">' : '">') +
+      '<em class="{0}">{1}<div class="x-progress-wrap' + (Ext.isIE ? ' x-progress-wrap-ie">' : '">') +
         '<!-- --><div class="x-progress-inner">' +
-          '<div class="x-progress-bar x-progress-bar{1}" style="width:{2}%;">{3}' +
+          '<div class="x-progress-bar x-progress-bar{2}" style="width:{3}%;">{4}' +
         '</div>' +
-      '</div>{4}',
+      '</div>{5}</em>',
+      this.getWrapperClass(values, index, v),
       this.getTopText(values, index, v),
       this.getStyle(values, index, v), 
       (v / this.ceiling) * 100, 
       this.getText(values, index, v),
-      this.getBottomText(values, index, v)
+      this.getBottomText(values, index, v)      
     );
   }
 });

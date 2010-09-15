@@ -7,6 +7,12 @@ $configArr = array(
 <?php $gridConfig = $this->configuration->getGridpanelConfig(); ?>
 <?php if(!$this->configuration->hasFilterForm() || (isset($gridConfig['autoLoadStore']) && $gridConfig['autoLoadStore'])):?>
   this.on({
+    render: {
+      fn: function(){
+        this.view.refresh(); 
+        this.loadMask.show();
+      }
+    },
     afterrender: {
       fn: function(){this.getStore().load()},
       scope: this,

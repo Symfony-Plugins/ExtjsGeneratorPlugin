@@ -14,23 +14,30 @@
 <?php unset($this->config['datastore']['config']) ?>
   }
   
+  public function getDatastoreType()
+  {
+<?php 
+  $type = 'Store'; 
+  $groupingConfig = array(); 
+  if(isset($this->config['datastore']['grouping']) && isset($this->config['datastore']['grouping']['field'])) 
+  {
+    $type = 'Grouping'.$type;
+  } 
+?>
+    return '<?php echo $type ?>';   
+  }
+  
   public function getDatastoreGroupingConfig()
   {
 <?php $groupingConfig = array(); if(isset($this->config['datastore']['grouping']) && isset($this->config['datastore']['grouping']['field'])): ?>
 <?php $groupingConfig['groupField'] = isset($this->config['datastore']['grouping']['start_grouped']) ? $this->config['datastore']['grouping']['field'] : null ?>
-<?php $groupingConfig['remoteGroup'] = true ?>
+<?php //$groupingConfig['remoteGroup'] = true ?>
 <?php $groupingConfig['sortInfo'] = array('field' => $this->config['datastore']['grouping']['field'], 'direction' => 'asc')?>
 <?php endif;?>
     return <?php echo $this->asPhp($groupingConfig) ?>;
 <?php unset($this->config['datastore']['grouping']) ?>
   }
-  
-  public function getDatastoreType()
-  {
-<?php $type = 'Store'; $groupingConfig = array(); if(isset($this->config['datastore']['grouping']) && isset($this->config['datastore']['grouping']['field'])) $type = 'Grouping'.$type ?>
-    return '<?php echo $type ?>';   
-  }
-  
+    
   public function getDatastoreSortConfig()
   {
 <?php

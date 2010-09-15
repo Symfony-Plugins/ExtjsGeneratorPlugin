@@ -44,6 +44,7 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
     $this->addOption('date', array());
     $this->addOption('time', array());
     $this->addOption('with_time', true);
+    $this->addOption('context', 'form');
     $this->addOption('format', '%date% %time%');
   }
 
@@ -79,7 +80,7 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
 
     unset($attributes['help']);
 
-    return $this->renderExtjsContentBlock('form', 'TwinDateField', array_merge($configArr, $attributes));
+    return $this->renderExtjsContentBlock($this->getOption('context'), 'TwinDateField', array_merge($configArr, $attributes));
 
   //    $date = $this->getDateWidget($attributes)->render($name, $value);
   //

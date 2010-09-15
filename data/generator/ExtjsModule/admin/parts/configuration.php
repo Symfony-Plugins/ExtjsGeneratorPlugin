@@ -22,17 +22,17 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 
 <?php include dirname(__FILE__).'/filterpanelConfiguration.php' ?>
 
+<?php include dirname(__FILE__).'/listviewConfiguration.php' ?>
+
+<?php include dirname(__FILE__).'/gridpanelConfiguration.php' ?>
+
 <?php include dirname(__FILE__).'/datastoreConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/columnRenderersConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/columnModelConfiguration.php' ?>
 
-<?php include dirname(__FILE__).'/gridpanelConfiguration.php' ?>
-
 <?php include dirname(__FILE__).'/listpanelConfiguration.php' ?>
-
-<?php include dirname(__FILE__).'/listviewConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/formpanelConfiguration.php' ?>
 
