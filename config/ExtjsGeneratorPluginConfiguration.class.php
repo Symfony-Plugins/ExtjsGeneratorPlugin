@@ -40,8 +40,14 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     }
     
     $default_stylesheets = array(
-      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',
+      '/ExtjsGeneratorPlugin/css/ExtjsGeneratorPlugin.css',      
+    );
+    
+    $listpanel_stylesheets = array(
       '/ExtjsGeneratorPlugin/css/Ext.ux.list.ProgressColumn.css',
+    );
+    
+    $gridpanel_stylesheets = array(
       '/ExtjsGeneratorPlugin/css/Ext.ux.grid.plugin.ProgressColumn.css',
     );
     
@@ -66,31 +72,46 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinDateField.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinComboBox.js', 
       '/ExtjsGeneratorPlugin/js/Ext.ux.form.IsEmptyCheckbox.js',      
-      '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js',
-      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.form.TwinFileUploadField.js',    
+
+      '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs      
+    );
+    
+    $listpanel_javascripts = array(
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListViewPanel.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.GroupingListView.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.list.GroupingListView.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.ProgressColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',      
-      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',  
+    );
+    
+    $gridpanel_javascripts = array(
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.ProgressColumn.js',      
-      
-      '/ExtjsGeneratorPlugin/js/Ext.ux.tabpanel.plugin.TabCloseMenu.js',  // simple context menu for closing tabs or multiple tabs 
-      
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.ProgressColumn.js',   
     );
     
-    $prod_javascripts = array(
+    $prod_default_javascripts = array(
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr-min.js',
-      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-min.js' // YUI Compressor file of all files in web/js
+      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-Default-min.js' // YUI Compressor file of all default javascript files
     );
     
-    sfConfig::set('extjs_gen_default_javascripts', (sfConfig::get('sf_environment') == 'dev') ? $default_javascripts : $prod_javascripts);
+    $prod_listpanel_javascripts = array(
+      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-ListPanel-min.js' // YUI Compressor file of all listpanel javascript files
+    );
+    
+    $prod_gridpanel_javascripts = array(
+      '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-GridPanel-min.js' // YUI Compressor file of all gridpanel javascript files
+    );
+    
+    sfConfig::set('extjs_gen_default_javascripts', (sfConfig::get('sf_environment') == 'dev') ? $default_javascripts : $prod_default_javascripts);
+    sfConfig::set('extjs_gen_listpanel_javascripts', (sfConfig::get('sf_environment') == 'dev') ? $listpanel_javascripts : $prod_listpanel_javascripts);
+    sfConfig::set('extjs_gen_gridpanel_javascripts', (sfConfig::get('sf_environment') == 'dev') ? $gridpanel_javascripts : $prod_gridpanel_javascripts);
     sfConfig::set('extjs_gen_default_stylesheets', $default_stylesheets);
+    sfConfig::set('extjs_gen_listpanel_stylesheets', $listpanel_stylesheets);
+    sfConfig::set('extjs_gen_gridpanel_stylesheets', $gridpanel_stylesheets);
     
     // add support for our javascript ux files to sfExtjs3Plugin
     sfConfig::set('sf_extjs3_classes', array_merge(array(

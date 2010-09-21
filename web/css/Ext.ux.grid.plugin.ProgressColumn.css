@@ -25,7 +25,7 @@
 }
 
 .x-grid3-progresscol.x-grid3-dirty-cell .x-progress-text, .x-grid3-progresscol.x-grid3-dirty-cell .x-progress-text-ie, .x-grid3-progresscol.x-grid3-dirty-cell .x-progress-bar .x-progress-text-front-ie {
-  background: url(images/progress-dirty.gif) no-repeat scroll 0 0 transparent;
+  background: url(../images/progress-dirty.gif) no-repeat scroll 0 0 transparent;
 }
 
 .x-grid3-progresscol .x-progress-toptext, .x-grid3-progresscol .x-progress-bottomtext {
@@ -65,21 +65,21 @@
 }
 
 .x-progress-bar-red {
-	background: #ff0000 url(images/progress-bg-red.gif) repeat-x scroll left center;
+	background: #ff0000 url(../images/progress-bg-red.gif) repeat-x scroll left center;
 	border-right: 1px solid #cb7878;
 	border-top: 1px solid #ecb7ad;
 	border-bottom: 1px solid #bf5f5f;
 }
 
 .x-progress-bar-orange {
-	background: #9cbfee url(images/progress-bg-orange.gif) repeat-x scroll left center;
+	background: #9cbfee url(../images/progress-bg-orange.gif) repeat-x scroll left center;
 	border-right: 1px solid #deab7e;
 	border-top: 1px solid #d7b290;
 	border-bottom: 1px solid #d7b290;
 }
 
 .x-progress-bar-green {
-	background: #00ff00 url(images/progress-bg-green.gif) repeat-x scroll left center;
+	background: #00ff00 url(../images/progress-bg-green.gif) repeat-x scroll left center;
 	border-right: 1px solid #5bd976;
 	border-top: 1px solid #79e18f;
 	border-bottom: 1px solid #2da36d;

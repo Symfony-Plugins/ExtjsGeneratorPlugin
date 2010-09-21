@@ -2,6 +2,8 @@ Ext.namespace('Ext.ux.form');
 Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   submitOnSelect : true,
   submitOnClear : true,
+  allowClear : true,
+  defaultValue : null,
   initComponent : function() {
     Ext.ux.form.TwinDateField.superclass.initComponent.call(this);
 
@@ -54,9 +56,10 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   hideTrigger1 : true,
 
   reset : Ext.form.Field.prototype.reset.createSequence(function() {
-    this.originalValue = null;
-    this.setValue(null);
-    this.triggers[0].hide();
+    this.originalValue = this.defaultValue;
+    this.setValue(this.defaultValue);
+    if (this.allowClear)
+      this.triggers[0].hide();
   }),
 
   onTrigger2Click : function() {
@@ -88,10 +91,12 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   },
 
   setValue : Ext.form.DateField.prototype.setValue.createSequence(function(v) {
-    if (v !== null && v != '') {
-      this.triggers[0].show();
-    } else {
-      this.triggers[0].hide();
+    if (this.allowClear) {
+      if (v !== null && v != '') {
+        this.triggers[0].show();
+      } else {
+        this.triggers[0].hide();
+      }
     }
   })
 

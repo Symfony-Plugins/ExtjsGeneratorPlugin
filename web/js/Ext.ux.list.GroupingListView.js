@@ -1,5 +1,5 @@
-Ext.ns('Ext.ux');
-Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
+Ext.ns('Ext.ux.list');
+Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
 
   /**
    * @cfg {Boolean} startCollapsed true to start all groups collapsed (defaults
@@ -12,16 +12,19 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
    *      Collapsed
    */
   startExpanded : [],
-  
+
   groupHeaderTpl : '<tpl if="xindex == 1 || parent.rows[xindex-1].group_index !=  parent.rows[xindex-2].group_index">'
-    + '<div class="x-grid-group {[this.getCollapseClass(values)]}" groupeindex="{group_index}">'
-    + '<div class="x-grid-group-hd"><div class="x-grid-group-title">{group_index} '
-    + '</div></div>'
-    + '<div class="x-grid-group-body">'
-    + '</tpl>',
-    
+    + '<div class="x-grid-group {[this.getCollapseClass(values)]}" group-index="{group_index}">'
+      + '<div class="x-grid-group-hd">'
+        + '<div class="x-grid-group-title">'
+          + '{group_index} '
+        + '</div>' 
+      + '</div>' 
+    + '<div class="x-grid-group-body">' + 
+  '</tpl>',
+
   groupFooterTpl : '<tpl if="xindex == (xcount) || this.isBigger(xindex, (xcount-1)) || parent.rows[xindex-1].group_index !=  parent.rows[xindex].group_index"> '
-    +'</div></div></tpl>',
+    + '</div></div></tpl>',
 
   groupState : {},
 
@@ -31,28 +34,30 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
       collapsedClass = ' x-grid-group-collapsed';
     }
     this.tpl = new Ext.XTemplate(
-    '<tpl for="rows">'
-    // grouping header
-    + this.groupHeaderTpl,
-    // endof grouping header
-    
-    // row template
-    '<dl>',
-    '<tpl for="parent.columns">',
-    '<dt style="width:{[values.width*100]}%;text-align:{align};">',
-    '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">',
-    '{[values.tpl.apply(parent)]}',
-    '</em></dt>',
-    '</tpl>',
-    '<div class="x-clear"></div>',
-    '</dl>'
-    // endof row template
-    
-    // grouping footer
-    + this.groupFooterTpl,
-    // endof grouping footer
+    '<tpl for="rows">',
+      // grouping header
+      this.groupHeaderTpl,
+      // endof grouping header
 
-    '</tpl><div class="dataview-border"></div>', {
+      // row template
+      '<dl class="x-grid3-row {[xindex % 2 === 0 ? "" :  "x-grid3-row-alt"]}">',
+        '<tpl for="parent.columns">', 
+          '<dt style="width:{[values.width*100]}%;text-align:{align};">',
+            '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">', 
+              '{[values.tpl.apply(parent)]}',
+            '</em>', 
+          '</dt>', 
+        '</tpl>', 
+        '<div class="x-clear"></div>', 
+      '</dl>',
+      // endof row template
+
+      // grouping footer
+      this.groupFooterTpl,
+      // endof grouping footer
+
+    '</tpl>', 
+    '<div class="dataview-border"></div>', {
       isBigger : function(isbigger, than) {
         return isbigger > than;
       },
@@ -61,11 +66,41 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
       }
     }
     );
-    Ext.ux.GroupingListView.superclass.initComponent.apply(this, arguments);
+    Ext.ux.list.GroupingListView.superclass.initComponent.apply(this, arguments);
+  },
+
+  collectData : function(records, startIndex) {
+    var rs = [], groups = {}, groupRs = [], j;
+    for (var i = 0, len = records.length; i < len; i++) {
+      rs[i] = this.prepareData(records[i].data, startIndex + i, records[i]);
+
+      if (i == 0 || rs[i]['group_index'] != rs[i - 1]['group_index']) {
+        if (i > 0) {
+          groups[j] = groupRs;
+          groupRs = [];
+        }
+        j = rs[i]['group_index'];
+      }
+      groupRs.push(rs[i]);
+    }
+
+    // add the final array of rs objects
+    groups[j] = groupRs;
+
+    Ext.each(rs, function(item, index) {
+      item.rs = groups[item.group_index];
+    });
+
+    return {
+      columns : this.columns,
+      rows : rs
+    }
   },
 
   prepareData : function(recData, index, record) {
     var data = {}, groupId = record.data[record.store.groupField];
+
+    groupId = this.groupRenderer ? this.groupRenderer(groupId, index, record) : String(groupId);
 
     Ext.apply(data, recData);
     data.group_index = groupId;
@@ -73,13 +108,12 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
       this.groupState[groupId] = this.startCollapsed && (this.startExpanded.indexOf(groupId) == -1)
         ? false : true;
     }
-    // console.log(groupId, this.groupState[groupId]);
     data.group_collapsed = !this.groupState[groupId];
     return data;
   },
 
   onRender : function() {
-    Ext.ux.GroupingListView.superclass.onRender.apply(this, arguments);
+    Ext.ux.list.GroupingListView.superclass.onRender.apply(this, arguments);
     this.innerBody.on('mousedown', this.interceptMouse, this);
   },
 
@@ -102,7 +136,7 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
    */
   toggleGroup : function(group, expanded) {
     var gel = Ext.get(group);
-    var groupIndex = gel.getAttribute('groupeindex');
+    var groupIndex = gel.getAttribute('group-index');
     expanded = Ext.isDefined(expanded) ? expanded : gel.hasClass('x-grid-group-collapsed');
     this.groupState[groupIndex] = expanded;
     gel[expanded ? 'removeClass' : 'addClass']('x-grid-group-collapsed');
@@ -111,4 +145,4 @@ Ext.ux.GroupingListView = Ext.extend(Ext.ListView, {
 }
 );
 
-Ext.reg('groupinglistview', Ext.ux.GroupingListView);
+Ext.reg('groupinglistview', Ext.ux.list.GroupingListView);

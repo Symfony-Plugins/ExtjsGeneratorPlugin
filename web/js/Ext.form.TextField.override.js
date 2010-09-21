@@ -1,4 +1,5 @@
 Ext.override(Ext.form.TextField, {
+  defaultValue : null,
   initComponent : function() {
     Ext.form.TextField.superclass.initComponent.call(this);
     this.addEvents('autosize', 'keydown', 'keyup', 'keypress', 'reset');
@@ -12,6 +13,8 @@ Ext.override(Ext.form.TextField, {
    */
   reset : function() {
     Ext.form.TextField.superclass.reset.call(this);
+    this.originalValue = this.defaultValue;
+    this.setValue(this.defaultValue);
     this.fireEvent('reset');
     this.applyEmptyText();
   }
