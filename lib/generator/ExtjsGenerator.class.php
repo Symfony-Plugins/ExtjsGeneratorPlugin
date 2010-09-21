@@ -485,7 +485,7 @@ EOF;
     $configArr = array_merge($configArr, $params);
 
     // you can pass a class instead of an icon name with the class parameter
-    $iconCls = isset($configArr['class']) ? $configArr['class'] : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
+    $iconCls = isset($configArr['class']) ? "'{$configArr['class']}'" : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
 
     if(isset($configArr['handler_function']))
     {
@@ -583,7 +583,7 @@ EOF;
     $configArr = array_merge($configArr, $params);
 
     // you can pass a class instead of an icon name with the class parameter
-    $iconCls = isset($configArr['class']) ? $configArr['class'] : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
+    $iconCls = isset($configArr['class']) ? "'{$configArr['class']}'" : "\$sfExtjs3Plugin->asVar(\"Ext.ux.IconMgr.getIcon('{$configArr['icon']}')\")";
 
     if(isset($configArr['handler_function']))
     {
