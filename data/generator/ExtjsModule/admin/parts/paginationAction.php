@@ -19,13 +19,8 @@
 
   protected function buildQuery()
   {
-<?php if ($this->configuration->hasFilterForm()): ?>
-    if (null === $this->filters) $this->getFilterForm();
-    $query = $this->filters->buildCriteria($this->getFilters());
-<?php else: ?>
     $query = PropelQuery::from('<?php echo $this->getModelClass() ?>');
-<?php endif; ?>
-
+    
     foreach ($this->configuration->getWiths() as $with) {
       $query->joinWith($with);
     }
@@ -33,6 +28,11 @@
     foreach ($this->configuration->getQueryMethods() as $method) {
       $query->$method();
     }
+    
+<?php if ($this->configuration->hasFilterForm()): ?>
+    if (null === $this->filters) $this->getFilterForm();
+    $query = $this->filters->buildCriteria($this->getFilters(), $query);    
+<?php endif; ?>
 
     $this->processSort($query);
 

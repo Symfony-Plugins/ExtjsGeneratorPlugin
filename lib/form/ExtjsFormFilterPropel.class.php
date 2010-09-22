@@ -8,6 +8,11 @@ abstract class ExtjsFormFilterPropel extends sfFormFilterPropel
    * @return array An array of fields with their foreign query method
    */
   abstract public function getForeignColumnQueries();
+  
+  public function buildCriteria(array $values, ModelCriteria $criteria = null)
+  {
+    return $this->doBuildCriteria($this->processValues($values), $criteria);
+  }
 
   /**
    * Builds a Propel Criteria with processed values.
@@ -19,9 +24,9 @@ abstract class ExtjsFormFilterPropel extends sfFormFilterPropel
    *
    * @return Criteria
    */
-  protected function doBuildCriteria(array $values)
+  protected function doBuildCriteria(array $values, ModelCriteria $criteria = null)
   {
-    $criteria = PropelQuery::from($this->getModelName());
+    $criteria = ($criteria) ? $criteria : PropelQuery::from($this->getModelName());
     $peer = $criteria->getModelPeerName();
     
     $fields = $this->getFields();

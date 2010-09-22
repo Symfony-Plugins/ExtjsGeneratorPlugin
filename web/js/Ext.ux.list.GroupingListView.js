@@ -140,6 +140,34 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
     expanded = Ext.isDefined(expanded) ? expanded : gel.hasClass('x-grid-group-collapsed');
     this.groupState[groupIndex] = expanded;
     gel[expanded ? 'removeClass' : 'addClass']('x-grid-group-collapsed');
+  },
+  
+  /**
+   * Toggles all groups if no value is passed, otherwise sets the expanded
+   * state of all groups to the value passed.
+   * 
+   * @param {Boolean}
+   *          expanded (optional)
+   */
+  toggleAllGroups : function(expanded) {
+    var groups = this.getGroups();
+    for (var i = 0, len = groups.length; i < len; i++) {
+      this.toggleGroup(groups[i], expanded);
+    }
+  },
+
+  /**
+   * Expands all grouped rows.
+   */
+  expandAllGroups : function() {
+    this.toggleAllGroups(true);
+  },
+
+  /**
+   * Collapses all grouped rows.
+   */
+  collapseAllGroups : function() {
+    this.toggleAllGroups(false);
   }
 
 }
