@@ -55,7 +55,7 @@ Ext.ux.list.ProgressColumn = Ext.extend(Ext.list.Column, {
   /**
    * @cfg {String} the class to use for this column (defaults to x-list-progresscol)
    */
-  cls: 'x-list-progresscol',
+  cls: 'x-list-lvprogresscol',
 
   constructor : function(c) {
     c.tpl = c.tpl || new Ext.XTemplate('{[this.format(values, "' + c.dataIndex + '")]}');
@@ -88,47 +88,42 @@ Ext.ux.list.ProgressColumn = Ext.extend(Ext.list.Column, {
   
   getTopText: function(values, index, v) {
     if(this.topText) {
-      return String.format('<div class="x-progress-toptext">{0}</div>', this.topText);
+      return String.format('<em class="x-progress-toptext">{0}</em>', this.topText);
     }
     return '';
   },
   
   getBottomText: function(values, index, v) {
     if(this.bottomText) {
-      return String.format('<div class="x-progress-bottomtext">{0}</div>', this.bottomText);
+      return String.format('<em class="x-progress-bottomtext">{0}</em>', this.bottomText);
     }
     return '';
   }, 
   
   // ugly hack to get IE looking the same as FF
   getText: function(values, index, v) {
-    var textClass = (v < (this.ceiling / 1.818)) ? 'x-progress-text-back' : 'x-progress-text-front' + (Ext.isIE ? '-ie' : '');    
-    var text = String.format('</div><div class="x-progress-text {0}">{1}</div></div>',
-      textClass, 
+    var textClass = (v < (this.ceiling / 1.818)) ? 'x-progress-text-back' : 'x-progress-text-front';    
+    return String.format('<em class="x-progresscol-text {0}" style="width:100%;">{1}</em>',
+      textClass,
       v + this.textPst
-    );       
-    return (v < (this.ceiling / 1.031)) ? text.substring(0, text.length - 6) : text.substr(6);    
-  }, 
+    );
+  },
   
-  getWrapperClass: function(values, index, v)
-  {
-    return 'x-list-progresscol-wrapper';
+  getWrapperClass: function(values, index, v) {
+    return ''
   },
 
   getColumnMarkup: function(values, index) {
     //we get all the values for this row so extra things can be done by overriding any of the methods
     var v = values[index];
-    // the empty comment makes IE collapse empty divs
     return String.format(
-      '<em class="{0}">{1}<div class="x-progress-wrap' + (Ext.isIE ? ' x-progress-wrap-ie">' : '">') +
-        '<!-- --><div class="x-progress-inner">' +
-          '<div class="x-progress-bar x-progress-bar{2}" style="width:{3}%;">{4}' +
-        '</div>' +
-      '</div>{5}</em>',
+      '<em class="{0}">{1}<em class="x-progress-wrap">' +
+        '<em class="x-progress-bar  x-progress-bar{2}" style="width:{3}%;"></em>' +
+      '</em>{4}{5}</em>',
       this.getWrapperClass(values, index, v),
       this.getTopText(values, index, v),
       this.getStyle(values, index, v), 
-      (v / this.ceiling) * 100, 
+      (v / this.ceiling) * 100,
       this.getText(values, index, v),
       this.getBottomText(values, index, v)      
     );

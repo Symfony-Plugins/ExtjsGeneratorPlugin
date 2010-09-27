@@ -8,7 +8,7 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
   startCollapsed : false,
 
   /**
-   * @cfg {Array} startExpanded An Array of GroupeId's that should start
+   * @cfg {Array} startExpanded An Array of GroupId's that should start
    *      Collapsed
    */
   startExpanded : [],
@@ -18,9 +18,9 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
       + '<div class="x-grid-group-hd">'
         + '<div class="x-grid-group-title">'
           + '{group_index} '
-        + '</div>' 
-      + '</div>' 
-    + '<div class="x-grid-group-body">' + 
+        + '</div>'
+      + '</div>'
+    + '<div class="x-grid-group-body">' +
   '</tpl>',
 
   groupFooterTpl : '<tpl if="xindex == (xcount) || this.isBigger(xindex, (xcount-1)) || parent.rows[xindex-1].group_index !=  parent.rows[xindex].group_index"> '
@@ -41,14 +41,14 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
 
       // row template
       '<dl class="x-grid3-row {[xindex % 2 === 0 ? "" :  "x-grid3-row-alt"]}">',
-        '<tpl for="parent.columns">', 
+        '<tpl for="parent.columns">',
           '<dt style="width:{[values.width*100]}%;text-align:{align};">',
-            '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">', 
+            '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">',
               '{[values.tpl.apply(parent)]}',
-            '</em>', 
-          '</dt>', 
-        '</tpl>', 
-        '<div class="x-clear"></div>', 
+            '</em>',
+          '</dt>',
+        '</tpl>',
+        '<div class="x-clear"></div>',
       '</dl>',
       // endof row template
 
@@ -56,7 +56,7 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
       this.groupFooterTpl,
       // endof grouping footer
 
-    '</tpl>', 
+    '</tpl>',
     '<div class="dataview-border"></div>', {
       isBigger : function(isbigger, than) {
         return isbigger > than;
@@ -128,7 +128,7 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
   /**
    * Toggles the specified group if no value is passed, otherwise sets the
    * expanded state of the group to the value passed.
-   * 
+   *
    * @param {String}
    *          groupId The groupId assigned to the group (see getGroupId)
    * @param {Boolean}
@@ -141,16 +141,16 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
     this.groupState[groupIndex] = expanded;
     gel[expanded ? 'removeClass' : 'addClass']('x-grid-group-collapsed');
   },
-  
+
   /**
-   * Toggles all groups if no value is passed, otherwise sets the expanded
-   * state of all groups to the value passed.
-   * 
+   * Toggles all groups if no value is passed, otherwise sets the expanded state
+   * of all groups to the value passed.
+   *
    * @param {Boolean}
    *          expanded (optional)
    */
   toggleAllGroups : function(expanded) {
-    var groups = this.getGroups();
+    var groups = this.innerBody.dom.childNodes;
     for (var i = 0, len = groups.length; i < len; i++) {
       this.toggleGroup(groups[i], expanded);
     }
@@ -169,8 +169,6 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
   collapseAllGroups : function() {
     this.toggleAllGroups(false);
   }
-
-}
-);
+});
 
 Ext.reg('groupinglistview', Ext.ux.list.GroupingListView);

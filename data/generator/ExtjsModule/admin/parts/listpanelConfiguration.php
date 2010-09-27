@@ -2,7 +2,6 @@
   {
     return array_merge(array(
       'title'           => $this->getListTitle(),
-      'autoScroll'      => true,
       'plugins'         => $this->getListpanelPlugins(),
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_tabbed', true)) echo "      'header' => false," ?>
     ), <?php echo $this->asPhp(isset($this->config['listpanel']['config']) ? $this->config['listpanel']['config'] : array()) ?>);
