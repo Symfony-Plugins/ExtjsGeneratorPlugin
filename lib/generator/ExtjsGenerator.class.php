@@ -281,7 +281,7 @@ class ExtjsGenerator extends sfPropelGenerator
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\${$type}->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin({ptype: \'%s\', header:\'&nbsp;\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
+      return sprintf("\${$type}->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin({ptype: \'%s\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
     }
 
     //TODO refactor this to provide il8n support for header
@@ -701,7 +701,7 @@ EOF;
 $configArr["parameters"] = "c";
 $configArr["source"] = "
 // %1$s config
-this.%1$s_config = ".(isset($%1$s->config_array) ? $sfExtjs3Plugin->asAnonymousClass($%1$s->config_array) : \'{}\').";
+this.%1$s_config = " . ( isset($%1$s->config_array) && count($%1$s->config_array) ? $sfExtjs3Plugin->asAnonymousClass($%1$s->config_array) : \'{}\' ) . ";
 
 // combine %1$s config with arguments
 Ext.app.sf.$className.superclass.constructor.call(this, Ext.apply(this.%1$s_config, c));";

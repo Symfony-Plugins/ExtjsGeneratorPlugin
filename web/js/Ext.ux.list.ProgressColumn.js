@@ -100,10 +100,9 @@ Ext.ux.list.ProgressColumn = Ext.extend(Ext.list.Column, {
     return '';
   }, 
   
-  // ugly hack to get IE looking the same as FF
   getText: function(values, index, v) {
     var textClass = (v < (this.ceiling / 1.818)) ? 'x-progress-text-back' : 'x-progress-text-front';    
-    return String.format('<em class="x-progresscol-text {0}" style="width:100%;">{1}</em>',
+    return String.format('<em class="x-lvprogresscol-text {0}" style="width:100%;">{1}</em>',
       textClass,
       v + this.textPst
     );
