@@ -10,6 +10,13 @@ $objectActions = new stdClass();
 $objectActions->methods = array();
 $objectActions->variables = array();
 
+/* objectActions configuration */
+$objectActions->config_array = array(
+<?php foreach ($this->configuration->getObjectActionsConfig() as $name => $params): ?>
+  '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
+<?php endforeach; ?>
+);
+
 // generate toolbar action handler partials
 <?php if ($actions = $this->configuration->getValue('list.object_actions')): ?>
 <?php foreach ($actions as $name => $params): ?>
