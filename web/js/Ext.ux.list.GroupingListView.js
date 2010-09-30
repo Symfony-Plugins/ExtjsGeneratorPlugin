@@ -33,6 +33,25 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
     if (this.startCollapsed) {
       collapsedClass = ' x-grid-group-collapsed';
     }
+    
+    var rowTpl;
+    
+    if(!this.tpl){
+      rowTpl = '<dl>'
+        + '<tpl for="parent.columns">'
+          + '<dt style="width:{[values.width*100]}%;text-align:{align};">'
+            + '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">'
+                + '{[values.tpl.apply(parent)]}'
+            + '</em>'
+          +'</dt>'
+        + '</tpl>'
+        + '<div class="x-clear"></div>'
+      + '</dl>';
+    } else {
+      // strip off the template tags
+      rowTpl = this.tpl.html.substr(16, this.tpl.html.length - 22);
+    }    
+    
     this.tpl = new Ext.XTemplate(
     '<tpl for="rows">',
       // grouping header
@@ -40,16 +59,7 @@ Ext.ux.list.GroupingListView = Ext.extend(Ext.ListView, {
       // endof grouping header
 
       // row template
-      '<dl class="x-grid3-row {[xindex % 2 === 0 ? "" :  "x-grid3-row-alt"]}">',
-        '<tpl for="parent.columns">',
-          '<dt style="width:{[values.width*100]}%;text-align:{align};">',
-            '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">',
-              '{[values.tpl.apply(parent)]}',
-            '</em>',
-          '</dt>',
-        '</tpl>',
-        '<div class="x-clear"></div>',
-      '</dl>',
+      rowTpl,
       // endof row template
 
       // grouping footer

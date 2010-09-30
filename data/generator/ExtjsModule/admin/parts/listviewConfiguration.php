@@ -1,18 +1,28 @@
   public function getListviewConfig()
   {
-    $stripedRowTpl = "new Ext.XTemplate('<tpl for=\"rows\">',
-  '<dl class=\"x-grid3-row {[xindex % 2 === 0 ? \"\" :  \"x-grid3-row-alt\"]}\">',
-  '<tpl for=\"parent.columns\">',
-  '<dt style=\"width:{[values.width*100]}%;text-align:{align};\">',
-  '<em unselectable=\"on\"<tpl if=\"cls\">  class=\"{cls}</tpl>\">{[values.tpl.apply(parent)]}',
-  '</em></dt></tpl><div class=\"x-clear\"></div></dl></tpl>'
-)";
+    $stripedRowTpl = <<<EOF
+new Ext.XTemplate('<tpl for="rows">',
+  '<dl class="x-grid3-row {[xindex % 2 === 0 ? "" :  "x-grid3-row-alt"]}">',
+    '<tpl for="parent.columns">',
+      '<dt style="width:{[values.width*100]}%;text-align:{align};">',
+        '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">',
+          '{[values.tpl.apply(parent)]}',
+        '</em>',
+      '</dt>',
+    '</tpl>',
+    '<div class="x-clear"></div>',
+  '</dl>',
+'</tpl>')
+EOF;
       
     return array_merge(array(
       'xtype' => $this->getListviewXtype() . 'listview',
-      'trackOver' => sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true),
-      'reserveScrollOffset' => true,      
-      'trackOver' => <?php echo sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true) ?>,    
+      'reserveScrollOffset' => true,  
+<?php if (sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true)): ?>           
+      'trackOver' => true,
+<?php else: ?>   
+      'overClass' => false,   
+<?php endif; ?>           
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true)): ?>      
       'tpl' => $stripedRowTpl,
 <?php endif; ?>      

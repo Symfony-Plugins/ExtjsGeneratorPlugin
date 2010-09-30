@@ -6,8 +6,12 @@
       'autoScroll'      => true,
       'clicksToEdit'    => 1,
       'trackMouseOver'  => sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true),
-      'loadMask'        => sfConfig::get('app_extjs_gen_plugin_list_loadMask', true),
-      'stripeRows'      => sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true),
+<?php if (sfConfig::get('app_extjs_gen_plugin_list_loadMask', true)): ?>      
+      'loadMask'        => true,
+<?php endif; ?>      
+<?php if (sfConfig::get('app_extjs_gen_plugin_list_stripeRows', true)): ?>  
+      'stripeRows'      => true,
+<?php endif; ?>
       'stateful'        => true,
       'stateId'         => '<?php echo $this->params['route_prefix'] ?>gridpanel',
       'viewConfig'      => array(
