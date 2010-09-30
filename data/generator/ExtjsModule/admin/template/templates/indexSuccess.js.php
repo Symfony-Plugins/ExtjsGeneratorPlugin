@@ -6,7 +6,10 @@
 <?php if(count($this->configuration->getListActions()) || count($this->configuration->getListBatchActions())): ?>
 [?php include_partial('topToolbar', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
 <?php endif; ?>
+<?php $bbarConfig = $this->configuration->getBottomToolbarConfig() ?>
+<?php if (isset($bbarConfig['disabled']) && $bbarConfig['disabled'] !== true): ?>
 [?php include_partial('bottomToolbar', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
+<?php endif; ?>
 [?php include_partial('datastore', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
 <?php if($this->configuration->getListLayout() == 'gridpanel'): ?>
 [?php include_partial('columnRenderers', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
