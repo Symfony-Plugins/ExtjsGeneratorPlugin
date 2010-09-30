@@ -41,4 +41,10 @@
   {
     return <?php echo $this->asPhp(isset($this->config['tabpanel']['partials']) ? $this->config['tabpanel']['partials'] : array()) ?>;
 <?php unset($this->config['tabpanel']['partials']) ?>
+  }
+  
+  public function tabpanelIsDisabled()
+  {
+    return <?php echo isset($this->config['tabpanel']['disabled']) && $this->config['tabpanel']['disabled'] === true ? 'true' : 'false' ?>;
+<?php unset($this->config['tabpanel']['disabled']) ?>
   }      

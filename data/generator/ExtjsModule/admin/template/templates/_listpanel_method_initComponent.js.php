@@ -21,8 +21,7 @@ $configArr = array(
 <?php if(count($this->configuration->getListActions()) || count($this->configuration->getListBatchActions())): ?>
     this.tbar = Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName().'toptoolbar' ?>',store: this.ds});
 <?php endif; ?>
-<?php $bbarConfig = $this->configuration->getBottomToolbarConfig() ?>
-<?php if (isset($bbarConfig['disabled']) && $bbarConfig['disabled'] !== true): ?>
+<?php if (!$this->configuration->bottomToolbarIsDisabled()): ?>
     this.bbar = Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName().'bottomtoolbar' ?>',store: this.ds});
 <?php endif; ?>
 

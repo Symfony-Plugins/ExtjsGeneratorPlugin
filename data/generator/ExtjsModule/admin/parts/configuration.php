@@ -37,24 +37,7 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 <?php include dirname(__FILE__).'/formpanelConfiguration.php' ?>
 
 <?php include dirname(__FILE__).'/objectActionsConfiguration.php' ?>
-
-  public function getFormClass()
-  {
-    return '<?php echo isset($this->config['form']['class']) ? $this->config['form']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'Form' ?>';
-<?php unset($this->config['form']['class']) ?>
-  }
-
-  public function hasFilterForm()
-  {
-    return <?php echo !isset($this->config['filter']['class']) || false !== $this->config['filter']['class'] ? 'true' : 'false' ?>;
-  }
-
-  public function getFilterFormClass()
-  {
-    return '<?php echo isset($this->config['filter']['class']) ? $this->config['filter']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'FormFilter' ?>';
-<?php unset($this->config['filter']['class']) ?>
-  }
-
+  
   public function getPrimaryKeys($firstOne = false)
   {
     $keys = <?php echo $this->asPhp($this->getPrimaryKeys()) ?>;

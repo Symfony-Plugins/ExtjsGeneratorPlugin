@@ -24,6 +24,8 @@ foreign columns should be clickable to open an adminstration for that foreign ta
 ### generic
 add time display for datetime fields to list, filter, and edit
 add support for objects with multiple fields as primary key
+add *isDisabled config method for all components
+add get*Extends config method for all components
 
 error handling
 - need to catch errors when index.js doesn't load because of a problem with the javascript

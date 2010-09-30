@@ -60,3 +60,20 @@ if(isset($this->config['form']))
     return <?php echo $this->asPhp(isset($this->config['formpanel']['partials']) ? $this->config['formpanel']['partials'] : array()) ?>;
 <?php unset($this->config['formpanel']['partials']) ?>
   }
+  
+  public function formpanelIsDisabled()
+  {
+    return <?php echo isset($this->config['formpanel']['disabled']) && $this->config['formpanel']['disabled'] === true ? 'true' : 'false' ?>;
+<?php unset($this->config['formpanel']['disabled']) ?>
+  }
+  
+  public function hasForm()
+  {
+    return <?php echo !isset($this->config['form']['class']) || false !== $this->config['form']['class'] ? 'true' : 'false' ?>;
+  }
+  
+  public function getFormClass()
+  {
+    return '<?php echo isset($this->config['form']['class']) ? $this->config['form']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'Form' ?>';
+<?php unset($this->config['form']['class']) ?>
+  }

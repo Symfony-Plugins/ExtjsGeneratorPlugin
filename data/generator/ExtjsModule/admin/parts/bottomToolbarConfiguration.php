@@ -36,3 +36,9 @@
     return <?php echo $this->asPhp(isset($this->config['bottom_toolbar']['partials']) ? $this->config['bottom_toolbar']['partials'] : array()) ?>;
 <?php unset($this->config['bottom_toolbar']['partials']) ?>
   }
+  
+  public function bottomToolbarIsDisabled()
+  {
+    return <?php echo isset($this->config['bottom_toolbar']['disabled']) && $this->config['bottom_toolbar']['disabled'] === true ? 'true' : 'false' ?>;
+<?php unset($this->config['bottom_toolbar']['disabled']) ?>
+  } 

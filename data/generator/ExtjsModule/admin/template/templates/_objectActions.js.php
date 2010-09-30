@@ -3,6 +3,7 @@
   $className = $moduleName."ObjectActions";
   $xtype = $this->getModuleName()."objectactions";
   $extends = ($this->configuration->getListLayout() == 'listpanel') ? 'Ext.ux.ListView.plugin.RowActions' :'Ext.ux.grid.plugin.RowActions';
+  $extends = ($this->configuration->getObjectActionsExtends()) ? $this->configuration->getObjectActionsExtends() : $extends;
 ?>
 [?php
 $className = '<?php echo $className ?>';

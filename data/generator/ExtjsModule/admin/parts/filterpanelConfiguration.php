@@ -37,4 +37,21 @@
   {
     return <?php echo $this->asPhp(isset($this->config['filterpanel']['partials']) ? $this->config['filterpanel']['partials'] : array()) ?>;
 <?php unset($this->config['filterpanel']['partials']) ?>
-  }  
+  }
+  
+  public function filterpanelIsDisabled()
+  {
+    return <?php echo isset($this->config['filterpanel']['disabled']) && $this->config['filterpanel']['disabled'] === true ? 'true' : 'false' ?>;
+<?php unset($this->config['filterpanel']['disabled']) ?>
+  }
+  
+  public function hasFilterForm()
+  {
+    return <?php echo !isset($this->config['filter']['class']) || false !== $this->config['filter']['class'] ? 'true' : 'false' ?>;
+  }
+
+  public function getFilterFormClass()
+  {
+    return '<?php echo isset($this->config['filter']['class']) ? $this->config['filter']['class'] : 'Extjs' .ucfirst($this->getModelClass()).'FormFilter' ?>';
+<?php unset($this->config['filter']['class']) ?>
+  } 
