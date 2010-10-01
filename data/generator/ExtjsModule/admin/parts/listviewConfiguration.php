@@ -17,7 +17,7 @@ EOF;
       
     return array_merge(array(
       'xtype' => $this->getListviewXtype() . 'listview',
-      'reserveScrollOffset' => true,  
+      'scrollOffset' => 20,  
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true)): ?>           
       'trackOver' => true,
 <?php else: ?>   

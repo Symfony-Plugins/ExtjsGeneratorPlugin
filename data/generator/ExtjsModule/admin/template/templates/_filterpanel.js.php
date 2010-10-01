@@ -46,7 +46,7 @@ foreach ($configuration->getFormFilterFields($filters) as $name => $field)
   $attributes = array_merge(array(
     'help' => $field->getConfig('help'),
     'fieldLabel' => addslashes($field->getConfig('label', $filters[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name))),
-    'url' => $this->getModuleName().'/combo.json'
+    'url' => url_for('@<?php echo $this->params['route_prefix'] ?>').'/combo.json'
   ), $field->getConfig('attributes', array()));
 
   $params = $field->getConfig();

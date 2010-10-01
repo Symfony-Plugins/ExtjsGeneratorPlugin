@@ -113,10 +113,10 @@ Ext.extend(Ext.ux.ListView.plugin.RowActions, Ext.util.Observable, {
    * @cfg {String} tplRow Template for row actions
    * @private
    */
-  tplRow : '<div class="ux-row-action"><tpl for="actions">'
-    + '<div class="ux-row-action-item {cls} <tpl if="text">'
+  tplRow : '<em class="ux-row-action"><tpl for="actions">'
+    + '<em class="ux-row-action-item {cls} <tpl if="text">'
     + 'ux-row-action-text</tpl>" style="{hide}{style}" qtip="{qtip}">'
-    + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></div></tpl></div>',
+    + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></em></tpl></em>',
   
   /**
    * Init function
@@ -146,14 +146,14 @@ Ext.extend(Ext.ux.ListView.plugin.RowActions, Ext.util.Observable, {
     }
 
     // do our CSS here so we don't have to include it
-    if (Ext.util.CSS.getRule('.ux-row-action-cell') == null) {
-      var styleBody = '.ux-row-action-item {float: '
-        + (this.align || 'left')
-        + ';min-width: 16px;height: 16px;background-repeat: no-repeat;margin: 0 5px 0 0;cursor: pointer;overflow: hidden;}'
-        + '.ext-ie .ux-row-action-item {width: 16px;}'
-        + '.ext-ie .ux-row-action-text {width: auto;}'
-        + '.ux-row-action-item span {vertical-align:middle; padding: 0 0 0 20px;  line-height: 18px;}'
-        + '.ext-ie .ux-row-action-item span {width: auto;}'
+    if (Ext.util.CSS.getRule('.ux-row-action-item') == null) {
+      var styleBody = 
+        '.ux-row-action-item {float: ' + (this.align || 'left') + ';min-width:16px;height:16px;background-repeat:no-repeat;margin: 0 5px 0 0;cursor:pointer;overflow:hidden;}' +
+        '.x-list-body .ux-row-action em, .x-list-body em.ux-row-action {padding:0px;}' +
+        '.ext-ie .ux-row-action-item {width: 16px;}' +
+        '.ext-ie .ux-row-action-text {width: auto;}' +
+        '.ux-row-action-item span {vertical-align:middle; padding: 0 0 0 20px;  line-height: 18px;}' +
+        '.ext-ie .ux-row-action-item span {width: auto;}'
       var styleSheet = Ext.util.CSS.createStyleSheet(
         '/* Ext.ux.ListView.plugin.RowActions stylesheet */\n' + styleBody, 'RowActions'
       );

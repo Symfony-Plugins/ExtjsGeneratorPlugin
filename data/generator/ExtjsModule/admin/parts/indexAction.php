@@ -14,6 +14,8 @@
 
     if($request->getRequestFormat() == 'json')
     {
+      sfConfig::set('sf_escaping_strategy', false);
+      
       // pager
       $limit = $request->getParameter('limit', $this->configuration->getPagerMaxPerPage());
       $page = floor($request->getParameter('start', 0) / $limit)+1;
@@ -26,6 +28,7 @@
     if($request->getRequestFormat() == 'csv')
     {
       $this->setLayout(false);
+      sfConfig::set('sf_escaping_strategy', false);
       $this->getResponse()->setHttpHeader('Content-Type', 'application/csv', true);
       $this->getResponse()->setHttpHeader('Content-Disposition', 'attachment; filename="<?php echo $this->configuration->getExportTitle() ?>.csv"', true);
       $this->getResponse()->setHttpHeader('Pragma','public', true);
