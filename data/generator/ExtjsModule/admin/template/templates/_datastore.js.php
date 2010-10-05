@@ -18,7 +18,7 @@ $datastore->config_array = array(
 );
 
 $datastore->config_array['proxy'] = $sfExtjs3Plugin->HttpProxy(array(
-  'url' => '<?php echo $this->getUrlForAction('list') ?>.json',
+  'url' => url_for('@<?php echo $this->params['route_prefix'] ?>').'/index.json',
   'method' => 'GET',
 ));
 

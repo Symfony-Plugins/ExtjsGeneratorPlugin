@@ -45,6 +45,8 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 
 <?php include dirname(__FILE__).'/../../parts/gridpanelAction.php' ?>
 
+<?php include dirname(__FILE__).'/../../parts/listpanelAction.php' ?>
+
 <?php include dirname(__FILE__).'/../../parts/tabpanelAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/formpanelAction.php' ?>

@@ -18,7 +18,8 @@ class BaseExtjsGeneratorPluginXtypeManagerActions extends sfActions
       'gridpanel' => 'gridpanel',
       'tabpanel' => 'tabpanel',
       'filterpanel' => 'filterpanel',
-      'formpanel' => 'formpanel'
+      'formpanel' => 'formpanel',
+      'listpanel' => 'listpanel'
     );
 
     foreach($components as $action => $component)
