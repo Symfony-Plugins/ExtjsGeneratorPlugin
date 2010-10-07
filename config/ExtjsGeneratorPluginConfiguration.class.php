@@ -78,6 +78,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     );
     
     $listpanel_javascripts = array(
+      '/ExtjsGeneratorPlugin/js/Ext.list.ListView.override.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListViewPanel.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.GroupingListView.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.CheckColumn.js',
