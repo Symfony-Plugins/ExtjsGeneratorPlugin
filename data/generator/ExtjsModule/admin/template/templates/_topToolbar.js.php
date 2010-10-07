@@ -53,14 +53,18 @@ $topToolbar->config_array['items'][] = array(
   'xtype' => 'tbbutton',
   'iconCls' => "Ext.ux.IconMgr.getIcon('add')",
   'handler' => $sfExtjs3Plugin->asMethod("
-  var selections = this.ownerCt.getSelectionModel().getSelections();
+<?php if($this->configuration->getListLayout() == 'gridpanel'): ?>  
+  var selections = Ext.app.sf.ListPanel.getSelectionModel().getSelections();
+<?php else: ?>
+  var selections = Ext.app.sf.ListPanel.getView().getSelectedRecords();
+<?php endif; ?>
   if(selections.length == 0){
     Ext.ux.MessageBox.error(
       '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
       '".__('You must select at least one item.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
     );
   } else {
-    this.ownerCt.getGridEl().mask()
+    Ext.app.sf.ListPanel.body.mask('".__('Executing Batch Action ... ', array(), '<?php echo $this->getI18nCatalogue() ?>')."');
     var action = Ext.ComponentMgr.get('batch_action_combo').getValue();
     var params = {  
       ".$csrf."batch_action: action
@@ -74,6 +78,7 @@ $topToolbar->config_array['items'][] = array(
       url:'".url_for('<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'batch')).".json',
       method : 'POST',
       params : params,
+      timeout: 60000,
       success : function(response) {
         var json_response = Ext.util.JSON.decode(response.responseText);       
           
@@ -81,7 +86,7 @@ $topToolbar->config_array['items'][] = array(
           Ext.ux.MessageBox.info(
             '".__('Successful!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
             json_response.message,
-            this.ownerCt.getStore().reload(),
+            Ext.app.sf.ListPanel.getStore().reload(),
             this
           );
         } else {
@@ -90,21 +95,21 @@ $topToolbar->config_array['items'][] = array(
             json_response.message
           );
         }       
-        this.ownerCt.getGridEl().unmask();        
+        Ext.app.sf.ListPanel.body.unmask();        
       },
       failure: function(response) {
         Ext.ux.MessageBox.error(
           '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
           '".__('The web server returned an unexpected response.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
         );
-        this.ownerCt.getGridEl().unmask();
+        Ext.app.sf.ListPanel.body.unmask();
       },
       scope: this
     });
 
   }
 "),
-  'tooltip' => __('Perform action on selected records', array(), '<?php echo $this->getI18nCatalogue() ?>'),
+  'tooltip' => __('Perform action on selected row(s)', array(), '<?php echo $this->getI18nCatalogue() ?>'),
   'scope' => 'this',
 );
 
