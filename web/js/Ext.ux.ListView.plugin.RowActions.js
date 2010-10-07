@@ -87,7 +87,7 @@ Ext.extend(Ext.ux.ListView.plugin.RowActions, Ext.util.Observable, {
   /**
    * @cfg {String} additional class to add to the column
    */
-  cls : '',
+  cls : 'ux-row-action',
   
   /**
    * @cfg {String} default column width
@@ -113,10 +113,10 @@ Ext.extend(Ext.ux.ListView.plugin.RowActions, Ext.util.Observable, {
    * @cfg {String} tplRow Template for row actions
    * @private
    */
-  tplRow : '<em class="ux-row-action"><tpl for="actions">'
+  tplRow : '<tpl for="actions">'
     + '<em class="ux-row-action-item {cls} <tpl if="text">'
     + 'ux-row-action-text</tpl>" style="{hide}{style}" qtip="{qtip}">'
-    + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></em></tpl></em>',
+    + '<tpl if="text"><span qtip="{qtip}">{text}</span></tpl></em></tpl>',
   
   /**
    * Init function
@@ -149,7 +149,8 @@ Ext.extend(Ext.ux.ListView.plugin.RowActions, Ext.util.Observable, {
     if (Ext.util.CSS.getRule('.ux-row-action-item') == null) {
       var styleBody = 
         '.ux-row-action-item {float: ' + (this.align || 'left') + ';min-width:16px;height:16px;background-repeat:no-repeat;margin: 0 5px 0 0;cursor:pointer;overflow:hidden;}' +
-        '.x-list-body .ux-row-action em, .x-list-body em.ux-row-action {padding:0px;}' +
+        '.x-list-body .ux-row-action em {padding:0px;}' +
+        '.x-list-body em.ux-row-action {padding:2px 3px 0;}' +
         '.ext-ie .ux-row-action-item {width: 16px;}' +
         '.ext-ie .ux-row-action-text {width: auto;}' +
         '.ux-row-action-item span {vertical-align:middle; padding: 0 0 0 20px;  line-height: 18px;}' +

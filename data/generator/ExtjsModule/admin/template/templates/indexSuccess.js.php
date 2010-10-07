@@ -31,7 +31,7 @@
 <?php endif; ?>
 
 <?php if($this->configuration->hasForm() && !$this->configuration->formpanelIsDisabled()): ?>
-[?php include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'configuration' => $configuration)) ?]
+[?php //include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'configuration' => $configuration)) ?]
 <?php endif; ?>
 
 // initialise CodeLoader

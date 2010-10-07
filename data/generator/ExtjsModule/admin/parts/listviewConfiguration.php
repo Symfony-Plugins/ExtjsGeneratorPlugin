@@ -15,9 +15,9 @@ new Ext.XTemplate('<tpl for="rows">',
 '</tpl>')
 EOF;
       
-    return array_merge(array(
+    $defaultConfig = array(
       'xtype' => $this->getListviewXtype() . 'listview',
-      'scrollOffset' => 20,  
+      'scrollOffset' => 20,        
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true)): ?>           
       'trackOver' => true,
 <?php else: ?>   
@@ -29,7 +29,16 @@ EOF;
       'stateful' => true,
       'stateId' => '<?php echo $this->params['route_prefix'] ?>listview',
       'plugins' => $this->getListviewPlugins()
-    ), <?php echo $this->asPhp(isset($this->config['listview']['config']) ? $this->config['listview']['config'] : array()) ?>);
+    );
+    
+    if($this->getListBatchActions())
+    {
+      $defaultConfig['plugins'] = array_merge(array("'lvcheckboxselection'"), $defaultConfig['plugins']);
+      $defaultConfig['multiSelect'] = true;
+      unset($defaultConfig['trackOver'], $defaultConfig['overClass']);
+    }
+      
+    return array_merge($defaultConfig, <?php echo $this->asPhp(isset($this->config['listview']['config']) ? $this->config['listview']['config'] : array()) ?>);
 <?php unset($this->config['listview']['config']) ?>
   }
 

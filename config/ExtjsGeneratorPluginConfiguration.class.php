@@ -83,7 +83,8 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.list.ProgressColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',  
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckColumn.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.ListView.plugin.CheckboxSelection.js'  
     );
     
     $gridpanel_javascripts = array(
