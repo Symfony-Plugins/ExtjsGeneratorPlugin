@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormSelect.class.php 23994 2009-11-15 22:55:24Z bschussek $
  */
 class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase

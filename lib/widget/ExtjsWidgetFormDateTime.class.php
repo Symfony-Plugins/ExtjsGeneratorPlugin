@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormDateTime.class.php 20301 2009-07-19 10:57:32Z fabien $
  */
 class ExtjsWidgetFormDateTime extends ExtjsWidgetForm

@@ -5,7 +5,7 @@
  *
  * @package     ExtjsGeneratorPlugin
  * @subpackage  IconMgrPreview
- * @author      Benjamin Runnels <benjamin.r.runnels@citi.com>
+ * @author      Benjamin Runnels <kraven@kraven.org>
  * @version     SVN: $Id: BaseActions.class.php 12534 2008-11-01 13:38:27Z Kris.Wallsmith $
  */
 abstract class BaseIconMgrPreviewActions extends sfActions

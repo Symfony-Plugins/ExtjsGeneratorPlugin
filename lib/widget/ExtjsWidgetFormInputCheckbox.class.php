@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormInputCheckbox.class.php 21908 2009-09-11 12:06:21Z fabien $
  */
 class ExtjsWidgetFormInputCheckbox extends ExtjsWidgetFormInput

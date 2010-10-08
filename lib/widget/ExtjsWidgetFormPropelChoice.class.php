@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormPropelChoice.class.php 22261 2009-09-23 05:31:39Z fabien $
  */
 class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice

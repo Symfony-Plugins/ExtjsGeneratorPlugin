@@ -5,7 +5,7 @@
  *
  * @package    symfony
  * @subpackage ExtjsGeneratorPlugin
- * @author     Benjamin Runnels <benjamin.r.runnels@citi.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  */
 class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 {

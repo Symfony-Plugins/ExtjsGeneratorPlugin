@@ -5,7 +5,7 @@
  *
  * @package     ExtjsGeneratorPlugin
  * @subpackage  config
- * @author      Benjamin Runnels <benjamin.r.runnels@citi.com>
+ * @author      Benjamin Runnels <kraven@kraven.org>
  */
 class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 {

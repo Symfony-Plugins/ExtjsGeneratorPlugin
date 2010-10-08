@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormInputHidden.class.php 9046 2008-05-19 08:13:51Z FabianLange $
  */
 class ExtjsWidgetFormInputHidden extends ExtjsWidgetFormInput

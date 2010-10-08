@@ -6,7 +6,7 @@ require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPr
  *
  * @package    symfony
  * @subpackage ExtjsGeneratorPlugin
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  */
 class ExtjsGenerateAdminTask extends sfPropelGenerateAdminTask
 {
@@ -39,8 +39,8 @@ The [extjs:generate-admin|INFO] task generates an Extjs Propel admin module:
 
   [./symfony extjs:generate-admin frontend Article|INFO]
 
-The task creates a module in the [%frontend%|COMMENT] application for the
-[%Article%|COMMENT] model.
+The task creates a module in the [frontend|COMMENT] application for the
+[Article|COMMENT] model.
 
 The task creates a route for you in the application [routing.yml|COMMENT].
 
@@ -48,8 +48,8 @@ You can also generate an Extjs Propel admin module by passing a route name:
 
   [./symfony extjs:generate-admin frontend article|INFO]
 
-The task creates a module in the [%frontend%|COMMENT] application for the
-[%article%|COMMENT] route definition found in [routing.yml|COMMENT].
+The task creates a module in the [frontend|COMMENT] application for the
+[article|COMMENT] route definition found in [routing.yml|COMMENT].
 
 For the filters and batch actions to work properly, you need to add
 the [with_wildcard_routes|COMMENT] option to the route:
@@ -66,7 +66,7 @@ EOF;
    * @see sfTask
    */
   protected function execute($arguments = array(), $options = array())
-  {
+  {    
     // get configuration for the given route
     if(false !== ($route = $this->getRouteFromName($arguments['route_or_model'])))
     {
@@ -93,7 +93,7 @@ EOF;
     $name = strtolower(preg_replace(array(
       '/([A-Z]+)([A-Z][a-z])/',
       '/([a-z\d])([A-Z])/'
-    ), '\\1_\\2', $model));
+    ), '\\1_\\2', $options['module'] ? $options['module'] : $model));
 
     if(isset($options['module']))
     {
@@ -103,11 +103,11 @@ EOF;
         $name .= '_' . $options['module'];
       }
     }
-
-    $routing = sfConfig::get('sf_app_config_dir') . '/routing.yml';
+        
+    $routing = $this->getRouting($arguments);
     $content = file_get_contents($routing);
     $routesArray = sfYaml::load($content);
-
+  
     if(! isset($routesArray[$name]))
     {
       $primaryKey = $this->getPrimaryKey($model);
@@ -121,9 +121,8 @@ EOF;
     prefix_path:          /%s
     column:               %s
     with_wildcard_routes: true
-
-
 EOF
+
       , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey) . $content;
 
       $this->logSection('file+', $routing);
@@ -146,7 +145,7 @@ EOF
     }
 
     $module = $routeOptions['module'];
-    $model = $routeOptions['model'];
+    $model = $routeOptions['model'];    
 
     // execute the propel:generate-module task
     $task = new ExtjsGenerateModuleTask($this->dispatcher, $this->formatter);
@@ -189,5 +188,10 @@ EOF
     }
 
     return false;
+  }
+  
+  protected function getRouting($arguments)
+  {
+    return sfConfig::get('sf_app_config_dir') . '/routing.yml';    
   }
 }

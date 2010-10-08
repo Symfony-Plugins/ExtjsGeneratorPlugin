@@ -6,7 +6,7 @@ require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPr
  *
  * @package    symfony
  * @subpackage ExtjsGeneratorPlugin
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  */
 class ExtjsGenerateModuleTask extends sfPropelGenerateModuleTask
 {
@@ -37,15 +37,15 @@ class ExtjsGenerateModuleTask extends sfPropelGenerateModuleTask
 
     $this->namespace = 'extjs';
     $this->name = 'generate-module';
-    $this->briefDescription = 'Generates a Propel module';
+    $this->briefDescription = 'Generates an ExtjsGenerator module';
 
     $this->detailedDescription = <<<EOF
-The [extjs:generate-module|INFO] task generates a Propel module:
+The [extjs:generate-module|INFO] task generates an ExtjsGenerator module:
 
   [./symfony extjs:generate-module frontend article Article|INFO]
 
-The task creates a [%module%|COMMENT] module in the [%application%|COMMENT] application
-for the model class [%model%|COMMENT].
+The task creates an [article|COMMENT] module in the [frontend|COMMENT] application
+for the model class [Article|COMMENT].
 
 You can also create an empty module that inherits its actions and templates from
 a runtime generated module in [%sf_app_cache_dir%/modules/auto%module%|COMMENT] by
@@ -67,7 +67,7 @@ EOF;
   }
 
   protected function executeGenerate($arguments = array(), $options = array())
-  {
+  {     
     // generate module
     $tmpDir = sfConfig::get('sf_cache_dir') . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . md5(uniqid(rand(), true));
     $generatorManager = new sfGeneratorManager($this->configuration, $tmpDir);
@@ -84,7 +84,8 @@ EOF;
       'actions_base_class' => $options['actions-base-class']
     ));
 
-    $moduleDir = sfConfig::get('sf_app_module_dir') . '/' . $arguments['module'];
+    $moduleDir = $this->getModuleDirectory($arguments);
+//    var_export($moduleDir);
 
     // copy our generated module
     $this->getFilesystem()->mirror($tmpDir . DIRECTORY_SEPARATOR . 'auto' . ucfirst($arguments['module']), $moduleDir, sfFinder::type('any'));
@@ -116,7 +117,7 @@ EOF;
 
   protected function executeInit($arguments = array(), $options = array())
   {
-    $moduleDir = sfConfig::get('sf_app_module_dir') . '/' . $arguments['module'];
+    $moduleDir = $this->getModuleDirectory($arguments);
 
     // create basic application structure
     $finder = sfFinder::type('any')->discard('.sf');
@@ -166,17 +167,22 @@ EOF;
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php', '*.yml');
     $this->constants['CONFIG'] = sprintf(<<<EOF
-    model_class:           %s
-    theme:                 %s
-    non_verbose_templates: %s
-    with_show:             %s
-    singular:              %s
-    plural:                %s
-    route_prefix:          %s
-    with_propel_route:     %s
-    actions_base_class:    %s
+    model_class:            %s
+    theme:                  %s
+    non_verbose_templates:  %s
+    with_show:              %s
+    singular:               %s
+    plural:                 %s
+    route_prefix:           %s
+    with_propel_route:      %s
+    actions_base_class:     %s
 EOF
     , $arguments['model'], $options['theme'], $options['non-verbose-templates'] ? 'true' : 'false', $options['with-show'] ? 'true' : 'false', $options['singular'] ? $options['singular'] : '~', $options['plural'] ? $options['plural'] : '~', $options['route-prefix'] ? $options['route-prefix'] : '~', $options['with-propel-route'] ? $options['with-propel-route'] : 'false', $options['actions-base-class']);
     $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $this->constants);
+  }
+  
+  protected function getModuleDirectory(Array $arguments)
+  {
+    return sfConfig::get('sf_app_module_dir') . '/' . $arguments['module'];
   }
 }

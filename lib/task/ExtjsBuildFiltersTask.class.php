@@ -15,7 +15,7 @@ require_once (sfConfig::get('sf_plugins_dir') . '/sfPropel15Plugin/lib/task/sfPr
  *
  * @package    symfony
  * @subpackage propel
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfPropelBuildFiltersTask.class.php 23927 2009-11-14 16:10:57Z fabien $
  */
 class ExtjsBuildFiltersTask extends sfPropelBaseTask

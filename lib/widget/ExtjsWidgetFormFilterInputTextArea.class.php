@@ -13,7 +13,7 @@
  *
  * @package    symfony
  * @subpackage widget
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  * @version    SVN: $Id: sfWidgetFormInputText.class.php 20941 2009-08-08 14:11:51Z Kris.Wallsmith $
  */
 class ExtjsWidgetFormFilterInputTextArea extends ExtjsWidgetFormFilterInput

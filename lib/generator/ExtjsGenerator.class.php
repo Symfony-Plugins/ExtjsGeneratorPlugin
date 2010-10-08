@@ -5,7 +5,7 @@
  *
  * @package    symfony
  * @subpackage ExtjsGenerator
- * @author     Benjamin Runnels <benjamin.r.runnels@citi.com>
+ * @author     Benjamin Runnels <kraven@kraven.org>
  */
 class ExtjsGenerator extends sfPropelGenerator
 {
