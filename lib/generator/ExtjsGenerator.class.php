@@ -823,6 +823,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
     $widgetConfig['class'] = (isset($widgetConfig['class'])) ? $widgetConfig['class'] : $gen->getWidgetClassForColumn($column);
     $widgetOptions = $gen->getWidgetOptionsForColumn($column);
     if(!count($widgetConfig['options']) && $widgetOptions != '') eval("\$widgetConfig['options'] = $widgetOptions;");
+//    if(!count($widgetConfig['options']) && $widgetOptions != '') $widgetConfig['options'] = $widgetOptions;
   }
 
   protected function getValidatorConfigForForeignField(ExtjsModelGeneratorConfigurationField $field, &$validatorConfig, $view)
@@ -834,7 +835,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
 
     $validatorConfig['class'] = (isset($validatorConfig['class'])) ? $validatorConfig['class'] : $gen->getValidatorClassForColumn($column);
     $validatorOptions = $gen->getValidatorOptionsForColumn($column);
-    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
+//    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
+    if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
   }
 
   /**
@@ -916,12 +918,13 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         // widget customization
         $widgetConfig = $this->getWidgetConfigForField($field, $view);
 
-        if(count($widgetConfig))
+        if(count($widgetConfig) && ((isset($widgetConfig['class']) && count($widgetConfig['class'])) || (isset($widgetConfig['options']) && count($widgetConfig['options']))))
         {
           if(isset($widgetConfig['class']))
           {
             if($view == 'filter') $widgetConfig['options']['context'] = 'filter';
             $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $widgetConfig['class'], $this->asPhp($widgetConfig['options']), $this->asPhp($widgetConfig['attributes']));
+//            $customization .= sprintf("    \$this->%s->setWidget('%s', new %s(%s, %s));\n", $formVariableName, $fieldName, $widgetConfig['class'], $widgetConfig['options'], $this->asPhp($widgetConfig['attributes']));
           }
           else
           {
@@ -939,7 +942,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         // validator configuration
         $validatorConfig = $this->getValidatorConfigForField($field, $view);
 
-        if(count($validatorConfig))
+        if(count($validatorConfig) && ((isset($validatorConfig['class']) && count($validatorConfig['class'])) || (isset($validatorConfig['options']) && count($validatorConfig['options']))))
         {
           if(isset($validatorConfig['class']))
           {
@@ -948,8 +951,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
             {
               $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
             }
-
-            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $this->asPhp($validatorConfig['options']), $this->asPhp($validatorConfig['messages']));
+//            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $this->asPhp($validatorConfig['options']), $this->asPhp($validatorConfig['messages']));
+            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $validatorConfig['options'], $this->asPhp($validatorConfig['messages']));
           }
           else
           {

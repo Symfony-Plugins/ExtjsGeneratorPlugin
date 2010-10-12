@@ -59,6 +59,10 @@ the [with_wildcard_routes|COMMENT] option to the route:
     options:
       model:                Article
       with_wildcard_routes: true
+      with_show:            false
+      collection_actions:
+        index:  get
+        combo:  post
 EOF;
   }
 
@@ -66,7 +70,7 @@ EOF;
    * @see sfTask
    */
   protected function execute($arguments = array(), $options = array())
-  {    
+  {
     // get configuration for the given route
     if(false !== ($route = $this->getRouteFromName($arguments['route_or_model'])))
     {
@@ -103,11 +107,11 @@ EOF;
         $name .= '_' . $options['module'];
       }
     }
-        
+
     $routing = $this->getRouting($arguments);
     $content = file_get_contents($routing);
     $routesArray = sfYaml::load($content);
-  
+
     if(! isset($routesArray[$name]))
     {
       $primaryKey = $this->getPrimaryKey($model);
@@ -121,6 +125,10 @@ EOF;
     prefix_path:          /%s
     column:               %s
     with_wildcard_routes: true
+    with_show:            false
+    collection_actions:
+      index:  get
+      combo:  post
 EOF
 
       , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey) . $content;
@@ -145,7 +153,7 @@ EOF
     }
 
     $module = $routeOptions['module'];
-    $model = $routeOptions['model'];    
+    $model = $routeOptions['model'];
 
     // execute the propel:generate-module task
     $task = new ExtjsGenerateModuleTask($this->dispatcher, $this->formatter);
@@ -189,9 +197,9 @@ EOF
 
     return false;
   }
-  
+
   protected function getRouting($arguments)
   {
-    return sfConfig::get('sf_app_config_dir') . '/routing.yml';    
+    return sfConfig::get('sf_app_config_dir') . '/routing.yml';
   }
 }
