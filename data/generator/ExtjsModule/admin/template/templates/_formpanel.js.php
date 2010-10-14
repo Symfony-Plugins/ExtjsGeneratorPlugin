@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'FormPanel';
   $xtype = $this->getModuleName().'formpanel';
+  sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -77,7 +78,7 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
     $attributes = array(
       'help' => $field->getConfig('help'),
       'fieldLabel' => addslashes($field->getConfig('label', $form[$name]->getParent()->getWidget()->getFormFormatter()->generateLabelName($name))),
-      'url' => $this->getModuleName().'/combo.json'
+      'url' => url_for('@'.$this->params['route_prefix']).'/combo.json'
     );
 
     $fieldAttributes = $field->getConfig('attributes', array());

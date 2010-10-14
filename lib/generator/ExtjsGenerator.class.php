@@ -213,8 +213,8 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnField($field, $type ='columnModel')
   {
-    if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
-
+    if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false; 
+    
     if ($field->isPlugin())
     {
       if ($field->getKey() == 'expander')
@@ -248,7 +248,6 @@ class ExtjsGenerator extends sfPropelGenerator
           break;
         case 'Text':
           $colArr['cls'] = 'x-listview-cell-wrap';
-//          $colArr['xtype'] = 'this.formatLongstring';
           break;
         case 'Boolean':
           $colArr['xtype'] = 'lvcheckcolumn';
@@ -262,6 +261,12 @@ class ExtjsGenerator extends sfPropelGenerator
     }
     else
     {
+      // automatically add the checkcolumn plugin for boolean fields
+      if($field->getType() == 'Boolean' && $field->getConfig('plugin') === null)
+      {
+        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), 'checkcolumn');
+      }      
+      
       $colArr['renderer'] = $field->getColumnModelRenderer();
     }
     
@@ -277,7 +282,14 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnPlugin($field, $type ='columnModel')
   {
-    if (!$field->isPlugin()) return false;
+    // automatically add the checkcolumn plugin for boolean fields
+    if(!$field->isPlugin() && $field->getType() == 'Boolean' && $type ='columnModel')
+    {
+      $field->setPlugin(true);
+      $field->setPluginConfig('checkcolumn');
+    }
+    
+    if (!$field->isPlugin()) return;
 
     if ($field->getKey() == 'object_actions')
     {
@@ -802,12 +814,33 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         $validatorConfig['messages'] = $validatorMessages;
       }
     }
+    
+    if($field->getConfig('combo', false))
+    {
+      if(!isset($validatorConfig['class']))
+      {
+        $validatorConfig['class'] = 'sfValidatorPass';
+      }
+
+      $options = array(
+        'required' => false
+      );
+
+      $validatorConfig['options'] = (isset($validatorConfig['options'])) ? array_merge($options, $validatorConfig['options']) : $options;
+    }
+    
+    
     if(!isset($validatorConfig['options']) || !is_array($validatorConfig['options'])) $validatorConfig['options'] = array();
     if(!isset($validatorConfig['messages']) || !is_array($validatorConfig['messages'])) $validatorConfig['messages'] = array();
 
     if($field->getConfig('relation_name', false) && strpos($field->getName(), '-'))
     {
       $this->getValidatorConfigForForeignField($field, $validatorConfig, $view);
+    }
+    
+    if(isset($validatorConfig['options']) && count($validatorConfig['options']) && $field->getConfig('type') != 'Date')
+    {
+      $validatorConfig['options'] = $this->asPhp($validatorConfig['options']);
     }
 
     return $validatorConfig;

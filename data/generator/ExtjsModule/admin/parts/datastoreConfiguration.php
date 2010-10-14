@@ -44,14 +44,13 @@
 $sortConfig = array();
 if(isset($this->config['list']['sort']))
 {
-  
   if(is_array($this->config['list']['sort']))
   {
-    $sortConfig = array('field' => $this->config['list']['sort'][0], 'direction' => $this->config['list']['sort'][1]);
+    $sortConfig['sortInfo'] = array('field' => $this->config['list']['sort'][0], 'direction' => $this->config['list']['sort'][1]);
   }
   else
   {
-    $sortConfig = array('field' => $this->config['list']['sort'], 'direction' => 'asc');
+     $sortConfig['sortInfo'] = array('field' => $this->config['list']['sort'], 'direction' => 'asc');
   }
 } 
 ?>
