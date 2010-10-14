@@ -282,14 +282,16 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnPlugin($field, $type ='columnModel')
   {
+    $ptype = $field->getConfig('plugin');
     // automatically add the checkcolumn plugin for boolean fields
     if(!$field->isPlugin() && $field->getType() == 'Boolean' && $type ='columnModel')
     {
-      $field->setPlugin(true);
-      $field->setPluginConfig('checkcolumn');
+      $ptype = 'checkcolumn';
+    } 
+    elseif (!$field->isPlugin())
+    {
+      return;
     }
-    
-    if (!$field->isPlugin()) return;
 
     if ($field->getKey() == 'object_actions')
     {
@@ -297,8 +299,8 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     //TODO refactor this to provide il8n support for header
-    return sprintf("\${$type}->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
-      'ptype'     => $field->getConfig('plugin'),
+    return sprintf("\${$type}->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $ptype, $this->asPhp(array_merge(array(
+      'ptype'     => $ptype,
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
       'header'    => $field->getConfig('label', '', true),
       'dataIndex' => $field->getName()
@@ -314,7 +316,16 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderGridPanelPlugin($field)
   {
-    if (!$field->isPlugin()) return false;
+    $plugin = $field->getConfig('plugin');
+    // automatically add the checkcolumn plugin for boolean fields
+    if(!$field->isPlugin() && $field->getType() == 'Boolean' && $type ='columnModel')
+    {
+      $plugin = 'checkcolumn';
+    } 
+    elseif (!$field->isPlugin())
+    {
+      return;
+    }
 
     //    if($field->getKey() == 'expander')
     //    {
@@ -328,7 +339,7 @@ class ExtjsGenerator extends sfPropelGenerator
       return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_objectactions'", $this->getModuleName());
     }
 
-    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
+    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $plugin);
   }
   
   public function renderListViewPlugin($field)

@@ -190,11 +190,6 @@ class ExtjsModelGeneratorConfigurationField extends sfModelGeneratorConfiguratio
   {
     $this->config['is_plugin'] = $boolean;
   }
-  
-  public function setPluginConfig($plugin)
-  {
-    $this->config['plugin'] = $plugin;
-  }
 
   /**
    * Returns true if the column is a plugin.
