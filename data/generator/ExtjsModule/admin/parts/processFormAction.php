@@ -7,7 +7,7 @@
 
       $<?php echo $this->getSingularName() ?> = $form->save();
 
-      $this->dispatcher->notify(new sfEvent($this, 'admin.save_object', array('object' => $<?php echo $this->getSingularName() ?>)));
+      $this->dispatcher->notify(new sfEvent($this, 'admin.save_object', array('object' => $this-><?php echo $this->getSingularName() ?>)));
 
       if ($request->hasParameter('_save_and_add'))
       {
@@ -19,7 +19,7 @@
       {
         $this->getUser()->setFlash('notice', $notice);
 
-        //$this->redirect(array('sf_route' => '<?php echo $this->getUrlForAction('edit') ?>', 'sf_subject' => $<?php echo $this->getSingularName() ?>));
+        //$this->redirect(array('sf_route' => '<?php echo $this->getUrlForAction('edit') ?>', 'sf_subject' => $this-><?php echo $this->getSingularName() ?>));
       }
     }
     else

@@ -9,10 +9,10 @@
       {
         foreach ($fields as $name => $field)
         {
-          $sfGuardUser = $request->getParameter('sf_guard_user', array());
+          $requestField = $request->getParameter($this->form->getName(), array());
           //TODO: figure out how to get the right csrf token for the form on the client without the form being bound to an object
-          //if(!isset($sfGuardUser[$field->getName()]) && $field->getName() != $this->form->getCSRFFieldName()) unset($this->form[$name]);
-          if(!isset($sfGuardUser[$field->getName()])) unset($this->form[$name]);
+          //if(!isset($requestField[$field->getName()]) && $field->getName() != $this->form->getCSRFFieldName()) unset($this->form[$name]);
+          if(!isset($requestField[$field->getName()])) unset($this->form[$name]);
         }
       }
     }

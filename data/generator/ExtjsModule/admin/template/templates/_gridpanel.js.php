@@ -68,8 +68,8 @@ include_partial('gridpanel_method_initEvents', array('sfExtjs3Plugin' => $sfExtj
 // onEditLinkClick
 include_partial('gridpanel_method_onEditLinkClick', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
-// updateDB
-//include_partial('list_gridpanel_method_updateDB', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
+// updateDatabase
+include_partial('gridpanel_method_updateDatabase', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
 // setFilter
 include_partial('gridpanel_method_setFilter', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));

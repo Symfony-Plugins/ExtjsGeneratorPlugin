@@ -36,8 +36,8 @@ $this->createPartialFile('_editaction_'.$name, <<<EOT
 ");
 
 *** Method example with parameters
-\$configArr->['parameters'] = 'grid, record, action, row, col';
-\$configArr->['source'] = "
+\$configArr['parameters'] = 'grid, record, action, row, col';
+\$configArr['source'] = "
   //method code
 ");
 \$formpanel->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);

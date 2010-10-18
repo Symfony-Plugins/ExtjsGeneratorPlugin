@@ -90,9 +90,11 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     
     $gridpanel_javascripts = array(
       '/ExtjsGeneratorPlugin/js/Ext.grid.GridPanel.override.js',
-      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
+//      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.CheckColumn.js',
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.RowActions.js',
       '/ExtjsGeneratorPlugin/js/Ext.ux.grid.plugin.ProgressColumn.js',   
+      '/ExtjsGeneratorPlugin/js/Ext.ux.grid.ForeignFieldColumn.js',
     );
     
     $prod_default_javascripts = array(

@@ -1,5 +1,7 @@
 [?php use_helper('I18N', 'Date') ?]
 [?php $sfExtjs3Plugin = new sfExtjs3Plugin() ?]
+// initialise CodeLoader
+Ext.app.CodeLoader = new Ext.ux.ModuleManager({modulePath: '[?php echo sfContext::getInstance()->getRequest()->getScriptName() ?]' });
 
 <?php if(!$this->configuration->objectActionsIsDisabled() && count($this->configuration->getListObjectActions())): ?>
 [?php include_partial('objectActions', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
@@ -33,9 +35,6 @@
 <?php if($this->configuration->hasForm() && !$this->configuration->formpanelIsDisabled()): ?>
 [?php //include_partial('formpanel', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'configuration' => $configuration)) ?]
 <?php endif; ?>
-
-// initialise CodeLoader
-Ext.app.CodeLoader = new Ext.ux.ModuleManager({modulePath: '[?php echo sfContext::getInstance()->getRequest()->getScriptName() ?]' });
 
 Ext.onReady(function(){
 [?php include_partial('layout', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]

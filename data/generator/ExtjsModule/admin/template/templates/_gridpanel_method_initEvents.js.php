@@ -3,13 +3,18 @@
 $configArr = array(
   'source' => "
   Ext.app.sf.$className.superclass.initEvents.apply(this);
+  this.on({
+    afteredit: {
+      fn:     this.updateDatabase
+    }
+  });
 
 <?php $gridConfig = $this->configuration->getGridpanelConfig(); ?>
 <?php if(!$this->configuration->hasFilterForm() || (isset($gridConfig['autoLoadStore']) && $gridConfig['autoLoadStore'])):?>
   this.on({
     render: {
       fn: function(){
-        this.view.refresh(); 
+        this.view.refresh();
         this.loadMask.show();
       }
     },
@@ -19,8 +24,8 @@ $configArr = array(
       single: true
     }
   });
-<?php endif; ?>
 
+<?php endif; ?>
   this.body.on({
     scope:    this,
     click:    this.onEditLinkClick,

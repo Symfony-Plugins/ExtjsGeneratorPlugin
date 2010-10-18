@@ -130,6 +130,7 @@ EOF;
       index:  get
       combo:  post
 
+
 EOF
 
       , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey) . $content;

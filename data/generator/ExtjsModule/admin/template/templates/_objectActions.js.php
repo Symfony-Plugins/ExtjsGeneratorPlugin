@@ -33,8 +33,8 @@ if($this->configuration->getListLayout() == 'listpanel')
 ");
 
 *** Method example with parameters
-\$configArr->['parameters'] = 'view, record, action, node, index';
-\$configArr->['source'] = "
+\$configArr['parameters'] = 'view, record, action, node, index';
+\$configArr['source'] = "
   //method code
 ");
 \$objectActions->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
@@ -59,8 +59,8 @@ else
 ");
 
 *** Method example with parameters
-\$configArr->['parameters'] = 'grid, record, action, row, col';
-\$configArr->['source'] = "
+\$configArr['parameters'] = 'grid, record, action, row, col';
+\$configArr['source'] = "
   //method code
 ");
 \$objectActions->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);
@@ -75,11 +75,11 @@ EOT
   );
 }
 ?>
-include_partial('<?php echo 'objectAction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'objectActions' => $objectActions));
+include_partial('<?php echo 'objectAction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'objectActions' => $objectActions, 'className' => $className));
 
 <?php endif; ?>
 <?php if(in_array($name, array('_delete', '_edit'))): ?>
-include_partial('<?php echo 'objectAction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'objectActions' => $objectActions));
+include_partial('<?php echo 'objectAction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'objectActions' => $objectActions, 'className' => $className));
 
 <?php endif; ?>
 <?php echo $this->addCredentialCondition($this->getObjectActionButton($name, $params), $params)."\n" ?>

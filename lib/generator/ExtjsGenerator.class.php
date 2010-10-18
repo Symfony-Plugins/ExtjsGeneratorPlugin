@@ -261,13 +261,15 @@ class ExtjsGenerator extends sfPropelGenerator
     }
     else
     {
-      // automatically add the checkcolumn plugin for boolean fields
-      if($field->getType() == 'Boolean' && $field->getConfig('plugin') === null)
+      // automatically add the checkcolumn for boolean fields
+      if($field->getType() == 'Boolean' && $field->getConfig('xtype') === null)
       {
-        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), 'checkcolumn');
-      }      
-      
-      $colArr['renderer'] = $field->getColumnModelRenderer();
+        $colArr['xtype'] = 'checkcolumn';
+      }
+      else
+      {
+        $colArr['renderer'] = $field->getColumnModelRenderer();
+      }
     }
     
     return sprintf("\${$type}->config_array['columns'][] = %s", $this->asPhp(array_merge($colArr, $field->getConfig('config', array()))));
@@ -282,16 +284,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnPlugin($field, $type ='columnModel')
   {
-    $ptype = $field->getConfig('plugin');
-    // automatically add the checkcolumn plugin for boolean fields
-    if(!$field->isPlugin() && $field->getType() == 'Boolean' && $type ='columnModel')
-    {
-      $ptype = 'checkcolumn';
-    } 
-    elseif (!$field->isPlugin())
-    {
-      return;
-    }
+    if (!$field->isPlugin()) return;
 
     if ($field->getKey() == 'object_actions')
     {
@@ -299,8 +292,8 @@ class ExtjsGenerator extends sfPropelGenerator
     }
 
     //TODO refactor this to provide il8n support for header
-    return sprintf("\${$type}->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $ptype, $this->asPhp(array_merge(array(
-      'ptype'     => $ptype,
+    return sprintf("\${$type}->variables['%s_%s'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin('.\$sfExtjs3Plugin->asAnonymousClass(%s).')')", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'), $this->asPhp(array_merge(array(
+      'ptype'     => $field->getConfig('plugin'),
       //'header' => "__('" . $field->getConfig('label', '', true) . "', array(), '" . $this->getI18nCatalogue() . "')",
       'header'    => $field->getConfig('label', '', true),
       'dataIndex' => $field->getName()
@@ -316,16 +309,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderGridPanelPlugin($field)
   {
-    $plugin = $field->getConfig('plugin');
-    // automatically add the checkcolumn plugin for boolean fields
-    if(!$field->isPlugin() && $field->getType() == 'Boolean' && $type ='columnModel')
-    {
-      $plugin = 'checkcolumn';
-    } 
-    elseif (!$field->isPlugin())
-    {
-      return;
-    }
+    if (!$field->isPlugin()) return;
 
     //    if($field->getKey() == 'expander')
     //    {
@@ -339,7 +323,7 @@ class ExtjsGenerator extends sfPropelGenerator
       return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_objectactions'", $this->getModuleName());
     }
 
-    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $plugin);
+    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
   }
   
   public function renderListViewPlugin($field)
@@ -658,8 +642,8 @@ EOF;
 ");
 
 *** Method example with parameters
-\$configArr->['parameters'] = 'grid, record, action, row, col';
-\$configArr->['source'] = "
+\$configArr['parameters'] = 'grid, record, action, row, col';
+\$configArr['source'] = "
   //method code
 ");
 \${$objName}->methods['MethodName'] = \$sfExtjs3Plugin->asMethod(\$configArr);

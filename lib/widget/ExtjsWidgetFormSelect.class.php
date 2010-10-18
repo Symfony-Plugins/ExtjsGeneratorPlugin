@@ -63,9 +63,9 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     if(is_array($value)) $value = null;
 
     $type = 'TwinComboBox';
-    $choices = $this->getChoices();
     if(isset($attributes['multiple']) && $attributes['multiple'] == 'multiple')
     {
+      $choices = $this->getChoices();
       $type = 'ItemSelector';
       unset($attributes['multiple']);
       $this->setOption('with_empty', false);
@@ -80,7 +80,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
                 'value',
                 'display'
               ),
-              'data' => $this->getOptionsForSelect($value, $choices)
+              //'data' => $this->getOptionsForSelect($value, $choices)
             ),
             'valueField' => 'value',
             'displayField' => 'display',
@@ -108,6 +108,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
     {
       if($attributes['mode'] == 'local')
       {
+        $choices = $this->getChoices();
         $store = array(
           'xtype' => 'arraystore',
           'fields' => array(
@@ -143,7 +144,6 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'valueField' => 'value',
         'displayField' => 'display',
         'forceSelection' => true,
-        'triggerAction' => 'all',
         'mode' => $attributes['mode'],
         'minChars' => sfConfig::get('app_extjs_gen_plugin_remote_combo_minChars', 3),
       );

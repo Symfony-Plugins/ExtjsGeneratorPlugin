@@ -131,8 +131,8 @@ $this->createPartialFile('_listaction_'.$name, <<<EOT
 ");
 
 *** Method example with parameters
-\$configArr->['parameters'] = 'grid, record, action, row, col';
-\$configArr->['source'] = "
+\$configArr['parameters'] = 'grid, record, action, row, col';
+\$configArr['source'] = "
   //method code
 ");
 \$topToolbar->methods['$name'] = \$sfExtjs3Plugin->asMethod(\$configArr);

@@ -8,6 +8,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   submitOnClear : true,
   allowClear : true,
   defaultValue : null,
+  triggerAction: 'all',
   plugins : [
     'comboListAutoSizer'
   ],
@@ -108,6 +109,16 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       this.el.dom.qtip = null;
       this.fireEvent('clear', this);
     }
-  }
+  },
+  
+  // private
+  onFocus : Ext.form.ComboBox.prototype.onFocus.createSequence(function() {
+    // if grid editor widen the editor to account for the size of the trigger fields
+    if (!this.ownerCt) {
+      var sz = this.wrap.getSize();
+      this.minEditorWidth = (!this.minEditorWidth) ? sz.width + 36 : this.minEditorWidth;
+      this.setSize(this.minEditorWidth, sz.height);
+    }
+  })
 });
 Ext.ComponentMgr.registerType('twincombo', Ext.ux.form.TwinComboBox);
