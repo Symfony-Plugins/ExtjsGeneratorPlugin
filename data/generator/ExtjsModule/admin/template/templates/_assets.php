@@ -3,8 +3,13 @@
 
 
 <?php $css = array_merge($css, sfConfig::get('extjs_gen_'.$this->configuration->getListLayout().'_stylesheets', array())) ?>
-<?php $js = array_merge($js, sfConfig::get('extjs_gen_'.$this->configuration->getListLayout().'_javascripts', array())) ?>
-
+<?php
+$js = array_merge(
+  $js,
+  sfConfig::get('extjs_gen_formpanel_javascripts', array()),
+  sfConfig::get('extjs_gen_'.$this->configuration->getListLayout().'_javascripts', array())
+);
+?>
 
 <?php if (isset($this->params['css']) && ($this->params['css'] !== false)): ?>
 [?php use_stylesheet('<?php echo $this->params['css'] ?>', 'first') ?]

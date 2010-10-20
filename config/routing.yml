@@ -1,0 +1,7 @@
+extjs_gen_plugin_get_xtype:
+  url: /js/getXtype/:xtype/*.:sf_format
+  param:
+    module:     ExtjsGeneratorPluginXtypeManager
+    action:     find
+    sf_format:  js
+    
