@@ -34,3 +34,9 @@
     return <?php echo $this->asPhp(isset($this->config['listpanel']['partials']) ? $this->config['listpanel']['partials'] : array()) ?>;
 <?php unset($this->config['listpanel']['partials']) ?>
   }
+
+  public function getListpanelExtends()
+  {
+    return <?php echo isset($this->config['listpanel']['extends']) ? "'{$this->config['listpanel']['extends']}'" : 'null' ?>;
+<?php unset($this->config['listpanel']['extends']) ?>
+  }

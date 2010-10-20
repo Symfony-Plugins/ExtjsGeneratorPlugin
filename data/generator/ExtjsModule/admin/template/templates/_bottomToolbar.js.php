@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'BottomToolbar';
   $xtype = $this->getModuleName().'bottomtoolbar';
+  $extends = ($this->configuration->getBottomToolbarExtends()) ? $this->configuration->getBottomToolbarExtends() : 'Ext.PagingToolbar';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -26,7 +27,7 @@ $bottomToolbar->config_array['emptyMsg'] = __($bottomToolbar->config_array['empt
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.PagingToolbar',
+  '<?php echo $extends ?>',
   array_merge(
     $bottomToolbar->methods,
     $bottomToolbar->variables

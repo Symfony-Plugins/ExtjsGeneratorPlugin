@@ -30,15 +30,21 @@
     return <?php echo $this->asPhp($pluginsArr) ?>;
 <?php unset($this->config['bottom_toolbar']['plugins']) ?>
   }
-  
+
   public function getBottomToolbarPartials()
   {
     return <?php echo $this->asPhp(isset($this->config['bottom_toolbar']['partials']) ? $this->config['bottom_toolbar']['partials'] : array()) ?>;
 <?php unset($this->config['bottom_toolbar']['partials']) ?>
   }
-  
+
+  public function getBottomToolbarExtends()
+  {
+    return <?php echo isset($this->config['bottom_toolbar']['extends']) ? "'{$this->config['bottom_toolbar']['extends']}'" : 'null' ?>;
+<?php unset($this->config['bottom_toolbar']['extends']) ?>
+  }
+
   public function bottomToolbarIsDisabled()
   {
     return <?php echo isset($this->config['bottom_toolbar']['disabled']) && $this->config['bottom_toolbar']['disabled'] === true ? 'true' : 'false' ?>;
 <?php unset($this->config['bottom_toolbar']['disabled']) ?>
-  } 
+  }

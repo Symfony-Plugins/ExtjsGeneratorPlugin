@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName."ColumnModel";
   $xtype = $this->getModuleName()."columnmodel";
+  $extends = ($this->configuration->getColumnModelExtends()) ? $this->configuration->getColumnModelExtends() : "Ext.app.sf.{$moduleName}ColumnRenderers";
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -30,7 +31,7 @@ foreach ($this->configuration->getValue('list.display') as $name => $field)
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.app.sf.<?php echo $moduleName."ColumnRenderers" ?>',
+  '<?php echo $extends ?>',
   array_merge(
     $columnModel->methods,
     $columnModel->variables

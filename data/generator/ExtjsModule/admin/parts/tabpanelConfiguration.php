@@ -36,15 +36,21 @@
     return <?php echo isset($this->config['tabpanel']['active_tab']) ? $this->config['tabpanel']['active_tab'] : 0 ?>;
 <?php unset($this->config['tabpanel']['active_tab']) ?>
   }
-  
+
   public function getTabpanelPartials()
   {
     return <?php echo $this->asPhp(isset($this->config['tabpanel']['partials']) ? $this->config['tabpanel']['partials'] : array()) ?>;
 <?php unset($this->config['tabpanel']['partials']) ?>
   }
-  
+
+  public function getTabpanelExtends()
+  {
+    return <?php echo isset($this->config['tabpanel']['extends']) ? "'{$this->config['tabpanel']['extends']}'" : 'null' ?>;
+<?php unset($this->config['tabpanel']['extends']) ?>
+  }
+
   public function tabpanelIsDisabled()
   {
     return <?php echo isset($this->config['tabpanel']['disabled']) && $this->config['tabpanel']['disabled'] === true ? 'true' : 'false' ?>;
 <?php unset($this->config['tabpanel']['disabled']) ?>
-  }      
+  }

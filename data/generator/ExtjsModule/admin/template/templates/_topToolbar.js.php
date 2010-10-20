@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'TopToolbar';
   $xtype = $this->getModuleName().'toptoolbar';
+  $extends = ($this->configuration->getTopToolbarExtends()) ? $this->configuration->getTopToolbarExtends() : 'Ext.Toolbar';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -163,7 +164,7 @@ include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.Toolbar',
+  '<?php echo $extends ?>',
   array_merge(
     $topToolbar->methods,
     $topToolbar->variables

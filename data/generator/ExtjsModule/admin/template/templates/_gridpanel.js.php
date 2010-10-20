@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName."GridPanel";
   $xtype = $this->getModuleName()."gridpanel";
+  $extends = ($this->configuration->getGridpanelExtends()) ? $this->configuration->getGridpanelExtends() : 'Ext.grid.GridPanel';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -87,7 +88,7 @@ include_partial('gridpanel_method_resetFilter', array('sfExtjs3Plugin' => $sfExt
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.grid.EditorGridPanel',
+  '<?php echo $extends ?>',
   array_merge(
     $gridpanel->methods,
     $gridpanel->variables

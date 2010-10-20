@@ -3,6 +3,7 @@
   $store = $this->configuration->getDatastoreType(); 
   $className = $moduleName.$store;
   $xtype = $this->getModuleName().strtolower($store);
+  $extends = ($this->configuration->getDatastoreExtends()) ? $this->configuration->getDatastoreExtends() : "Ext.data.$store";
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -48,7 +49,7 @@ $datastore->config_array['reader'] = $sfExtjs3Plugin->JsonReader(array(
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.data.<?php echo $store ?>',
+  '<?php echo $extends ?>',
   array_merge(
     $datastore->methods,
     $datastore->variables

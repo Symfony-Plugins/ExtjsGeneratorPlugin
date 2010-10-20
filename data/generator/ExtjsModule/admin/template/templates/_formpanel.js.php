@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'FormPanel';
   $xtype = $this->getModuleName().'formpanel';
+  $extends = ($this->configuration->getFormpanelExtends()) ? $this->configuration->getFormpanelExtends() : 'Ext.FormPanel';
   sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 ?>
 [?php
@@ -160,7 +161,7 @@ include_partial('formpanel_method_close', array('sfExtjs3Plugin' => $sfExtjs3Plu
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.FormPanel',
+  '<?php echo $extends ?>',
   array_merge(
     $formpanel->methods,
     $formpanel->variables

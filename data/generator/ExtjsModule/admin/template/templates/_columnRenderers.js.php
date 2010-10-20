@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'ColumnRenderers';
   $xtype = $this->getModuleName().'columnrenderers';
+  $extends = ($this->configuration->getColumnRenderersExtends()) ? $this->configuration->getColumnRenderersExtends() : 'Ext.grid.ColumnModel';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -49,7 +50,7 @@ $columnRenderers->methods['formatDate'] = $sfExtjs3Plugin->asMethod(array(
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.grid.ColumnModel',
+  '<?php echo $extends ?>',
   array_merge(
     $columnRenderers->methods,
     $columnRenderers->variables

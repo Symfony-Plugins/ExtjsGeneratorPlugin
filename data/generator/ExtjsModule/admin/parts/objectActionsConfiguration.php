@@ -11,14 +11,14 @@
 <?php unset($this->config['object_actions']['partials']) ?>
   }
 
-  public function objectActionsIsDisabled()
-  {
-    return <?php echo isset($this->config['object_actions']['disabled']) && $this->config['object_actions']['disabled'] === true ? 'true' : 'false' ?>;
-<?php unset($this->config['object_actions']['disabled']) ?>
-  }
-
   public function getObjectActionsExtends()
   {
     return <?php echo isset($this->config['object_actions']['extends']) ? "'{$this->config['object_actions']['extends']}'" : 'null' ?>;
 <?php unset($this->config['object_actions']['extends']) ?>
+  }
+
+  public function objectActionsIsDisabled()
+  {
+    return <?php echo isset($this->config['object_actions']['disabled']) && $this->config['object_actions']['disabled'] === true ? 'true' : 'false' ?>;
+<?php unset($this->config['object_actions']['disabled']) ?>
   }

@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName.'TabPanel';
   $xtype = $this->getModuleName().'tabpanel';
+  $extends = ($this->configuration->getTabpanelExtends()) ? $this->configuration->getTabpanelExtends() : 'Ext.TabPanel';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -23,7 +24,7 @@ $tabpanel->config_array = array(
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.TabPanel',
+  '<?php echo $extends ?>',
   array_merge(
     $tabpanel->methods,
     $tabpanel->variables

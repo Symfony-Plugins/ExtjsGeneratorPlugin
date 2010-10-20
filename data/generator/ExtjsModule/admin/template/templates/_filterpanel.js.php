@@ -2,6 +2,7 @@
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName."FilterPanel";
   $xtype = $this->getModuleName()."filterpanel";
+  $extends = ($this->configuration->getFilterpanelExtends()) ? $this->configuration->getFilterpanelExtends() : 'Ext.FormPanel';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -78,7 +79,7 @@ include_partial('filterpanel_method_initEvents', array('sfExtjs3Plugin' => $sfEx
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.FormPanel',
+  '<?php echo $extends ?>',
   array_merge(
     $filterpanel->methods,
     $filterpanel->variables

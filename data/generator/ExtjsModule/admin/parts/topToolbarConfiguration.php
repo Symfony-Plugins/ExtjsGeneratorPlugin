@@ -28,13 +28,19 @@
     return <?php echo $this->asPhp($pluginsArr) ?>;
 <?php unset($this->config['top_toolbar']['plugins']) ?>
   }
-  
+
   public function getTopToolbarPartials()
   {
     return <?php echo $this->asPhp(isset($this->config['top_toolbar']['partials']) ? $this->config['top_toolbar']['partials'] : array()) ?>;
 <?php unset($this->config['top_toolbar']['partials']) ?>
   }
-  
+
+  public function getTopToolbarExtends()
+  {
+    return <?php echo isset($this->config['top_toolbar']['extends']) ? "'{$this->config['top_toolbar']['extends']}'" : 'null' ?>;
+<?php unset($this->config['top_toolbar']['extends']) ?>
+  }
+
   public function topToolbarIsDisabled()
   {
     return <?php echo isset($this->config['top_toolbar']['disabled']) && $this->config['top_toolbar']['disabled'] === true ? 'true' : 'false' ?>;

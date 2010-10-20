@@ -60,3 +60,9 @@
     return <?php echo $this->asPhp(isset($this->config['gridpanel']['partials']) ? $this->config['gridpanel']['partials'] : array()) ?>;
 <?php unset($this->config['gridpanel']['partials']) ?>
   }
+
+  public function getGridpanelExtends()
+  {
+    return <?php echo isset($this->config['gridpanel']['extends']) ? "'{$this->config['gridpanel']['extends']}'" : 'null' ?>;
+<?php unset($this->config['gridpanel']['extends']) ?>
+  }

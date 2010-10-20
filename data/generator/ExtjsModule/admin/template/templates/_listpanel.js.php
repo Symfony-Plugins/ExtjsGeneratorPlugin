@@ -18,6 +18,7 @@ Ext.reg('lvlinkcolumn', Ext.ux.list.LinkColumn);
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
   $className = $moduleName."ListPanel";
   $xtype = $this->getModuleName()."listpanel";
+  $extends = ($this->configuration->getListpanelExtends()) ? $this->configuration->getListpanelExtends() : 'Ext.ux.ListViewPanel';
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -60,7 +61,7 @@ include_partial('listpanel_method_onEditLinkClick', array('sfExtjs3Plugin' => $s
 $sfExtjs3Plugin->beginClass(
   'Ext.app.sf',
   '<?php echo $className ?>',
-  'Ext.ux.ListViewPanel',
+  '<?php echo $extends ?>',
   array_merge(
     $listpanel->methods,
     $listpanel->variables
