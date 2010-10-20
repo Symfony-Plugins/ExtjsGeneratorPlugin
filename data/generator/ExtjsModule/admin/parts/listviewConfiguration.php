@@ -1,11 +1,12 @@
   public function getListviewConfig()
   {
     $stripedRowTpl = <<<EOF
-new Ext.XTemplate('<tpl for="rows">',
+new Ext.XTemplate(
+'<tpl for="rows">',
   '<dl class="x-grid3-row {[xindex % 2 === 0 ? "" :  "x-grid3-row-alt"]}">',
     '<tpl for="parent.columns">',
       '<dt style="width:{[values.width*100]}%;text-align:{align};">',
-        '<em unselectable="on"<tpl if="cls"> class="{cls}</tpl>">',
+        '<em<tpl if="cls"> class="{cls}"</tpl>>',
           '{[values.tpl.apply(parent)]}',
         '</em>',
       '</dt>',
