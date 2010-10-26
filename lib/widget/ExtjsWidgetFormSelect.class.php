@@ -142,7 +142,6 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         'valueField' => 'value',
         'displayField' => 'display',
         'forceSelection' => true,
-        'mode' => $attributes['mode'],
         'minChars' => sfConfig::get('app_extjs_gen_plugin_remote_combo_minChars', 3),
       );
 

@@ -9,6 +9,10 @@
  */
 class ExtjsFormGenerator extends sfPropelFormGenerator
 {
+  public function setDbMap($dbMap)
+  {
+    $this->dbMap = $dbMap;
+  }
 
   /**
    * Initializes the current sfGenerator instance.

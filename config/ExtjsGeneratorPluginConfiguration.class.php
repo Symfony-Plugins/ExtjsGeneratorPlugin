@@ -64,6 +64,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.MultiSelect.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.ItemSelector.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinDateField.js',
+      '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinDateTimeField.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinComboBox.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.IsEmptyCheckbox.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinFileUploadField.js',
@@ -115,6 +116,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
     // add support for our javascript ux files to sfExtjs3Plugin
     sfConfig::set('sf_extjs3_classes', array_merge(array(
       'TwinDateField' => 'Ext.ux.form.TwinDateField',
+      'TwinDateTimeField' => 'Ext.ux.form.TwinDateTimeField',
       'TwinComboBox' => 'Ext.ux.form.TwinComboBox',
       'MultiSelect' => 'Ext.ux.form.MultiSelect',
       'ItemSelector' => 'Ext.ux.form.ItemSelector',
@@ -124,6 +126,11 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 
     sfConfig::set('Ext.ux.form.TwinDateField', array(
       'class' => 'Ext.ux.form.TwinDateField',
+      'attributes' => array()
+    ));
+    
+    sfConfig::set('Ext.ux.form.TwinDateTimeField', array(
+      'class' => 'Ext.ux.form.TwinDateTimeField',
       'attributes' => array()
     ));
 

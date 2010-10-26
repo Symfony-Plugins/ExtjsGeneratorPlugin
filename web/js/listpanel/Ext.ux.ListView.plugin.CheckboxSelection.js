@@ -34,6 +34,8 @@ Ext.ux.ListView.plugin.CheckboxSelection = Ext.extend(Ext.util.Observable, {
    * @cfg {String} default CheckboxSelection column width
    */
   width : '.027',
+  
+  plain: true,
 
   /**
    * Init function
@@ -107,7 +109,7 @@ Ext.ux.ListView.plugin.CheckboxSelection = Ext.extend(Ext.util.Observable, {
       var styleBody = 'div.ux-lv-checkboxsel {height:14px; width:100% !important;}' +
       '.x-list-header .ux-lv-checkboxsel {margin-left:1px;}' +
       'em#ext-comp-1023-xlhd-1 {padding:4px 4px 4px 3px;}' +
-      '.x-list-body .ux-lv-checkboxsel-wrap {background:#FAFAFA url(/sfExtjs3Plugin/extjs/resources/images/default/grid/grid3-special-col-bg.gif) repeat-y scroll right center !important;}';
+      (this.plain) ? '' : '.x-list-body .ux-lv-checkboxsel-wrap {background:#FAFAFA url(/sfExtjs3Plugin/extjs/resources/images/default/grid/grid3-special-col-bg.gif) repeat-y scroll right center !important;}';
       var styleSheet = Ext.util.CSS.createStyleSheet(
         '/* Ext.ux.ListView.plugin.CheckboxSelection stylesheet */\n' + styleBody, 'CheckboxSelection'
       );

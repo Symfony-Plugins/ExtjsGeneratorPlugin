@@ -845,6 +845,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
     $gen = new $generatorClass($this->getGeneratorManager());
+    $gen->setDbMap($this->dbMap);
     $relationMap = $this->getTableMap()->getRelation($field->getConfig('relation_name'));
     $column = $relationMap->getRightTable()->getColumn($field->getConfig('field_name'));
 
@@ -858,13 +859,14 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
   {
     $generatorClass = sprintf('ExtjsForm%sGenerator', $view == 'filter' ? ucfirst($view) : '');
     $gen = new $generatorClass($this->getGeneratorManager());
+    $gen->setDbMap($this->dbMap);
     $relationMap = $this->getTableMap()->getRelation($field->getConfig('relation_name'));
     $column = $relationMap->getRightTable()->getColumn($field->getConfig('field_name'));
 
     $validatorConfig['class'] = (isset($validatorConfig['class'])) ? $validatorConfig['class'] : $gen->getValidatorClassForColumn($column);
     $validatorOptions = $gen->getValidatorOptionsForColumn($column);
-//    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
-    if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
+    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
+//    if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
   }
 
   /**

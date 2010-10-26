@@ -9,6 +9,10 @@
  */
 class ExtjsFormFilterGenerator extends sfPropelFormFilterGenerator
 {
+  public function setDbMap($dbMap)
+  {
+    $this->dbMap = $dbMap;
+  }
 
   /** Initializes the current sfGenerator instance.
    *

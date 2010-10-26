@@ -47,6 +47,34 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       }
     });
   },
+  
+  applyState : function(state) {
+    this.lastSelectionText = state.lastSelectionText ? state.lastSelectionText : this.defaultText;
+    var selectedIndex = state.selectedIndex ? state.selectedIndex : this.defaultIndex;
+    this.addRecordToStore(this.lastSelectionText, selectedIndex);
+  },
+
+  getState : function() {
+    return {
+      selectedIndex : this.getValue(),
+      lastSelectionText : this.lastSelectionText
+    };
+  },
+  
+  // private
+  addRecordToStore : function(display, value)
+  {
+    if ((this.store !== null) && (value != ""))
+    {
+      // add preloaded value to the store
+      var o = new Array();
+      o.data = new Array();
+      o.data[0] = new Array();
+      o.data[0][this.valueField] = value;
+      o.data[0][this.displayField] = display;
+      this.store.loadData(o, true);
+    }
+  },
 
   // private
   setValue : Ext.form.ComboBox.prototype.setValue.createSequence(function(v) {

@@ -23,10 +23,10 @@ $topToolbar->config_array = array(
 <?php foreach ((array) $batchActions as $action => $params): ?>
 <?php echo $this->addCredentialCondition("\$batchActionArr[] = array('$action', __('{$params['label']}', array(), '{$this->getI18nCatalogue()}'));", $params) ?>
 <?php endforeach; ?>
-
+$batchId = uniqid('batch_action_combo_');
 $topToolbar->config_array['items'][] = array(
   'xtype' => 'twincombo',
-  'id' => 'batch_action_combo',
+  'id' => $batchId,
   'hiddenName' => 'batch_action',
   'emptyText' => __('Choose an action', array(), '<?php echo $this->getI18nCatalogue() ?>'),
   'mode' => 'local',
@@ -66,7 +66,7 @@ $topToolbar->config_array['items'][] = array(
     );
   } else {
     Ext.app.sf.ListPanel.body.mask('".__('Executing Batch Action ... ', array(), '<?php echo $this->getI18nCatalogue() ?>')."');
-    var action = Ext.ComponentMgr.get('batch_action_combo').getValue();
+    var action = Ext.ComponentMgr.get('" . $batchId . "').getValue();
     var params = {  
       ".$csrf."batch_action: action
     };

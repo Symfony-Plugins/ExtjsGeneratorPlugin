@@ -1,7 +1,6 @@
   public function getFilterpanelConfig()
   {
     return array_merge(array(
-      'deferredRender' => true,
       'title'      => 'Filters',
       'autoScroll' => true,
       'bodyStyle'  => 'padding: 5px 0px 0px 10px; position: relative;',

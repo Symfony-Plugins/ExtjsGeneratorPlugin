@@ -1,6 +1,20 @@
 [?php use_helper('I18N', 'Date') ?]
 [?php $sfExtjs3Plugin = new sfExtjs3Plugin() ?]
 // initialise CodeLoader
+Ext.ComponentMgr.loadType = function(type) {  
+  Ext.Ajax.request({
+    url : '[?php echo url_for('@homepage') ?]js/getXtype/' + type + '.js',
+    disableCaching : true,
+    method : 'GET',
+    async : false,
+    success : function(resp, opt) {
+      eval.call(window, String(resp.responseText || "").trim());
+    },
+    failure : function(resp, opt) {   
+    }
+  });
+};
+
 <?php if(!$this->configuration->objectActionsIsDisabled() && count($this->configuration->getListObjectActions())): ?>
 [?php include_partial('objectActions', array('sfExtjs3Plugin' => $sfExtjs3Plugin)) ?]
 <?php endif; ?>

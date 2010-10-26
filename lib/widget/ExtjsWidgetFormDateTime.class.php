@@ -41,11 +41,11 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
    */
   protected function configure($options = array(), $attributes = array())
   {
-    $this->addOption('date', array());
-    $this->addOption('time', array());
+//    $this->addOption('date', array());
+//    $this->addOption('time', array());
     $this->addOption('with_time', true);
     $this->addOption('context', 'form');
-    $this->addOption('format', '%date% %time%');
+//    $this->addOption('format', '%date% %time%');
   }
 
   /**
@@ -79,19 +79,9 @@ class ExtjsWidgetFormDateTime extends ExtjsWidgetForm
     }
 
     unset($attributes['help']);
+    
+    $xtype = $this->getOption('with_time') ? 'TwinDateTimeField' : 'TwinDateField';
 
-    return $this->renderExtjsContentBlock($this->getOption('context'), 'TwinDateField', array_merge($configArr, $attributes));
-
-  //    $date = $this->getDateWidget($attributes)->render($name, $value);
-  //
-  //    if(! $this->getOption('with_time'))
-  //    {
-  //      return $date;
-  //    }
-  //
-  //    return strtr($this->getOption('format'), array(
-  //      '%date%' => $date,
-  //      '%time%' => $this->getTimeWidget($attributes)->render($name, $value)
-  //    ));
+    return $this->renderExtjsContentBlock($this->getOption('context'), $xtype,  array_merge($configArr, $attributes));
   }
 }
