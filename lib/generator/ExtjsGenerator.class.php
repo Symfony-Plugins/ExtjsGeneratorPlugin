@@ -865,8 +865,14 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
 
     $validatorConfig['class'] = (isset($validatorConfig['class'])) ? $validatorConfig['class'] : $gen->getValidatorClassForColumn($column);
     $validatorOptions = $gen->getValidatorOptionsForColumn($column);
-    if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
-//    if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
+    if($field->getConfig('type') != 'Date')
+    {
+      if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
+    } 
+    else
+    {
+      if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
+    }
   }
 
   /**
@@ -941,7 +947,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         if($field->getConfig('type', false) == 'plain')
         {
           $plainFields[] = $fieldName;
-          $customization .= sprintf("    \$this->%s->setWidget('%s', new sfWidgetFormPlain());\n", $formVariableName, $fieldName);
+          $customization .= sprintf("    \$this->%s->setWidget('%s', new ExtjsWidgetFormInputPlain());\n", $formVariableName, $fieldName);
           $customization .= sprintf("    \$this->%s->setValidator('%s', new sfValidatorPass(array('required' => false)));\n", $formVariableName, $fieldName);
         }
 

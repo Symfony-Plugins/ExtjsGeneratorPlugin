@@ -67,7 +67,7 @@ $readerFields = array();
 $fieldItems = array();
 <?php
 $this->form = $this->configuration->getForm();
-eval($this->getFormCustomization('form', 'form', false));
+eval($this->getFormCustomization('edit', 'form', false));
 
 $form = $this->form;
 foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'edit')  as $fieldset => $fields):
@@ -104,7 +104,7 @@ $formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(arra
   ),
   'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
   'items' => $fieldItems,
-), $configuration->getFormFieldsetParams('params_<?php echo $fieldset ?>')));
+), $configuration->getFormFieldsetConfig('config_<?php echo $fieldset ?>')));
 $fieldItems = array();
 
 <?php endif; ?>

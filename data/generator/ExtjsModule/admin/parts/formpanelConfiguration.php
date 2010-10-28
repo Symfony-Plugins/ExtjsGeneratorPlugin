@@ -14,7 +14,7 @@
 <?php unset($this->config['formpanel']['config']) ?>
   }
 
-  public function getFormFieldsetParams($fieldset)
+  public function getFormFieldsetConfig($fieldset)
   {
 <?php
 $fieldsetConfigs = array();
@@ -22,7 +22,7 @@ if(isset($this->config['form']))
 {
   foreach($this->config['form'] as $key => $config)
   {
-    if(strstr($key, 'params_'))
+    if(strstr($key, 'config_'))
     {
       $fieldsetConfigs[$key] = $config;
       unset($this->config['form'][$key]);

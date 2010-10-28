@@ -68,6 +68,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinComboBox.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.IsEmptyCheckbox.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.TwinFileUploadField.js',
+      '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.PlainTextField.js',
     );
 
     $listpanel_javascripts = array(
@@ -122,6 +123,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       'ItemSelector' => 'Ext.ux.form.ItemSelector',
       'IsEmptyCheckbox' => 'Ext.ux.form.IsEmptyCheckbox',
       'TwinFileUploadField' => 'Ext.ux.form.TwinFileUploadField',
+      'PlainTextField' => 'Ext.ux.form.PlainTextField',
     ), sfConfig::get('sf_extjs3_classes', array())));
 
     sfConfig::set('Ext.ux.form.TwinDateField', array(
@@ -156,6 +158,11 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 
     sfConfig::set('Ext.ux.form.TwinFileUploadField', array(
       'class' => 'Ext.ux.form.TwinFileUploadField',
+      'attributes' => array()
+    ));
+    
+    sfConfig::set('Ext.ux.form.PlainTextField', array(
+      'class' => 'Ext.ux.form.PlainTextField',
       'attributes' => array()
     ));
 

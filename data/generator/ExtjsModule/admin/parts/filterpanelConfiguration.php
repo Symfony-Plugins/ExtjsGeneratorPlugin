@@ -3,10 +3,11 @@
     return array_merge(array(
       'title'      => 'Filters',
       'autoScroll' => true,
-      'bodyStyle'  => 'padding: 5px 0px 0px 10px; position: relative;',
+      'bodyStyle'  => 'padding:5px 10px 0px 10px; border-bottom: 1px solid #99BBE8',
       'labelAlign' => 'top',
+      'border' => false,
       'plugins'   => $this->getFilterpanelPlugins(),
-      'defaults'   => array('anchor' => '85%'),
+      'defaults'   => array('anchor' => '100%'),
     ), <?php echo $this->asPhp(isset($this->config['filterpanel']['config']) ? $this->config['filterpanel']['config'] : array()) ?>);
 <?php unset($this->config['filterpanel']['config']) ?>
   }
