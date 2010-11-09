@@ -249,7 +249,7 @@ abstract class ExtjsModelGeneratorConfiguration extends sfModelGeneratorConfigur
     $key = sfInflector::underscore($this->getPrimaryKeys(true));
     $csrfToken = $form->getCSRFFieldName();
     $needsId = true;
-    $needsCsrf = true;
+    $needsCsrf = $form->isCSRFProtected();
 
     $method = sprintf('get%sDisplay', ucfirst($context));
     if (!$fieldsets = $this->$method())

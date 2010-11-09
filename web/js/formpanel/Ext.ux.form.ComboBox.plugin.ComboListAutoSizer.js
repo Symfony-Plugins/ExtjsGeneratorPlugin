@@ -10,6 +10,10 @@ Ext.ux.form.ComboBox.plugin.ComboListAutoSizer = (function() {
       autoWidth = Math.max(autoWidth, textMetrics.getWidth(record.get(combo.displayField)) + 25);
     });
     combo.list.setWidth(autoWidth);
+    // combo as a grid editor needs minListWidth set or the size reverts back to the original size
+    if(!combo.ownerCt) {
+      combo.minListWidth = autoWidth;
+    }
     combo.innerList.setWidth(autoWidth - combo.list.getFrameWidth('lr'));
     combo.list.alignTo(combo.wrap, combo.listAlign);
   }

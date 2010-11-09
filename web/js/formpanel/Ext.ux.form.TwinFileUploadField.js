@@ -83,6 +83,7 @@ Ext.ux.form.TwinFileUploadField = Ext.extend(Ext.form.TwinTriggerField, {
 
   onRender : function(ct, position) {
     Ext.ux.form.TwinFileUploadField.superclass.onRender.call(this, ct, position);
+    this.triggers[0].hide();
     this.wrapper = Ext.get(this.getFileWrapperId());
     
     this.createFileInput();

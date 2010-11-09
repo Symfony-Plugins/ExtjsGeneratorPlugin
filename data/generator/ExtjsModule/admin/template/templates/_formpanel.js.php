@@ -21,7 +21,7 @@ $formpanel->config_array = array_merge($formpanel->config_array, array(
 <?php foreach ($this->configuration->getFormpanelConfig() as $name => $params): ?>
   '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
 <?php endforeach; ?>
-)) ;
+));
 
 // generate toolbar action handler partials
 <?php if ($editActions = $this->configuration->getValue('edit.actions')): ?>
@@ -56,8 +56,8 @@ include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $
 
 <?php endif; ?>
 <?php if(in_array($name, array('_reload', '_save', '_savenew', '_delete', '_cancel'))): ?>
-include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
 
+include_partial('<?php echo 'editaction_'.$name ?>', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'formpanel' => $formpanel));
 <?php endif; ?>
 <?php echo $this->addCredentialCondition($this->getEditActionButton($name, $params), $params)."\n" ?>
 <?php endforeach; ?>
@@ -83,7 +83,7 @@ foreach ($this->configuration->getFormFields($form, $form->isNew() ? 'new' : 'ed
     );
 
     $fieldAttributes = $field->getConfig('attributes', array());
-    echo $this->addCredentialCondition(sprintf("%s;\n\n", $form[$name]->render(array_merge($attributes, $fieldAttributes))), $field->getConfig());
+    echo $this->addCredentialCondition(sprintf("%s\n\n", $form[$name]->render(array_merge($attributes, $fieldAttributes))), $field->getConfig());
   }
 
   if($fieldset == 'NONE'): ?>

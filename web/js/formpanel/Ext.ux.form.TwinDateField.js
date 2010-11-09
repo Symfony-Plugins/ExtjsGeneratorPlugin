@@ -10,8 +10,7 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
     this.triggerConfig = {
       tag : 'span',
       cls : 'x-form-twin-triggers',
-      cn : [
-      {
+      cn : [{
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger1Class
@@ -19,8 +18,7 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger2Class
-      }
-      ]
+      }]
     };
     this.addEvents('valuechange');
   },
@@ -48,6 +46,10 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
       }
     });
   },
+  
+  onRender : Ext.form.DateField.prototype.onRender.createSequence(function(v) { 
+    this.triggers[0].hide();
+  }),
 
   getTrigger : Ext.form.TwinTriggerField.prototype.getTrigger,
   initTrigger : Ext.form.TwinTriggerField.prototype.initTrigger,
@@ -91,12 +93,22 @@ Ext.ux.form.TwinDateField = Ext.extend(Ext.form.DateField, {
   },
 
   setValue : Ext.form.DateField.prototype.setValue.createSequence(function(v) {
-    if (this.allowClear) {
-      if (v !== null && v != '') {
+    if (v !== null && v != '') {
+      if (this.allowClear)
         this.triggers[0].show();
-      } else {
-        this.triggers[0].hide();
-      }
+    } else {
+      this.triggers[0].hide();
+    }
+  }),
+
+  // private
+  onFocus : Ext.form.DateField.prototype.onFocus.createSequence(function() {
+    // if grid editor widen the editor to account for the size of the trigger
+    // fields
+    if (!this.ownerCt) {
+      var sz = this.wrap.getSize();
+      this.minEditorWidth = (!this.minEditorWidth) ? sz.width + 36 : this.minEditorWidth;
+      this.setSize(this.minEditorWidth, sz.height);
     }
   })
 

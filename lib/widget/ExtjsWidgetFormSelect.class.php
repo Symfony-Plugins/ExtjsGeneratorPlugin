@@ -169,7 +169,7 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
 
     return strtr($this->getOption('template'), array(
       '%input%' => $this->renderExtjsContentBlock($this->getOption('context'), $type, array_merge($configArr, $attributes)),
-      '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
+      '%empty_checkbox%' => $this->getOption('with_empty') && $this->getOption('context') == 'filter' ? "\n\n" . $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));
   }
 

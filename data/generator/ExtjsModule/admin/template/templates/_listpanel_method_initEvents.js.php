@@ -5,7 +5,7 @@ $configArr = array(
   Ext.app.sf.$className.superclass.initEvents.apply(this);
 
 <?php $listConfig = $this->configuration->getListpanelConfig(); ?>
-<?php if(!$this->configuration->hasFilterForm() || (isset($listConfig['autoLoadStore']) && $listConfig['autoLoadStore'])):?>
+<?php if(!$this->configuration->hasFilterForm() ||  $this->configuration->filterpanelIsDisabled() || ( isset($listConfig['autoLoadStore']) && $listConfig['autoLoadStore'] ) ):?>
   this.on({
     afterrender: {
       fn: function(){this.getStore().load()},

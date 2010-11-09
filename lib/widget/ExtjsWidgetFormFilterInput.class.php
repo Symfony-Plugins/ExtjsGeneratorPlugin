@@ -74,7 +74,7 @@ class ExtjsWidgetFormFilterInput extends ExtjsWidgetForm
           )
         )
       ), $attributes)),
-      '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
+      '%empty_checkbox%' => $this->getOption('with_empty') && $this->getOption('type') == 'filter' ? "\n\n" . $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));
   }
 }

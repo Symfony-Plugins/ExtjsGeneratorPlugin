@@ -8,6 +8,7 @@
  */
 class ExtjsPropel15Route extends sfPropel15Route
 {
+  public $object = false,  $options = array();
 
   /**
    * Gets the object related to the current route and parameters.

@@ -9,6 +9,8 @@ $className = '<?php echo $className ?>';
 $topToolbar = new stdClass();
 $topToolbar->methods = array();
 $topToolbar->variables = array();
+$batchId = uniqid('batch_action_combo_');
+$csrf = '';
 
 /* topToolbar configuration */
 $topToolbar->config_array = array(
@@ -23,7 +25,7 @@ $topToolbar->config_array = array(
 <?php foreach ((array) $batchActions as $action => $params): ?>
 <?php echo $this->addCredentialCondition("\$batchActionArr[] = array('$action', __('{$params['label']}', array(), '{$this->getI18nCatalogue()}'));", $params) ?>
 <?php endforeach; ?>
-$batchId = uniqid('batch_action_combo_');
+
 $topToolbar->config_array['items'][] = array(
   'xtype' => 'twincombo',
   'id' => $batchId,
@@ -43,8 +45,7 @@ $topToolbar->config_array['items'][] = array(
   ),
 );
 
-$form = new BaseForm();
-$csrf = ''; 
+$form = new BaseForm(); 
 if ($form->isCSRFProtected())
 {
   $csrf = "{$form->getCSRFFieldName()}: '{$form->getCSRFToken()}',\n      ";  
@@ -53,63 +54,7 @@ if ($form->isCSRFProtected())
 $topToolbar->config_array['items'][] = array(
   'xtype' => 'tbbutton',
   'iconCls' => "Ext.ux.IconMgr.getIcon('add')",
-  'handler' => $sfExtjs3Plugin->asMethod("
-<?php if($this->configuration->getListLayout() == 'gridpanel'): ?>  
-  var selections = Ext.app.sf.ListPanel.getSelectionModel().getSelections();
-<?php else: ?>
-  var selections = Ext.app.sf.ListPanel.getView().getSelectedRecords();
-<?php endif; ?>
-  if(selections.length == 0){
-    Ext.ux.MessageBox.error(
-      '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
-      '".__('You must select at least one item.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
-    );
-  } else {
-    Ext.app.sf.ListPanel.body.mask('".__('Executing Batch Action ... ', array(), '<?php echo $this->getI18nCatalogue() ?>')."');
-    var action = Ext.ComponentMgr.get('" . $batchId . "').getValue();
-    var params = {  
-      ".$csrf."batch_action: action
-    };
-    
-    for (var i = 0; i < selections.length; i++) {
-      params['ids['+i+']'] = selections[i].id;
-    }
-    
-    Ext.Ajax.request({
-      url:'".url_for('<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'batch')).".json',
-      method : 'POST',
-      params : params,
-      timeout: 60000,
-      success : function(response) {
-        var json_response = Ext.util.JSON.decode(response.responseText);       
-          
-        if(json_response.success) {   
-          Ext.ux.MessageBox.info(
-            '".__('Successful!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
-            json_response.message,
-            Ext.app.sf.ListPanel.getStore().reload(),
-            this
-          );
-        } else {
-          Ext.ux.MessageBox.error(
-            '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
-            json_response.message
-          );
-        }       
-        Ext.app.sf.ListPanel.body.unmask();        
-      },
-      failure: function(response) {
-        Ext.ux.MessageBox.error(
-          '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
-          '".__('The web server returned an unexpected response.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
-        );
-        Ext.app.sf.ListPanel.body.unmask();
-      },
-      scope: this
-    });
-
-  }
-"),
+  'handler' => 'this.batchHandler',
   'tooltip' => __('Perform action on selected row(s)', array(), '<?php echo $this->getI18nCatalogue() ?>'),
   'scope' => 'this',
 );
@@ -157,6 +102,10 @@ include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $
 <?php echo $this->addCredentialCondition($this->getListActionButton($name, $params), $params)."\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
+
+// batchHandler
+include_partial('topToolbar_method_batchHandler', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar, 'className' => $className, 'batchId' => $batchId, 'csrf' => $csrf));
+
 <?php echo $this->getStandardPartials('topToolbar') ?>
 <?php echo $this->getCustomPartials('topToolbar'); ?>
 

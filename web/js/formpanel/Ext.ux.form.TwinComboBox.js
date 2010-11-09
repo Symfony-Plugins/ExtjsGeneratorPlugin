@@ -8,10 +8,8 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   submitOnClear : true,
   allowClear : true,
   defaultValue : null,
-  triggerAction: 'all',
-  plugins : [
-    'comboListAutoSizer'
-  ],
+  triggerAction : 'all',
+//  plugins : ['comboListAutoSizer'],
 
   initComponent : function() {
     Ext.ux.form.TwinComboBox.superclass.initComponent.call(this);
@@ -19,8 +17,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
     this.triggerConfig = {
       tag : 'span',
       cls : 'x-form-twin-triggers',
-      cn : [
-      {
+      cn : [{
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger1Class
@@ -28,8 +25,7 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
         tag : 'img',
         src : Ext.BLANK_IMAGE_URL,
         cls : 'x-form-trigger ' + this.trigger2Class
-      }
-      ]
+      }]
     };
   },
 
@@ -48,6 +44,10 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
     });
   },
   
+  onRender : Ext.form.ComboBox.prototype.onRender.createSequence(function(v) { 
+    this.triggers[0].hide();
+  }),
+
   applyState : function(state) {
     this.lastSelectionText = state.lastSelectionText ? state.lastSelectionText : this.defaultText;
     var selectedIndex = state.selectedIndex ? state.selectedIndex : this.defaultIndex;
@@ -60,12 +60,10 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       lastSelectionText : this.lastSelectionText
     };
   },
-  
+
   // private
-  addRecordToStore : function(display, value)
-  {
-    if ((this.store !== null) && (value != ""))
-    {
+  addRecordToStore : function(display, value) {
+    if ((this.store !== null) && (value != "")) {
       // add preloaded value to the store
       var o = new Array();
       o.data = new Array();
@@ -78,12 +76,11 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
 
   // private
   setValue : Ext.form.ComboBox.prototype.setValue.createSequence(function(v) {
-    if (this.allowClear) {
-      if (v !== null && v != '') {
+    if (v !== null && v != '') {
+      if (this.allowClear)
         this.triggers[0].show();
-      } else {
-        this.triggers[0].hide();
-      }
+    } else {
+      this.triggers[0].hide();
     }
 
     var textWidth = Ext.util.TextMetrics.measure(this.el, this.lastSelectionText).width;
@@ -138,10 +135,11 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       this.fireEvent('clear', this);
     }
   },
-  
+
   // private
   onFocus : Ext.form.ComboBox.prototype.onFocus.createSequence(function() {
-    // if grid editor widen the editor to account for the size of the trigger fields
+    // if grid editor widen the editor to account for the size of the trigger
+    // fields
     if (!this.ownerCt) {
       var sz = this.wrap.getSize();
       this.minEditorWidth = (!this.minEditorWidth) ? sz.width + 36 : this.minEditorWidth;

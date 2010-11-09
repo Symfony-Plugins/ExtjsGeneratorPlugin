@@ -27,7 +27,7 @@ $configArr = array(
     params['<?php echo sfInflector::underscore($this->getModelClass()) ?>[' + e.field +']'] = e.value;
 
     Ext.Ajax.request({
-      url:'" . url_for('@<?php echo $this->params['route_prefix'] ?>') . "/' + e.record.id,
+      url:'" . url_for('@<?php echo $this->params['route_prefix'] ?>') . "/' + e.record.get('<?php echo sfInflector::underscore($this->getPrimaryKeys(true)) ?>'),
       method: 'POST',
       params: params,
       success: function(result, request) {

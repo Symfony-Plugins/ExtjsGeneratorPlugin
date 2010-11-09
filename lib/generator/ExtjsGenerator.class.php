@@ -268,7 +268,8 @@ class ExtjsGenerator extends sfPropelGenerator
       }
       else
       {
-        $colArr['renderer'] = $field->getColumnModelRenderer();
+        $renderer = $field->getColumnModelRenderer();
+        if($renderer) $colArr['renderer'] = $renderer;
       }
     }
     
@@ -833,10 +834,10 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
       $this->getValidatorConfigForForeignField($field, $validatorConfig, $view);
     }
     
-    if(isset($validatorConfig['options']) && count($validatorConfig['options']) && $field->getConfig('type') != 'Date')
-    {
-      $validatorConfig['options'] = $this->asPhp($validatorConfig['options']);
-    }
+//    if(isset($validatorConfig['options']) && count($validatorConfig['options']) && $field->getConfig('type') != 'Date')
+//    {
+//      $validatorConfig['options'] = $this->asPhp($validatorConfig['options']);
+//    }
 
     return $validatorConfig;
   }
@@ -987,8 +988,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
             {
               $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
             }
-//            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $this->asPhp($validatorConfig['options']), $this->asPhp($validatorConfig['messages']));
-            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $validatorConfig['options'], $this->asPhp($validatorConfig['messages']));
+            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $this->asPhp($validatorConfig['options']), $this->asPhp($validatorConfig['messages']));
+//            $customization .= sprintf("    \$this->%s->setValidator('%s', $format);\n", $formVariableName, $fieldName, $validatorConfig['class'], $validatorConfig['options'], $this->asPhp($validatorConfig['messages']));
           }
           else
           {

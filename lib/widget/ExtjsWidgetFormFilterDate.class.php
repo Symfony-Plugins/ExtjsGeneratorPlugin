@@ -73,7 +73,7 @@ class ExtjsWidgetFormFilterDate extends ExtjsWidgetForm
         'itemCls' => 'date-filter',
         'anchor' => '80%'
       ), $attributes)),
-      '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
+      '%empty_checkbox%' => $this->getOption('with_empty') ? "\n\n" . $this->renderExtjsFilterIsEmptyCheckbox($name, $values) : ''
     ));
   }
 }
