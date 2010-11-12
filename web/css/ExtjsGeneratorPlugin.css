@@ -32,7 +32,7 @@ input.x-static-text-field {
 	filter: alpha(opacity =   100);
 }
 
-/* formpanel label align fixes */
+/* formpanel label align fixes 
 .x-form-label-left .x-form-item label.x-form-item-label,.x-form-label-right .x-form-item label.x-form-item-label
 	{
 	width: auto;
@@ -50,4 +50,4 @@ input.x-static-text-field {
 .x-form-label-right .x-form-item,.x-form-label-left .x-form-item {
 	padding-top: 0px;
 	padding-bottom: 0px;
-}
+}*/

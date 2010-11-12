@@ -17,5 +17,19 @@ Ext.override(Ext.form.TextField, {
     this.setValue(this.defaultValue);
     this.fireEvent('reset');
     this.applyEmptyText();
+  },
+
+  setReadOnly : function(readOnly) {
+    if (this.rendered) {
+      this.el.dom.readOnly = readOnly;
+    }
+    this.readOnly = readOnly;
+    if(this.readOnly) {
+      this.focusClass = false;      
+      this.getActionEl().addClass(this.disabledClass);
+    } else {
+      this.focusClass =  'x-form-focus';
+      this.getActionEl().removeClass(this.disabledClass);
+    }
   }
 });

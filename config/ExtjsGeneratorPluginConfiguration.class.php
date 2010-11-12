@@ -59,6 +59,8 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.form.TextField.override.js',  //adds reset event
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.form.Hidden.override.js',  //disables reset method
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.form.Field.override.js',  //adds support for required config
+      '/ExtjsGeneratorPlugin/js/formpanel/Ext.form.TriggerField.override.js', //makes readonly triggerfields look like disabled
+      '/ExtjsGeneratorPlugin/js/formpanel/Ext.form.Checkbox.override.js',  //prevents toggle on readyOnly
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.ComboBox.plugin.ComboListAutoSizer.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.field.plugin.FieldHelp.js',
       '/ExtjsGeneratorPlugin/js/formpanel/Ext.ux.form.MultiSelect.js',

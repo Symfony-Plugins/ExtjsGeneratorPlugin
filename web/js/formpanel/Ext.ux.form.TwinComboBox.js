@@ -3,13 +3,14 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   getTrigger : Ext.form.TwinTriggerField.prototype.getTrigger,
   initTrigger : Ext.form.TwinTriggerField.prototype.initTrigger,
   trigger1Class : 'x-form-clear-trigger',
+  trigger2Class : '',
   hideTrigger1 : true,
   submitOnSelect : true,
   submitOnClear : true,
   allowClear : true,
   defaultValue : null,
   triggerAction : 'all',
-//  plugins : ['comboListAutoSizer'],
+  plugins : ['comboListAutoSizer'],
 
   initComponent : function() {
     Ext.ux.form.TwinComboBox.superclass.initComponent.call(this);
@@ -29,24 +30,59 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
     };
   },
 
-  initEvents : function() {
-    Ext.ux.form.TwinComboBox.superclass.initEvents.call(this);
-
-    this.on({
-      select : {
-        fn : function() {
-          if (this.submitOnSelect && this.ownerCt && this.ownerCt.buttons) {
-            this.ownerCt.buttons[0].handler.call(this.ownerCt);
-          }
-        },
-        scope : this
-      }
-    });
-  },
-  
-  onRender : Ext.form.ComboBox.prototype.onRender.createSequence(function(v) { 
-    this.triggers[0].hide();
+  onSelect : Ext.form.ComboBox.prototype.onSelect.createSequence(function(v) {
+    if (this.value && this.ownerCt && this.ownerCt.buttons && this.submitOnSelect) {
+      this.ownerCt.buttons[0].handler.call(this.ownerCt);
+    }
   }),
+
+  onRender : Ext.form.ComboBox.prototype.onRender.createSequence(function(v) {
+    this.getTrigger(0).hide();
+  }),
+
+  setValue : Ext.form.ComboBox.prototype.setValue.createSequence(function(v) {
+    if (v !== null && v != '') {
+      if (this.allowClear)
+        this.getTrigger(0).show();
+    } else {
+      this.getTrigger(0).hide();
+    }
+
+    var textWidth = Ext.util.TextMetrics.measure(this.el, this.lastSelectionText).width;
+    if (textWidth > (this.el.getWidth() - 20)) {
+      this.el.dom.qtip = this.lastSelectionText;
+      this.el.dom.qwidth = textWidth + 5;
+
+      if (Ext.QuickTips) {
+        Ext.QuickTips.enable();
+      }
+    }
+  }),
+
+  reset : Ext.form.ComboBox.prototype.reset.createSequence(function() {
+    this.originalValue = this.defaultValue;
+    this.setValue(this.defaultValue);
+    if (this.allowClear)
+      this.getTrigger(0).hide();
+  }),
+
+  onTrigger2Click : function() {
+    if (!this.readOnly)
+      this.onTriggerClick();
+  },
+
+  onTrigger1Click : function() {
+    if (!this.disabled && !this.readOnly) {
+      this.clearValue();
+      this.getTrigger(0).hide();
+      if (this.submitOnClear && this.ownerCt && this.ownerCt.buttons) {
+        this.ownerCt.buttons[0].handler.call(this.ownerCt);
+      }
+      this.el.dom.qtip = null;
+      this.fireEvent('clear', this);
+      this.onFocus();
+    }
+  },
 
   applyState : function(state) {
     this.lastSelectionText = state.lastSelectionText ? state.lastSelectionText : this.defaultText;
@@ -75,26 +111,6 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
   },
 
   // private
-  setValue : Ext.form.ComboBox.prototype.setValue.createSequence(function(v) {
-    if (v !== null && v != '') {
-      if (this.allowClear)
-        this.triggers[0].show();
-    } else {
-      this.triggers[0].hide();
-    }
-
-    var textWidth = Ext.util.TextMetrics.measure(this.el, this.lastSelectionText).width;
-    if (textWidth > (this.el.getWidth() - 20)) {
-      this.el.dom.qtip = this.lastSelectionText;
-      this.el.dom.qwidth = textWidth + 5;
-
-      if (Ext.QuickTips) {
-        Ext.QuickTips.enable();
-      }
-    }
-  }),
-
-  // private
   findRecord : function(prop, value) {
     var record;
     if (this.store.getCount() > 0) {
@@ -106,45 +122,13 @@ Ext.ux.form.TwinComboBox = Ext.extend(Ext.form.ComboBox, {
       });
     }
     return record;
-  },
+  }
 
-  reset : Ext.form.Field.prototype.reset.createSequence(function() {
-    this.originalValue = this.defaultValue;
-    this.setValue(this.defaultValue);
-    if (this.allowClear)
-      this.triggers[0].hide();
-  }),
-
-  onViewClick : Ext.form.ComboBox.prototype.onViewClick.createSequence(function() {
-    if (this.allowClear)
-      this.triggers[0].show();
-  }),
-
-  onTrigger2Click : function() {
-    this.onTriggerClick();
-  },
-
-  onTrigger1Click : function() {
-    if (!this.disabled) {
-      this.clearValue();
-      this.triggers[0].hide();
-      if (this.submitOnClear && this.ownerCt && this.ownerCt.buttons) {
-        this.ownerCt.buttons[0].handler.call(this.ownerCt);
-      }
-      this.el.dom.qtip = null;
-      this.fireEvent('clear', this);
-    }
-  },
-
-  // private
-  onFocus : Ext.form.ComboBox.prototype.onFocus.createSequence(function() {
-    // if grid editor widen the editor to account for the size of the trigger
-    // fields
-    if (!this.ownerCt) {
-      var sz = this.wrap.getSize();
-      this.minEditorWidth = (!this.minEditorWidth) ? sz.width + 36 : this.minEditorWidth;
-      this.setSize(this.minEditorWidth, sz.height);
-    }
-  })
-});
+  // onViewClick :
+  // Ext.form.ComboBox.prototype.onViewClick.createSequence(function() {
+  // if (this.allowClear)
+  // this.getTrigger(0).show();
+  // }),
+}
+);
 Ext.ComponentMgr.registerType('twincombo', Ext.ux.form.TwinComboBox);
