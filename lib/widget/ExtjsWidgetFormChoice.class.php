@@ -83,6 +83,10 @@ class ExtjsWidgetFormChoice extends ExtjsWidgetFormChoiceBase
     {
       $attributes['multiple'] = 'multiple';
     }
+    
+    // always go with local store because of foreign column value/display issues
+    // remote store still used for local columns or savestate can be configured
+    // manually for foreign columns
     if(!isset($attributes['mode'])) $attributes['mode'] = $this->getOption('mode');
 
     return $this->getRenderer()->render($name, $value, $attributes, $errors);
