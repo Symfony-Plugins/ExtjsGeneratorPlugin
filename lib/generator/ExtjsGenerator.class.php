@@ -769,7 +769,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
       if(!isset($widgetConfig['attributes']))
       {
         $widgetConfig['attributes'] = array(
-          'forceSelection' => false,
+          'forceSelection' => $view == 'filter' ? true : false,
           'mode' => 'remote'
         );
       }

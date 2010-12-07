@@ -150,7 +150,9 @@ class ExtjsWidgetFormSelect extends ExtjsWidgetFormChoiceBase
         $configArr['pageSize'] = sfConfig::get('app_extjs_gen_plugin_remote_combo_pageSize');
         $configArr['minListWidth'] = 230;
       }
-      if(!isset($store['baseParams']) || !isset($store['baseParams']['php_name'])) $configArr['editable'] = false;
+      
+      if($this->getOption('context') == 'form' && (!isset($store['baseParams']) || !isset($store['baseParams']['php_name']))) $configArr['editable'] = false;
+      
     }
 
     if(isset($attributes['help']) && $this->getOption('context') == 'form')
