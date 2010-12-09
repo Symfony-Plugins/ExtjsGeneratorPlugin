@@ -38,27 +38,35 @@ Ext.override(Ext.form.TriggerField, {
     }
   },
 
-  // private
-  onFocus : function() {
-    Ext.form.TriggerField.superclass.onFocus.call(this);
-    if (!this.mimicing) {
-      this.wrap.addClass(this.wrapFocusClass);
-      this.mimicing = true;
-      this.doc.on('mousedown', this.mimicBlur, this, {
-        delay : 10
-      });
-      if (this.monitorTab) {
-        this.on('specialkey', this.checkTab, this);
-      }
+  onRender : function(ct, position) {
+    this.doc = Ext.isIE ? Ext.getBody() : Ext.getDoc();
+    Ext.form.TriggerField.superclass.onRender.call(this, ct, position);
+
+    this.wrap = this.el.wrap({
+      cls : 'x-form-field-wrap x-form-field-trigger-wrap'
+    });
+    this.trigger = this.wrap.createChild(this.triggerConfig || {
+      tag : "img",
+      src : Ext.BLANK_IMAGE_URL,
+      alt : "",
+      cls : "x-form-trigger " + this.triggerClass
+    });
+    this.initTrigger();
+    if (!this.width) {
+      this.wrap.setWidth(this.el.getWidth() + this.trigger.getWidth());
     }
-    // if grid editor widen the editor to account for the size of the
-    // trigger
-    // fields
-    if (!this.ownerCt) {
-      var sz = this.wrap.getSize();
-      this.minEditorWidth = (!this.minEditorWidth) ? sz.width + 36 : this.minEditorWidth;
-      this.setSize(this.minEditorWidth, sz.height);
+
+    this.resizeEl = this.positionEl = this.wrap;
+
+    // if grideditor resize the editor to account for the size of the triggers
+    if (this.gridEditor) {
+      this.mon(this.gridEditor, 'beforeshow', function() {
+        var sz = this.field.wrap.getSize();
+        var triggersWidth = ('undefined' != typeof this.field.allowClear && !this.field.allowClear) ? 18 : 36;
+        var width = (!this.field.minEditorWidth || sz.width + triggersWidth > this.field.minEditorWidth) ? sz.width
+          + triggersWidth : this.field.minEditorWidth;
+        this.setSize(width, sz.height);
+      });
     }
   }
-
 });
