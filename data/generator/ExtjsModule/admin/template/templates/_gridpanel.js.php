@@ -11,7 +11,7 @@ $gridpanel->methods = array();
 $gridpanel->variables = array();
 $gridpanelPlugins = array();
 
-$gridpanel->variables['cm'] = $sfExtjs3Plugin->asVar("Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName() ?>columnmodel'})");
+$gridpanel->variables['cm'] = $sfExtjs3Plugin->asVar("new Ext.app.sf.<?php echo $this->getModuleName() ?>ColumnModel()");
 
 /* gridpanel Configuration */
 $gridpanel->config_array = array(
