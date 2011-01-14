@@ -3,7 +3,7 @@
     $columns = array();
     if($this->getListBatchActions())
     {
-      $columns[] = 'new Ext.grid.CheckboxSelectionModel()';
+      $columns[] = 'this.sm';
       $sm = 'new Ext.grid.CheckboxSelectionModel()';
     }
     else

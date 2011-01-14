@@ -3,6 +3,9 @@
   $className = $moduleName."ColumnModel";
   $xtype = $this->getModuleName()."columnmodel";
   $extends = ($this->configuration->getColumnModelExtends()) ? $this->configuration->getColumnModelExtends() : "Ext.app.sf.{$moduleName}ColumnRenderers";
+  $config = $this->configuration->getColumnModelConfig();
+  $sm = $config['sm'];
+  unset($config['sm']);
 ?>
 [?php
 $className = '<?php echo $className ?>';
@@ -10,13 +13,15 @@ $columnModel = new stdClass();
 $columnModel->methods = array();
 $columnModel->variables = array();
 
+$columnModel->variables['sm'] = $sfExtjs3Plugin->asVar("<?php echo $sm ?>");
+
 $columnModel->config_array = array(
-<?php foreach ($this->configuration->getColumnModelConfig() as $name => $params): ?>
+<?php foreach ($config as $name => $params): ?>
   '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
 <?php endforeach; ?>
 );
 
-<?php 
+<?php
 foreach ($this->configuration->getValue('list.display') as $name => $field)
 {
   echo $this->addCredentialCondition(sprintf("%s;\n", $this->renderColumnField($field)), $field->getConfig());

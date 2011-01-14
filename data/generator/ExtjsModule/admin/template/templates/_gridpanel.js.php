@@ -33,7 +33,7 @@ $gridpanel->config_array['view'] = $sfExtjs3Plugin->asCustomClass('Ext.grid.<?ph
       'source' => 'v.scroller.dom.scrollTop = v.scrollTop + (v.scrollTop == 0 ? 0 : v.scroller.dom.scrollHeight - v.scrollHeight);',
     )),
   ),
-<?php if($this->configuration->getGridpanelGroupTextTpl() != '') echo "  'groupTextTpl' => '{$this->configuration->getGridpanelGroupTextTpl()}'," ?>  
+<?php if($this->configuration->getGridpanelGroupTextTpl() != '') echo "  'groupTextTpl' => '{$this->configuration->getGridpanelGroupTextTpl()}'," ?>
 ));
 
 <?php //if (!empty($gridConfig['expander_partial'])): ?>
@@ -42,7 +42,7 @@ $gridpanel->config_array['view'] = $sfExtjs3Plugin->asCustomClass('Ext.grid.<?ph
 <?php //endif; ?>
 
 // get plugins from generator
-<?php 
+<?php
 foreach ($this->configuration->getValue('list.display') as $name => $field)
 {
   if($plugin = $this->renderGridPanelPlugin($field)) echo sprintf("%s;\n", $plugin);
