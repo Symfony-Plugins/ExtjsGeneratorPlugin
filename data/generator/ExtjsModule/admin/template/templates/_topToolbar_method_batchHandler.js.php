@@ -1,18 +1,24 @@
-[?php // @string $csrf @integer $batchId @object $sfExtjs3Plugin and @object $topToolbar provided
+[?php // @string $csrf @object $sfExtjs3Plugin and @object $topToolbar provided
 $configArr['source'] = "
 <?php if($this->configuration->getListLayout() == 'gridpanel'): ?>  
-var selections = Ext.app.sf.ListPanel.getSelectionModel().getSelections();
+var selected = this.ownerCt.getSelectionModel().getSelections();
 <?php else: ?>
-var selections = Ext.app.sf.ListPanel.getView().getSelectedRecords();
+var selections = this.ownerCt.getView().getSelectedRecords();
 <?php endif; ?>
+var action = this.items.items[0].getValue();
 if(selections.length == 0){
   Ext.ux.MessageBox.error(
     '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
     '".__('You must select at least one item.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
   );
+} else if(action.length == 0) {
+  Ext.ux.MessageBox.error(
+    '".__('Error!', array(), 'messages')."', 
+    '".__('You must select a batch action to perform.', array(), 'messages')."'
+  );
 } else {
-  Ext.app.sf.ListPanel.body.mask('".__('Executing Batch Action ... ', array(), '<?php echo $this->getI18nCatalogue() ?>')."');
-  var action = Ext.ComponentMgr.get('" . $batchId . "').getValue();
+  this.ownerCt.body.mask('".__('Executing Batch Action ... ', array(), '<?php echo $this->getI18nCatalogue() ?>')."');
+
   var params = {  
     ".$csrf."batch_action: action
   };
@@ -33,7 +39,7 @@ if(selections.length == 0){
         Ext.ux.MessageBox.info(
           '".__('Successful!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
           json_response.message,
-          Ext.app.sf.ListPanel.getStore().reload(),
+          this.ownerCt.getStore().reload(),
           this
         );
       } else {
@@ -42,14 +48,14 @@ if(selections.length == 0){
           json_response.message
         );
       }       
-      Ext.app.sf.ListPanel.body.unmask();        
+      this.ownerCt.body.unmask();        
     },
     failure: function(response) {
       Ext.ux.MessageBox.error(
         '".__('Error!', array(), '<?php echo $this->getI18nCatalogue() ?>')."', 
         '".__('The web server returned an unexpected response.', array(), '<?php echo $this->getI18nCatalogue() ?>')."'
       );
-      Ext.app.sf.ListPanel.body.unmask();
+      this.ownerCt.body.unmask();
     },
     scope: this
   });

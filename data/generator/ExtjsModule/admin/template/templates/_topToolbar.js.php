@@ -9,7 +9,6 @@ $className = '<?php echo $className ?>';
 $topToolbar = new stdClass();
 $topToolbar->methods = array();
 $topToolbar->variables = array();
-$batchId = uniqid('batch_action_combo_');
 $csrf = '';
 
 /* topToolbar configuration */
@@ -28,7 +27,6 @@ $topToolbar->config_array = array(
 
 $topToolbar->config_array['items'][] = array(
   'xtype' => 'twincombo',
-  'id' => $batchId,
   'hiddenName' => 'batch_action',
   'emptyText' => __('Choose an action', array(), '<?php echo $this->getI18nCatalogue() ?>'),
   'mode' => 'local',
@@ -104,7 +102,7 @@ include_partial('<?php echo 'listaction_'.$name ?>', array('sfExtjs3Plugin' => $
 <?php endif; ?>
 
 // batchHandler
-include_partial('topToolbar_method_batchHandler', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar, 'className' => $className, 'batchId' => $batchId, 'csrf' => $csrf));
+include_partial('topToolbar_method_batchHandler', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'topToolbar' => $topToolbar, 'className' => $className, 'csrf' => $csrf));
 
 <?php echo $this->getStandardPartials('topToolbar') ?>
 <?php echo $this->getCustomPartials('topToolbar'); ?>
