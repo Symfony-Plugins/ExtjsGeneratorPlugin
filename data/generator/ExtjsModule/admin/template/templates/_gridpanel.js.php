@@ -11,16 +11,13 @@ $gridpanel->methods = array();
 $gridpanel->variables = array();
 $gridpanelPlugins = array();
 
-$gridpanel->variables['cm'] = $sfExtjs3Plugin->asVar("Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName() ?>columnmodel'})");
-
 /* gridpanel Configuration */
 $gridpanel->config_array = array(
+  'ds' => "Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName().strtolower($this->configuration->getDatastoreType()) ?>'})",
 <?php foreach ($this->configuration->getGridpanelConfig() as $name => $params): ?>
   '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
 <?php endforeach; ?>
 );
-
-$gridpanel->config_array['ds'] = "Ext.ComponentMgr.create({xtype:'<?php echo $this->getModuleName().strtolower($this->configuration->getDatastoreType()) ?>'})";
 
 $gridpanel->config_array['view'] = $sfExtjs3Plugin->asCustomClass('Ext.grid.<?php echo $this->configuration->getGridpanelType() ?>View',array(
   'listeners' => array(
@@ -60,6 +57,9 @@ elseif(count($gridpanelPlugins))
 
 /* gridPanel methods and variables */
 
+// constructor
+include_partial('gridpanel_method_constructor', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
+
 // initComponent
 include_partial('gridpanel_method_initComponent', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
@@ -78,7 +78,6 @@ include_partial('gridpanel_method_setFilter', array('sfExtjs3Plugin' => $sfExtjs
 // resetFilter
 include_partial('gridpanel_method_resetFilter', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'gridpanel' => $gridpanel, 'className' => $className));
 
-<?php echo $this->getStandardPartials('gridpanel',array('constructor')) ?>
 <?php echo $this->getCustomPartials('gridpanel'); ?>
 <?php //echo $gridConfig['expander_partial'] ?>
 

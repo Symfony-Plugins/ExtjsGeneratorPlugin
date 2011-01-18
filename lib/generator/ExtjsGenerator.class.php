@@ -321,10 +321,10 @@ class ExtjsGenerator extends sfPropelGenerator
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_objectactions'", $this->getModuleName());
+      return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_objectactions'", $this->getModuleName());
     }
 
-    return sprintf("\$gridpanelPlugins[] = 'this.cm.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
+    return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
   }
   
   public function renderListViewPlugin($field)

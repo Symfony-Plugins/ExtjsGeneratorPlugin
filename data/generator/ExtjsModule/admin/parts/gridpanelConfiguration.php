@@ -2,7 +2,6 @@
   {
     return array_merge(array(
       'title'           => $this->getListTitle(),
-      'cm'              => 'this.cm',
       'autoScroll'      => true,
       'clicksToEdit'    => 1,
       'trackMouseOver'  => sfConfig::get('app_extjs_gen_plugin_list_trackMouseOver', true),
@@ -17,7 +16,7 @@
       'viewConfig'      => array(
         'forceFit'      => sfConfig::get('app_extjs_gen_plugin_gridpanel_forceFit', false),
       ),
-      'sm'              => 'this.cm.sm',
+      'sm'              => 'this.getColumnModel().sm',
       'plugins'         => $this->getGridpanelPlugins(),
 <?php if (sfConfig::get('app_extjs_gen_plugin_list_tabbed', true)) echo "      'header' => false," ?>
     ), <?php echo $this->asPhp(isset($this->config['gridpanel']['config']) ? $this->config['gridpanel']['config'] : array()) ?>);
