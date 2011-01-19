@@ -8,7 +8,7 @@
  */
 class ExtjsPropel15Route extends sfPropel15Route
 {
-  public $object = false,  $options = array();
+  public $object = false, $options = array();
 
   /**
    * Gets the object related to the current route and parameters.
@@ -21,17 +21,17 @@ class ExtjsPropel15Route extends sfPropel15Route
    */
   public function getObject($query_methods = array())
   {
-    if(! $this->isBound())
+    if (!$this->isBound())
     {
       throw new LogicException('The route is not bound.');
     }
 
-    if('object' != $this->options['type'])
+    if ('object' != $this->options['type'])
     {
       throw new LogicException(sprintf('The route "%s" is not of type "object".', $this->pattern));
     }
 
-    if(false !== $this->object)
+    if (false !== $this->object)
     {
       return $this->object;
     }
@@ -39,9 +39,9 @@ class ExtjsPropel15Route extends sfPropel15Route
     $query = $this->getQuery();
 
     //add passed query_methods
-    if(count($query_methods))
+    if (count($query_methods))
     {
-      foreach($query_methods as $method)
+      foreach ($query_methods as $method)
       {
         $query->$method();
       }
@@ -49,11 +49,16 @@ class ExtjsPropel15Route extends sfPropel15Route
 
     // check the related object
     $this->object = $query->filterByArray($this->getModelParameters($this->parameters))->findOne();
-    if(! $this->object && (! isset($this->options['allow_empty']) || ! $this->options['allow_empty']))
+    if (!$this->object && (!isset($this->options['allow_empty']) || !$this->options['allow_empty']))
     {
       throw new sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
     }
 
     return $this->object;
+  }
+
+  public function getQuery()
+  {
+    return parent::getQuery();
   }
 }
