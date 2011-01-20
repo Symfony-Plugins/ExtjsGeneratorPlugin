@@ -29,6 +29,9 @@ foreach ($this->configuration->getValue('list.display') as $name => $field)
 }
 ?>
 
+// constructor
+include_partial('columnModel_method_constructor', array('sfExtjs3Plugin' => $sfExtjs3Plugin, 'columnModel' => $columnModel, 'className' => $className));
+
 <?php echo $this->getStandardPartials('columnModel',array('initComponent')) ?>
 <?php echo $this->getCustomPartials('columnModel'); ?>
 
