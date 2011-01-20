@@ -29,7 +29,7 @@ foreach ($this->configuration->getValue('list.display') as $name => $field)
 }
 ?>
 
-<?php echo $this->getStandardPartials('columnModel',array('initComponent', 'constructor')) ?>
+<?php echo $this->getStandardPartials('columnModel',array('initComponent')) ?>
 <?php echo $this->getCustomPartials('columnModel'); ?>
 
 // create the Ext.app.sf.<?php echo $className ?> class

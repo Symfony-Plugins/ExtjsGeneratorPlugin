@@ -106,6 +106,12 @@ else
 <?php unset($this->config['export']['title']) ?>
   }
 
+  public function getListRowExpanderDisplay()
+  {
+    return <?php echo $this->asPhp(isset($this->config['list']['row_expander_display']) ? $this->config['list']['row_expander_display'] : array()) ?>;
+<?php unset($this->config['list']['row_expander_display']) ?>
+  }
+
   public function getEditDisplay()
   {
     return <?php echo $this->asPhp(isset($this->config['edit']['display']) ? $this->config['edit']['display'] : array()) ?>;

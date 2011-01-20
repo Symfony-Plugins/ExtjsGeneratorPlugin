@@ -88,14 +88,15 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.ForeignFieldColumn.js',
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.plugin.RowActions.js',
-      '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.plugin.ProgressColumn.js',      
+      '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.plugin.ProgressColumn.js',
+      '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.plugin.RowExpander.js'
     );
 
     $prod_default_javascripts = array(
       '/ExtjsGeneratorPlugin/Ext.ux.IconMgr/Ext.ux.IconMgr-min.js',
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-Default-min.js' // YUI Compressor file of all default javascript files
     );
-    
+
     $prod_formpanel_javascripts = array(
       '/ExtjsGeneratorPlugin/js/ExtjsGeneratorPlugin-FormPanel-min.js' // YUI Compressor file of all formpanel javascript files
     );
@@ -132,7 +133,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       'class' => 'Ext.ux.form.TwinDateField',
       'attributes' => array()
     ));
-    
+
     sfConfig::set('Ext.ux.form.TwinDateTimeField', array(
       'class' => 'Ext.ux.form.TwinDateTimeField',
       'attributes' => array()
@@ -162,7 +163,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
       'class' => 'Ext.ux.form.TwinFileUploadField',
       'attributes' => array()
     ));
-    
+
     sfConfig::set('Ext.ux.form.PlainTextField', array(
       'class' => 'Ext.ux.form.PlainTextField',
       'attributes' => array()

@@ -1,20 +1,20 @@
 /**
  * @class Ext.ux.form.TwinDateTimeField
  * @extends Ext.form.Field
- * 
+ *
  * DateTime field, combination of DateField and TimeField
- * 
+ *
  * @author Ing. Jozef Sakáloš
  * @copyright (c) 2008, Ing. Jozef Sakáloš
  * @version 2.0
  * @revision $Id: Ext.ux.form.TwinDateTimeField.js 813 2010-01-29 23:32:36Z jozo $
- * 
+ *
  * @license Ext.ux.form.TwinDateTimeField is licensed under the terms of the Open Source
  *          LGPL 3.0 license. Commercial use is permitted to the extent that the
  *          code/component(s) do NOT become part of another Open Source or
  *          Commercially licensed development library or toolkit without
  *          explicit permission.
- * 
+ *
  * <p>
  * License details: <a href="http://www.gnu.org/licenses/lgpl.html"
  * target="_blank">http://www.gnu.org/licenses/lgpl.html</a>
@@ -24,7 +24,7 @@
 Ext.ns('Ext.ux.form');
 /**
  * Creates new DateTime
- * 
+ *
  * @constructor
  * @param {Object}
  *          config A config object
@@ -35,7 +35,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
    *      during date field validation (defaults to null)
    */
   dateValidator : null,
-  
+
   /**
    * @cfg {String/Object} defaultAutoCreate DomHelper element spec Let
    *      superclass to create hidden field instead of textbox. Hidden will be
@@ -45,26 +45,26 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
     tag : 'input',
     type : 'hidden'
   },
-  
+
   /**
    * @cfg {String} dtSeparator Date - Time separator. Used to split date and
    *      time (defaults to ' ' (space))
    */
   dtSeparator : ' ',
-  
+
   /**
    * @cfg {String} hiddenFormat Format of datetime used to store value in hidden
    *      field and submitted to server (defaults to 'Y-m-d H:i:s' that is mysql
    *      format)
    */
   hiddenFormat : 'Y-m-d H:i:s',
-  
+
   /**
    * @cfg {Boolean} otherToNow Set other field to now() if not explicly filled
    *      in (defaults to true)
    */
   otherToNow : true,
-  
+
   /**
    * @cfg {Boolean} emptyToNow Set field value to now on attempt to set empty
    *      value. If it is true then setValue() sets value of field to current
@@ -76,30 +76,30 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
    *      the grid editor (defaults to 'right')
    */
   timePosition : 'right', // valid values:'below', 'right'
-  
+
   /**
    * @cfg {Function} timeValidator A custom validation function to be called
    *      during time field validation (defaults to null)
    */
   timeValidator : null,
-  
+
   /**
    * @cfg {Number} timeWidth Width of time field in pixels (defaults to 100)
    */
   timeWidth : 100,
-  
+
   /**
    * @cfg {String} dateFormat Format of DateField. Can be localized. (defaults
    *      to 'm/y/d')
    */
-  dateFormat : 'm/d/y',
-  
+  dateFormat : 'm/d/Y',
+
   /**
    * @cfg {String} timeFormat Format of TimeField. Can be localized. (defaults
    *      to 'g:i A')
    */
   timeFormat : 'g:i A',
-  
+
   /**
    * @cfg {Object} dateConfig Config for DateField constructor.
    */
@@ -305,7 +305,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Calls markInvalid on both DateField and TimeField
-   * 
+   *
    * @param {String}
    *          msg Invalid message to display
    */
@@ -331,7 +331,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Disable this component.
-   * 
+   *
    * @return {Ext.Component} this
    */
   disable : function() {
@@ -349,7 +349,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Enable this component.
-   * 
+   *
    * @return {Ext.Component} this
    */
   enable : function() {
@@ -404,7 +404,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Returns true if this component is visible
-   * 
+   *
    * @return {boolean}
    */
   isVisible : function() {
@@ -579,7 +579,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Hide or show this component by boolean
-   * 
+   *
    * @return {Ext.Component} this
    */
   setVisible : function(visible) {
@@ -684,7 +684,7 @@ Ext.ux.form.TwinDateTimeField = Ext.extend(Ext.form.Field, {
 
   /**
    * Returns renderer suitable to render this field
-   * 
+   *
    * @param {Object}
    *          Column model config
    */

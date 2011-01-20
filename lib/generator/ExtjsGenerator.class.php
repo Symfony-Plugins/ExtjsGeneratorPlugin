@@ -187,7 +187,7 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderJsonReaderField(ExtjsModelGeneratorConfigurationField $field, $form = null)
   {
-    if ($field->isComponent() || $field->isPartial() || $field->getKey() == 'expander' || $field->getKey() == 'object_actions') return false;
+    if ($field->isComponent() || $field->isPartial() || $field->getKey() == 'row_expander' || $field->getKey() == 'object_actions') return false;
 
     $fieldArr = array(
       'name' => $field->getName(),
@@ -213,20 +213,18 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnField($field, $type ='columnModel')
   {
-    if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false; 
-    
+    if ($field->isComponent() || $field->isPartial() || $field->isInvisible() || $field->isHidden()) return false;
+
     if ($field->isPlugin())
     {
-      if ($field->getKey() == 'expander')
+      if ($field->getKey() == 'row_expander')
       {
-        return sprintf("\${$type}->config_array['columns'][] = %s", $this->asPhp(array(
-          'xtype' => 'rowexpander'
-        )));
+        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_rowExpander'", $this->getModuleName());
       }
 
       if ($field->getKey() == 'object_actions')
       {
-        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_objectactions'", $this->getModuleName());
+        return sprintf("\${$type}->config_array['columns'][] = 'this.%s_objectActions'", $this->getModuleName());
       }
 
       return sprintf("\${$type}->config_array['columns'][] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
@@ -272,7 +270,7 @@ class ExtjsGenerator extends sfPropelGenerator
         if($renderer) $colArr['renderer'] = $renderer;
       }
     }
-    
+
     return sprintf("\${$type}->config_array['columns'][] = %s", $this->asPhp(array_merge($colArr, $field->getConfig('config', array()))));
   }
 
@@ -285,11 +283,11 @@ class ExtjsGenerator extends sfPropelGenerator
    */
   public function renderColumnPlugin($field, $type ='columnModel')
   {
-    if (!$field->isPlugin()) return;
+    if (!$field->isPlugin() || $field->getKey() == 'row_expander') return;
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\${$type}->variables['%s_objectactions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin({ptype: \'%s\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
+      return sprintf("\${$type}->variables['%s_objectActions'] = \$sfExtjs3Plugin->asVar('Ext.ComponentMgr.createPlugin({ptype: \'%s\'})')", $this->getModuleName(), $this->getModuleName() . 'objectactions');
     }
 
     //TODO refactor this to provide il8n support for header
@@ -312,26 +310,24 @@ class ExtjsGenerator extends sfPropelGenerator
   {
     if (!$field->isPlugin()) return;
 
-    //    if($field->getKey() == 'expander')
-    //    {
-    //      return sprintf("\$gridpanelPlugins[] = %s", $this->asPhp(array(
-    //        'xtype' => 'rowexpander'
-    //      )));
-    //    }
+    if($field->getKey() == 'row_expander')
+    {
+      return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_rowExpander'", $this->getModuleName());
+    }
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_objectactions'", $this->getModuleName());
+      return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_objectActions'", $this->getModuleName());
     }
 
     return sprintf("\$gridpanelPlugins[] = 'this.colModel.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
   }
-  
+
   public function renderListViewPlugin($field)
   {
     if (!$field->isPlugin()) return false;
 
-    //    if($field->getKey() == 'expander')
+    if($field->getKey() == 'row_expander') return false;
     //    {
     //      return sprintf("\$gridpanelPlugins[] = %s", $this->asPhp(array(
     //        'xtype' => 'rowexpander'
@@ -340,7 +336,7 @@ class ExtjsGenerator extends sfPropelGenerator
 
     if ($field->getKey() == 'object_actions')
     {
-      return sprintf("\$listviewPlugins[] = 'this.%s_objectactions'", $this->getModuleName());
+      return sprintf("\$listviewPlugins[] = 'this.%s_objectActions'", $this->getModuleName());
     }
 
     return sprintf("\$listviewPlugins[] = 'this.%s_%s'", str_replace('-', '_', $field->getName()), $field->getConfig('plugin'));
@@ -425,7 +421,7 @@ EOF;
     $return = <<<EOF
 \$objectActions->config_array['actions'][] = array(
   'iconCls' => \$sfExtjs3Plugin->asVar("Ext.ux.IconMgr.getIcon('{$configArr['icon']}')"),
-  'qtip' => '{$configArr['help']}',  
+  'qtip' => '{$configArr['help']}',
   'hide' => {$configArr['hide']},
   'cb' => '{$configArr['handler']}',
   'scope' => \$sfExtjs3Plugin->asVar('{$configArr['scope']}'),
@@ -502,7 +498,7 @@ EOF;
     }
     else
     {
-      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";  
+      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";
     }
 
     $configStr = <<<EOF
@@ -600,7 +596,7 @@ EOF;
     }
     else
     {
-      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";  
+      $handler = "\$sfExtjs3Plugin->asVar('this.$actionName')";
     }
 
     $configStr = <<<EOF
@@ -704,7 +700,7 @@ EOF;
 
   protected function createStandardConstructorPartial($objName)
   {
-    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
+    return sprintf('<?php // @object $sfExtjs3Plugin string $className and @object %1$s provided
 // constructor
 $configArr["parameters"] = "c";
 $configArr["source"] = "
@@ -718,7 +714,7 @@ $%1$s->methods["constructor"] = $sfExtjs3Plugin->asMethod($configArr);', $objNam
 
   protected function createStandardInitComponentPartial($objName)
   {
-    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
+    return sprintf('<?php // @object $sfExtjs3Plugin string $className and @object %1$s provided
 // initComponent
 $configArr["source"] = "Ext.app.sf.$className.superclass.initComponent.apply(this, arguments);";
 $%1$s->methods["initComponent"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
@@ -726,7 +722,7 @@ $%1$s->methods["initComponent"] = $sfExtjs3Plugin->asMethod($configArr);', $objN
 
   protected function createStandardInitEventsPartial($objName)
   {
-    return sprintf('<?php // @object \$sfExtjs3Plugin string \$className and @object %1$s provided
+    return sprintf('<?php // @object $sfExtjs3Plugin string $className and @object %1$s provided
 // initEvents
 $configArr["source"] = "Ext.app.sf.$className.superclass.initEvents.apply(this);";
 $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName);
@@ -811,7 +807,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
         $validatorConfig['messages'] = $validatorMessages;
       }
     }
-    
+
     if($field->getConfig('combo', false))
     {
       if(!isset($validatorConfig['class']))
@@ -825,8 +821,8 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
 
       $validatorConfig['options'] = (isset($validatorConfig['options'])) ? array_merge($options, $validatorConfig['options']) : $options;
     }
-    
-    
+
+
     if(!isset($validatorConfig['options']) || !is_array($validatorConfig['options'])) $validatorConfig['options'] = array();
     if(!isset($validatorConfig['messages']) || !is_array($validatorConfig['messages'])) $validatorConfig['messages'] = array();
 
@@ -834,7 +830,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
     {
       $this->getValidatorConfigForForeignField($field, $validatorConfig, $view);
     }
-    
+
 //    if(isset($validatorConfig['options']) && count($validatorConfig['options']) && $field->getConfig('type') != 'Date')
 //    {
 //      $validatorConfig['options'] = $this->asPhp($validatorConfig['options']);
@@ -870,7 +866,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
     if($field->getConfig('type') != 'Date')
     {
       if(!count($validatorConfig['options']) && $validatorOptions != '') eval("\$validatorConfig['options'] = $validatorOptions;");
-    } 
+    }
     else
     {
       if(!count($validatorConfig['options']) && $validatorOptions != '') $validatorConfig['options'] = $validatorOptions;
