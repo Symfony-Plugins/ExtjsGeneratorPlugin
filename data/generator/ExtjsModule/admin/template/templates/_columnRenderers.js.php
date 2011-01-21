@@ -16,8 +16,8 @@ $columnRenderers->methods['renderLink'] = $sfExtjs3Plugin->asMethod(array(
   'source' => "
     if('function' == typeof value.dateFormat) value = this.formatDate(value);
     if (record) return String.format('<u><b><a class=\"grid_edit_link\" sf_ns:key=\"{0}\" href=\"#\">{1}</a></b></u>',
-      record.data['<?php echo sfInflector::underscore($this->getPrimaryKeys(true)) ?>'],
-      value      
+      record.data['<?php echo $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true))) ?>'],
+      value
     );
     return value;
   "

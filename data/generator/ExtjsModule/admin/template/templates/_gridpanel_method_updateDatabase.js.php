@@ -12,27 +12,27 @@ $configArr = array(
       sf_method: 'put',
       sf_format: 'json'
     };
-   
+
     // if the editor config has a name set field to the editor name value
     var editor = e.grid.getColumnModel().getCellEditor(e.column);
     if( editor && 'undefined' != typeof editor.field.initialConfig.name) {
         e.field = editor.field.initialConfig.name;
-    } 
-      
+    }
+
     // can't post a date object so format it as a string the database understands
     if(e.value == 'date') {
       e.value = e.value.dateFormat('m/d/Y');
     }
- 
+
     params['<?php echo sfInflector::underscore($this->getModelClass()) ?>[' + e.field +']'] = e.value;
 
     Ext.Ajax.request({
-      url:'" . url_for('@<?php echo $this->params['route_prefix'] ?>') . "/' + e.record.get('<?php echo sfInflector::underscore($this->getPrimaryKeys(true)) ?>'),
+      url:'" . url_for('@<?php echo $this->params['route_prefix'] ?>') . "/' + e.record.get('<?php echo $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true))) ?>'),
       method: 'POST',
       params: params,
       success: function(result, request) {
         var result = Ext.decode(result.responseText);
-        
+
         //we will always get into success even if result.success: false
         if(result.success) {
           // marks dirty records as committed (no red triangle)

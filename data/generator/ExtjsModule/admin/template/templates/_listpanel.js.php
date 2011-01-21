@@ -6,7 +6,7 @@ Ext.ux.list.LinkColumn = Ext.extend(Ext.list.Column, {
 
     c.tpl.format = function(values, index) {
       var v = (values[index] && 'function' == typeof values[index].dateFormat) ? Ext.util.Format.date(values[index], 'm/d/Y') : (values[index]) ? values[index] : 'not set';
-      return String.format('<u><b><a class="listview_edit_link" sf_ns:key="{0}" href="#">{1}</a></b></u>', values['<?php echo sfInflector::underscore($this->getPrimaryKeys(true)) ?>'], v);
+      return String.format('<u><b><a class="listview_edit_link" sf_ns:key="{0}" href="#">{1}</a></b></u>', values['<?php echo $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true))) ?>'], v);
     };
 
     Ext.ux.list.LinkColumn.superclass.constructor.call(this, c);

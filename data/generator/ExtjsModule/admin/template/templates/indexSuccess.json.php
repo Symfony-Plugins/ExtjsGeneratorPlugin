@@ -3,7 +3,7 @@ use_helper('I18N', 'Date');
 $dataArray = array();
 foreach ($pager->getResults() as $i => $<?php echo $this->getSingularName() ?>)
 {
-<?php $key = sfInflector::underscore($this->getPrimaryKeys(true)) ?>
+<?php $key = $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true))) ?>
 <?php $fields = $this->configuration->getValue('list.display') ?>
 <?php if(!array_key_exists($key, $fields)) $fields = array( $key => $this->configuration->getFieldConfiguration('list', $key)) + $fields ?>
 <?php foreach ($fields as $name => $field): ?>

@@ -24,7 +24,7 @@ if(selections.length == 0){
   };
 
   for (var i = 0; i < selections.length; i++) {
-    params['ids['+i+']'] = selections[i].get('<?php echo sfInflector::underscore($this->getPrimaryKeys(true)) ?>');
+    params['ids['+i+']'] = selections[i].get('<?php echo $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true))) ?>');
   }
 
   Ext.Ajax.request({

@@ -1,6 +1,6 @@
 <?php
   $moduleName = ucfirst(sfInflector::camelize($this->getModuleName()));
-  $store = $this->configuration->getDatastoreType(); 
+  $store = $this->configuration->getDatastoreType();
   $className = $moduleName.$store;
   $xtype = $this->getModuleName().strtolower($store);
   $extends = ($this->configuration->getDatastoreExtends()) ? $this->configuration->getDatastoreExtends() : "Ext.data.$store";
@@ -25,10 +25,10 @@ $datastore->config_array['proxy'] = $sfExtjs3Plugin->HttpProxy(array(
 
 $readerFields = array();
 <?php
-$key = sfInflector::underscore($this->getPrimaryKeys(true));
+$key = $this->translateColumnName($this->getTableMap()->getColumnByPhpName($this->getPrimaryKeys(true)));
 $fields = $this->configuration->getValue('list.display');
 
-if(!array_key_exists($key, $fields)) $fields = array( $key => $this->configuration->getFieldConfiguration('list', $key)) + $fields; 
+if(!array_key_exists($key, $fields)) $fields = array( $key => $this->configuration->getFieldConfiguration('list', $key)) + $fields;
 
 foreach ( $fields as $name => $field)
 {
