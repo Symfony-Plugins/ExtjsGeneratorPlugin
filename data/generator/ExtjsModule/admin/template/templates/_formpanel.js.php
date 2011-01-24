@@ -91,21 +91,24 @@ foreach($fieldItems as $fieldItem) $formpanel->config_array['items'][] = $fieldI
 $fieldItems = array();
 
 <?php else: ?>
-$formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
-  'title' => __('<?php echo $fieldset ?>', array(), '<?php echo $this->getI18nCatalogue() ?>'),
-  'collapsible' => false,
-  'autoHeight' => true,
-  'style' => 'padding:10px;',
-  'bodyStyle' => 'padding:0px 0px;',
-  'style' => 'margin-left:5px;margin-right:10px',
-  'autoWidth' => true,
-  'defaults' => array(
-  'anchor' => '51%'
-  ),
-  'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
-  'items' => $fieldItems,
-), $configuration->getFormFieldsetConfig('config_<?php echo $fieldset ?>')));
-$fieldItems = array();
+if(count($fieldItems))
+{
+  $formpanel->config_array['items'][] = $sfExtjs3Plugin->FieldSet(array_merge(array(
+    'title' => __('<?php echo $fieldset ?>', array(), '<?php echo $this->getI18nCatalogue() ?>'),
+    'collapsible' => false,
+    'autoHeight' => true,
+    'style' => 'padding:10px;',
+    'bodyStyle' => 'padding:0px 0px;',
+    'style' => 'margin-left:5px;margin-right:10px',
+    'autoWidth' => true,
+    'defaults' => array(
+    'anchor' => '51%'
+    ),
+    'labelWidth' => $formpanel->config_array['labelWidth'] - 16,
+    'items' => $fieldItems,
+  ), $configuration->getFormFieldsetConfig('config_<?php echo $fieldset ?>')));
+  $fieldItems = array();
+}
 
 <?php endif; ?>
 <?php endforeach; ?>
