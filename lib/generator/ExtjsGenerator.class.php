@@ -63,18 +63,22 @@ class ExtjsGenerator extends sfPropelGenerator
       foreach ($oneToOne->getLocalTable()->getColumns() as $column)
       {
         $name = $this->translateColumnName($column);
-        $names[] = $name;
-        $fields[$name] = array_merge(array(
-          'is_link'       => (boolean) $column->isPrimaryKey(),
-          'is_real'       => true,
-          'getter'        => sprintf('get%s()->get%s', $oneToOne->getName(), $column->getPhpName()),
-          'model'         => $column->getTable()->getPhpName(),
-          'php_name'      => $column->getPhpName(),
-          'field_name'    => $name,
-          'relation_name' => $oneToOne->getName(),
-          'sort_method'   => sprintf('orderBy%s.%s', $oneToOne->getName(), $column->getPhpName()),
-          'type'          => $this->getType($column)
-        ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+        if(!in_array($name, $names))
+        {
+
+          $names[] = $name;
+          $fields[$name] = array_merge(array(
+            'is_link'       => (boolean) $column->isPrimaryKey(),
+            'is_real'       => true,
+            'getter'        => sprintf('get%s()->get%s', $oneToOne->getName(), $column->getPhpName()),
+            'model'         => $column->getTable()->getPhpName(),
+            'php_name'      => $column->getPhpName(),
+            'field_name'    => $name,
+            'relation_name' => $oneToOne->getName(),
+            'sort_method'   => sprintf('orderBy%s.%s', $oneToOne->getName(), $column->getPhpName()),
+            'type'          => $this->getType($column)
+          ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+        }
       }
     }
 
