@@ -985,7 +985,7 @@ $%1$s->methods["initEvents"] = $sfExtjs3Plugin->asMethod($configArr);', $objName
           if(isset($validatorConfig['class']))
           {
             $format = 'new %s(%s, %s)';
-            if(in_array($class = $widgetConfig['class'], array('sfValidatorInteger', 'sfValidatorNumber')))
+            if(in_array($class = $validatorConfig['class'], array('sfValidatorInteger', 'sfValidatorNumber')))
             {
               $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s, %s))';
             }
