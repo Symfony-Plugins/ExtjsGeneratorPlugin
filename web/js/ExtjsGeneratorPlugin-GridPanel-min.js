@@ -1,4 +1,4 @@
-Ext.override(Ext.grid.GridPanel,{getView:function(){if(!this.view){this.view=new Ext.grid.GridView(this.viewConfig)}else{Ext.apply(this.view,this.viewConfig)}return this.view}});
+Ext.override(Ext.grid.GridPanel,{getView:function(){if(!this.view){this.view=new Ext.grid.GridView(this.viewConfig)}else{Ext.apply(this.view,this.viewConfig)}return this.view}});Ext.override(Ext.grid.GridView,{holdPosition:false,onLoad:function(){if(!this.holdPosition){this.scrollToTop()}}});
 /*
  * Ext JS Library 3.3.0
  * Copyright(c) 2006-2010 Ext JS, Inc.

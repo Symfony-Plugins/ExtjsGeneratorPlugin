@@ -85,6 +85,7 @@ class ExtjsGeneratorPluginConfiguration extends sfPluginConfiguration
 
     $gridpanel_javascripts = array(
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.grid.GridPanel.override.js',
+      '/ExtjsGeneratorPlugin/js/gridpanel/Ext.grid.GridView.override.js',
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.CheckColumn.js',
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.ForeignFieldColumn.js',
       '/ExtjsGeneratorPlugin/js/gridpanel/Ext.ux.grid.plugin.RowActions.js',
