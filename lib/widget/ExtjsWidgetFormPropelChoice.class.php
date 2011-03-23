@@ -77,13 +77,13 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
       'model' => $this->getOption('model')
     );
 
-    if(is_array($this->getOption('order_by'))) $params['order_by'] = json_encode($this->getOption('order_by'));
-    if(count($this->getOption('query_methods'))) $params['query_methods'] = json_encode($this->getOption('query_methods'));
-    if(!is_null($this->getOption('group_by'))) $params['group_by'] = $this->getOption('group_by');
-    if(!is_null($this->getOption('php_name'))) $params['php_name'] = $this->getOption('php_name');
-    if($this->getOption('multiple')) $params['multiple'] = $this->getOption('multiple');
-    if($this->getOption('method') != '__toString') $params['method'] = $this->getOption('method');
-    if($this->getOption('key_method') != 'getPrimaryKey') $params['key_method'] = $this->getOption('key_method');
+    if (is_array($this->getOption('order_by'))) $params['order_by'] = json_encode($this->getOption('order_by'));
+    if (count($this->getOption('query_methods'))) $params['query_methods'] = json_encode($this->getOption('query_methods'));
+    if (!is_null($this->getOption('group_by'))) $params['group_by'] = $this->getOption('group_by');
+    if (!is_null($this->getOption('php_name'))) $params['php_name'] = $this->getOption('php_name');
+    if ($this->getOption('multiple')) $params['multiple'] = $this->getOption('multiple');
+    if ($this->getOption('method') != '__toString') $params['method'] = $this->getOption('method');
+    if ($this->getOption('key_method') != 'getPrimaryKey') $params['key_method'] = $this->getOption('key_method');
     return $params;
   }
 
@@ -92,29 +92,33 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
    */
   public function getCriteria()
   {
-    if(!$this->criteria)
+    if (!$this->criteria)
     {
       $this->criteria = PropelQuery::from($this->getOption('model'));
 
-      if($this->getOption('criteria'))
+      if ($this->getOption('criteria'))
       {
         $this->criteria->mergeWith($this->getOption('criteria'));
       }
 
-      foreach($this->getOption('query_methods') as $method)
+      foreach ($this->getOption('query_methods') as $method)
       {
         $this->criteria->$method();
       }
 
-      if($order = $this->getOption('order_by'))
+      if ($order = $this->getOption('order_by'))
       {
         $this->criteria->orderBy($order[0], $order[1]);
       }
+      elseif (!is_null($this->getOption('php_name')))
+      {
+        $this->criteria->orderBy($this->getOption('model') . '.' . $this->getOption('php_name'), 'asc');
+      }
 
-      if($group = $this->getOption('group_by'))
+      if ($group = $this->getOption('group_by'))
       {
         //if a key_method was explicitly set use it otherwise key is the value
-        if($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
+        if ($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
         $this->criteria->groupBy($group)->select(isset($key) ? array($key, $group) : $group);
       }
     }
@@ -140,19 +144,19 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
   {
     $choices = array();
 
-    if(false !== $this->getOption('add_empty'))
+    if (false !== $this->getOption('add_empty'))
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
     }
 
     $criteria = $this->getCriteria();
 
-    if($group = $this->getOption('group_by'))
+    if ($group = $this->getOption('group_by'))
     {
       //if a key_method was explicitly set use it otherwise key is the value
-      if($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
+      if ($this->getOption('key_method') != 'getPrimaryKey') $key = substr($this->getOption('key_method'), 3);
       $values = $criteria->find($this->getOption('connection'));
-      foreach($values as $value)
+      foreach ($values as $value)
       {
         $choices[isset($key) ? $value[$key] : $value] = isset($key) ? $value[$group] : $value;
       }
@@ -161,18 +165,18 @@ class ExtjsWidgetFormPropelChoice extends ExtjsWidgetFormChoice
     {
       $objects = $criteria->find($this->getOption('connection'));
       $methodKey = $this->getOption('key_method');
-      if(! method_exists($this->getOption('model'), $methodKey))
+      if (!method_exists($this->getOption('model'), $methodKey))
       {
         throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
       }
 
       $methodValue = $this->getOption('method');
-      if(! method_exists($this->getOption('model'), $methodValue))
+      if (!method_exists($this->getOption('model'), $methodValue))
       {
         throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodValue, __CLASS__));
       }
 
-      foreach($objects as $object)
+      foreach ($objects as $object)
       {
         $choices[$object->$methodKey()] = $object->$methodValue();
       }
